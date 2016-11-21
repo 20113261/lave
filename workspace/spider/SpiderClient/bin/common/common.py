@@ -29,11 +29,11 @@ def set_proxy_client(client):
 def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions = [], forbid_regions = [], user = 'realtime', passwd = 'realtime', proxy_info = {}):
     special_ip = '10.10.156.56|10.10.184.17|10.10.184.214|10.10.170.233|10.10.176.6|10.10.48.27|10.10.38.160|10.10.29.204|10.10.106.179|10.10.228.4|10.10.218.199'
     try:
-	ip = getLocalIp() 
-    	if ip in special_ip:
-	    return 'REALTIME'
+        ip = getLocalIp() 
+        if ip not in special_ip:
+            return 'REALTIME'
     except:
-	return None
+        return None
 
     if proxy_info == {}:
         pass

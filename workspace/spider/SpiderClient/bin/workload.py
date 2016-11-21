@@ -68,7 +68,7 @@ class ControllerWorkload(WorkloadStorable):
         logger.info('Need %d New Tasks'%task_length)
         url = "/workload?forbid="  + self.__forbide_section_str + "&count=" + str(task_length)
         result = self.__client.get(url)
-	logger.info(result)        
+        logger.info(result)        
         if result == None or result == []:
             return False
 
@@ -97,10 +97,9 @@ class ControllerWorkload(WorkloadStorable):
 
 
     def write_redis_ticket(self, task, proxy,Error ):
-        
-	logger.info(task.redis_host) 
+        logger.info(task.redis_host) 
 
-	rds = redis.Redis(host=task.redis_host, port=task.redis_port,  db=int(task.redis_db), password = task.redis_passwd)
+        rds = redis.Redis(host=task.redis_host, port=task.redis_port,  db=int(task.redis_db), password = task.redis_passwd)
 
 
        
@@ -126,15 +125,16 @@ class ControllerWorkload(WorkloadStorable):
             logger.info('server is start! ')
             query = {"other_info":task.other_info}
             try:
-	    	self.write_redis_ticket(task, proxy,Error)
+                self.write_redis_ticket(task, proxy,Error)
             except Exception,e:
-		logger.info('not redis con'+str(e))
-	    url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
+                logger.info('not redis con'+str(e))
+
+            url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
             logger.info(url)
             
             HttpClient(task.host).get(url)
             return True
-	
+
         task_status = {"id": task.id, "content": task.content, "source": task.source, \
                 "workload_key": task.workload_key, "error": Error,'proxy' : proxy,"timeslot": task.timeslot}
         self.__tasks_status.append(task_status)

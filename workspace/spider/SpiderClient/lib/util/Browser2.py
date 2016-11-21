@@ -16,7 +16,7 @@ class MechanizeCrawler(object):
         self.qid = qid
         self.headers = headers
         self.br = requests.Session()
-	self.br.keep_alive = False
+        self.br.keep_alive = False
         self.Userproxy = False
         headers['User-Agent'] = GetUserAgent()
         self.br.headers.update(headers)
@@ -58,16 +58,16 @@ class MechanizeCrawler(object):
     def set_proxy(self, p, https = False):
         if p != None and p != "REALTIME":
             if p.split(':')[0] in SOCKS_PROXY:
-		print 'socks --- '+p
-		self.br.proxies = {
-			'http':'socks5://'+p,
-			'https':'socks5://'+p
-		 }
-	    else:
-		self.br.proxies = {
-			'https':'http://'+p,
-      			'http':'http://'+p,
-		}
+                print 'socks --- '+p
+                self.br.proxies = {
+                        'http':'socks5://'+p,
+                        'https':'socks5://'+p
+                }
+            else:
+                self.br.proxies = {
+                        'https':'http://'+p,
+                        'http':'http://'+p,
+                }
 
 
     def get_url_of_response(self):
@@ -94,12 +94,12 @@ class MechanizeCrawler(object):
     def get_cookie(self, method, url_base, paras = {}, paras_type = 1, time_out = 60):
         page,_ = self.req(method, url_base, paras = {}, paras_type = 1, time_out = 60)
         dcookie = requests.utils.dict_from_cookiejar(self.resp.cookies)
-	return dcookie,_
+        return dcookie,_
 
     def get_url(self, method, url_base, paras = {}, paras_type = 1, time_out = 60):
         page,_error = self.req(method, url_base, paras = {}  , paras_type = 1, time_out = 60)
 
-	return self.get_url_of_response(),_error
+        return self.get_url_of_response(),_error
 
 
 if __name__ == '__main__':
