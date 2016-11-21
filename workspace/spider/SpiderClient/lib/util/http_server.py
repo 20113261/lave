@@ -11,6 +11,13 @@ import socket
 import SocketServer
 import SimpleHTTPServer
 import urlparse
+from gevent.pywsgi import WSGIServer
+from gevent import monkey
+monkey.patch_all()
+
+from gevent.pywsgi import WSGIServer
+
+
 
 class URLParams:
     def __init__(self, params, path):
@@ -44,9 +51,11 @@ class ThreadedHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         self.dispatchers[path] = fun 
 
     def do_GET(self):
+        print  'herer',self.path
         o = urlparse.urlparse(self.path)
+        print o.query
         params = urlparse.parse_qs(o.query)
-
+        
         response = ''
         if o.path in self.dispatchers:
             fun = self.dispatchers[o.path]
@@ -59,7 +68,9 @@ class ThreadedHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
 
+
 class HttpServer:
+    '''
     def __init__(self, host, port):
         self.server = ThreadedTCPServer((host, port), ThreadedHTTPRequestHandler)
 
@@ -67,15 +78,47 @@ class HttpServer:
         ThreadedHTTPRequestHandler.register(path, fun)
 
     def run(self):
+        self.server.serve_forever() 
+    '''
+    def __init__(self, host, port):
+
+        self.path = {}
+        self.server = WSGIServer((host, port), self.application)
+    
+    def register(self, path, fun):
+        self.path[path] = fun
+ 
+    def application(self, environ, start_response):
+        
+
+        status = '200 OK'
+
+        headers = [
+            ('Content-Type', 'text/html')
+        ]
+
+        path_info = environ['PATH_INFO']
+        osquery = environ['QUERY_STRING']
+        response = 'lao niang kan ni shi bu shi timeout !'
+
+        if path_info in self.path:
+            params = urlparse.parse_qs(osquery)
+    
+            response = self.path[path_info](URLParams(params, osquery))
+        
+        start_response(status, headers)
+        return response
+    def run(self):
         self.server.serve_forever()
 
 def Test(params):
     #return "Test:" + str(params)
+    return 'ni hao a'
     return params.get("source")
 
 if __name__ == "__main__":
-    HOST, PORT = "10.136.2.131", 8086
+    HOST, PORT = "10.10.234.24", 8086
     server = HttpServer(HOST, PORT)
-    server.register("/test?source=hi", Test)
-    #server.run()
+    server.register("/test", Test)
+    server.run()
 

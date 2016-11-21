@@ -47,18 +47,17 @@ class Slave:
             启动slave
         '''
         # register
-        if not self.info.recv_real_time_request:
-            self.register("/modify_thread_num", self.modify_thread_num)
+        self.register("/modify_thread_num", self.modify_thread_num)
 
-        
+    
         # register to master
-            if not self.register_in_master():
-                logger.error("Can't register to master.")
-                return
-        
+        if not self.register_in_master():
+            logger.error("Can't register to master.")
+            return
+    
         # start the timer
-            self.__timer.start()
-        
+        self.__timer.start()
+    
         # start the workers
         self.__workers.start()
         

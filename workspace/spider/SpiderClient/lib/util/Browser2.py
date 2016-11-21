@@ -4,7 +4,7 @@ import json
 import httplib
 import requests
 from UserAgent import  GetUserAgent
-SOCKS_PROXY = '10.10.7.155'
+SOCKS_PROXY = '10.10.7.155|10.10.239.141|10.10.214.26'
 #SOCKS_PROXY = '139.129.231.218'
 #SOCKS_PROXY = '106.75.30.126'
 class MechanizeCrawler(object):
@@ -57,7 +57,7 @@ class MechanizeCrawler(object):
 
     def set_proxy(self, p, https = False):
         if p != None and p != "REALTIME":
-            if SOCKS_PROXY  in p:
+            if p.split(':')[0] in SOCKS_PROXY:
 		print 'socks --- '+p
 		self.br.proxies = {
 			'http':'socks5://'+p,
