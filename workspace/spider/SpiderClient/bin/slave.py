@@ -34,7 +34,8 @@ MULTI_REQUEST_TIMEOUT = 60
 PARSER_ERROR = 11
 SLAVE_ERROR = 41
 WORK_ERROR = 97
-
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 def getLocalIp(ifname = 'eth0'):
     import socket, fcntl, struct
@@ -119,7 +120,7 @@ def work(task):
     task_data = task.task_data
     parser = parsers[task.source]
     try:
-        abspath = os.path.abspath(__file__)
+        abspath = os.path.abspath(os.getcwd())
         dirname = os.path.dirname(abspath)
 
         file_path = parsers[task.source]['file_path']
@@ -140,9 +141,10 @@ def work(task):
         workload.complete_workload(task, error, proxy_or_ticket)
         logger.error("[create instance failed: task_data:%s] [traceback:%s]" %(task_data,error_info))
         return
-
+    print task
     try:
         error_value = parser.parse(task, flag = is_recv_real_time_request)
+        
         logger.info("verify_result: " + str(task) + '\t' + str(error_value))
 
         if type(error_value) is int:
@@ -164,32 +166,52 @@ def work(task):
 
 def request(params):
     task = Task()
-    task.error = '100'
-    result = {'err_code':'0'}
+    task.source = 'source_100'
+    result = {'result':'0','task':[]}
     try:
         task.error = '12'
-        req_task = eval(urllib.unquote(params.get('req')))
-        logger.info('Task :: '+str(req_task))
-        task.source = req_task.get('source')
-        task.content = req_task.get('content')
-        #task.proxy_info = proxy_info
-        #task.ticket_info = req_task.get('ticket_info')
-
-        task.req_md5 = task.ticket_info.get('md5','default_md5')
+        req_tasks = eval(urllib.unquote(params.get('req')))
+        logger.info('Task :: '+str(req_tasks))
         task.req_qid = params.get('qid')
         task.req_uid = params.get('uid')
-        task.host = req_task.get('master_info','default_host')
-        task.req_qid_md5 = task.req_qid + '_' + task.req_md5
-        task.other_info = req_task.get('other_info','default_other_info')
-        task.redis_key = task.other_info.get('redis_key') 
-    except Exception, e:
-        import traceback
-        traceback.print_exc()
-        logger.error('get request params error: ' + str(e))
+    except Exception,e:
+        logger.error('get request params error: ' +str(task.source)+ str(e))
         result['err_code'] = 'Not enough arguments'
         return json.dumps(result)
+
+    for req_task in req_tasks:
+        
+        try:
+            task.source = req_task.get('source')
+            task.content = req_task.get('content')
+            #task.proxy_info = proxy_info
+            #task.ticket_info = req_task.get('ticket_info')
+            task.req_md5 = task.ticket_info.get('md5','default_md5')
+           
+
+            task.master_info = req_task.get('master_info','default_host')
+            task.host = task.master_info.get('master_addr')
+
+            task.redis_host = task.master_info.get('redis_addr').split(':')[0]
+            task.redis_port = task.master_info.get('redis_addr').split(':')[-1]
+
+            task.redis_db = task.master_info.get('redis_db')
+            task.redis_passwd = task.master_info.get('redis_passwd')
+
+            task.req_qid_md5 = task.req_qid + '_' + task.req_md5
+            task.other_info = req_task.get('other_info','default_other_info')
+            other_info =  task.other_info.get('redis_key')
+            for each in  other_info:
+                task.redis_key = each
+                task.other_info['redis_key'] = each
+                workload.add_workload(task)
+            
+        except Exception,e:
+            result['task'].append({'err_code':'task error'})
+            continue
+
+        result['task'].append({'err_code':'0'})   
     
-    workload.add_workload(task)
     return json.dumps(result) 
 
 def getForbideSectionName():
@@ -240,6 +262,8 @@ if __name__ == "__main__":
 
     redis_host = config.get("redis","host")
     redis_port = config.getint("redis","port")
+#    redis_db = config.getint("redis","db")
+#    redis_password = config.get("redis","password")
     setRedisConf(redis_host,redis_port)
 
     import os
@@ -266,7 +290,7 @@ if __name__ == "__main__":
 
     is_recv_real_time_request = config.getint("slave","recv_real_time_request")
     
-    workload = ControllerWorkload(master_host, sources, forbide_section_str, redis_host, redis_port, recv_real_time_request = is_recv_real_time_request )
+    workload = ControllerWorkload(master_host, sources, forbide_section_str, recv_real_time_request = is_recv_real_time_request )
 
 
     parsers = load_parsers(config)

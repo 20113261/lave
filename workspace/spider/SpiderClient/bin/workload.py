@@ -24,19 +24,17 @@ import sys
 from gevent.queue import Queue, Empty
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
-TASK_COUNT = 1200
+TASK_COUNT = 10
 TaskQsize = 1000
-MaxQsize = 8500
+MaxQsize = 85000
 class ControllerWorkload(WorkloadStorable):
     '''
         通过Controller进行workload管理
     '''
-    def __init__(self, host, sources,  forbide_section_str,redis_host,redis_port, recv_real_time_request = True):
+    def __init__(self, host, sources,  forbide_section_str, recv_real_time_request = True):
         
         self.__client = HttpClientPool(host, timeout = 1000, maxsize = 500, block = True)
        
-        pool = redis.ConnectionPool(host = redis_host, port = redis_port, password='MiojiRedisOrz',db=9)  
-        self.redisconnect = redis.Redis(connection_pool = pool)
         self.__sources = sources
         self.__sem = threading.Semaphore()
         self.__complete_task_sem = threading.Semaphore()
@@ -52,9 +50,9 @@ class ControllerWorkload(WorkloadStorable):
 
     def add_workload(self, task):
         while self.__tasks.qsize() > (MaxQsize - 100):
-	      logger.info('request is full, please wait !')
-              time.sleep(10)	
-	self.__tasks.put(task)
+            logger.info('request is full, please wait !')
+            time.sleep(10)
+        self.__tasks.put(task)
 
     def get_workloads(self):
         '''
@@ -70,7 +68,7 @@ class ControllerWorkload(WorkloadStorable):
         logger.info('Need %d New Tasks'%task_length)
         url = "/workload?forbid="  + self.__forbide_section_str + "&count=" + str(task_length)
         result = self.__client.get(url)
-        
+	logger.info(result)        
         if result == None or result == []:
             return False
 
@@ -100,9 +98,15 @@ class ControllerWorkload(WorkloadStorable):
 
     def write_redis_ticket(self, task, proxy,Error ):
         
+	logger.info(task.redis_host) 
+
+	rds = redis.Redis(host=task.redis_host, port=task.redis_port,  db=int(task.redis_db), password = task.redis_passwd)
+
+
+       
         logger.info('redis_key' + str(task.redis_key))
-        result = {'err_code':Error,'data':proxy } 
-        self.redisconnect.set(task.redis_key, result )
+        result = {"err_code":Error,"data":proxy } 
+        rds.set(task.redis_key, json.dumps(result) )
  
     def assign_workload(self):
         
@@ -120,9 +124,12 @@ class ControllerWorkload(WorkloadStorable):
             if proxy == 'NULL':  proxy = []
 
             logger.info('server is start! ')
-            query = {'other_info':task.other_info}
-            self.write_redis_ticket(task, proxy,Error)
-            url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
+            query = {"other_info":task.other_info}
+            try:
+	    	self.write_redis_ticket(task, proxy,Error)
+            except Exception,e:
+		logger.info('not redis con'+str(e))
+	    url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
             logger.info(url)
             
             HttpClient(task.host).get(url)

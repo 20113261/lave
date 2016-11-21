@@ -14,11 +14,26 @@ proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 #proxy_client2 = http_client.HttpClientPool("10.136.11.134:8087")
 proxy_client2 = http_client.HttpClientPool("10.10.239.46:8087")
 
+def getLocalIp(ifname = 'eth0'):
+    import socket, fcntl, struct
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
+
+    ret = socket.inet_ntoa(inet[20:24])
+    return ret
+
 def set_proxy_client(client):
     global proxy_client2
     proxy_client2 = client
 
-def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions = [], forbid_regions = [], user = 'crawler', passwd = 'spider@miaoji!', proxy_info = {}):
+def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions = [], forbid_regions = [], user = 'realtime', passwd = 'realtime', proxy_info = {}):
+    special_ip = '10.10.156.56|10.10.184.17|10.10.184.214|10.10.170.233|10.10.176.6|10.10.48.27|10.10.38.160|10.10.29.204|10.10.106.179|10.10.228.4|10.10.218.199'
+    try:
+	ip = getLocalIp() 
+    	if ip in special_ip:
+	    return 'REALTIME'
+    except:
+	return None
 
     if proxy_info == {}:
         pass

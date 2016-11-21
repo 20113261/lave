@@ -7,7 +7,7 @@
 
 '''
 import jsonlib
-
+import json
 class Task:
     '''
         抓取任务
@@ -60,7 +60,7 @@ class Task:
         self.ticket_info.update(ticket_info)
 
     def __str__(self):
-        return jsonlib.write(self.__dict__)
+        return json.dumps(self.__dict__)
 
     @staticmethod
     def parse(s):

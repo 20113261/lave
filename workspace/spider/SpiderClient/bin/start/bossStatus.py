@@ -14,7 +14,7 @@ import time
 from util import timer
 import commands
 
-PROCESS_TIME_SPAN = 120
+PROCESS_TIME_SPAN = 10
 
 class BossStatus():
     '''
