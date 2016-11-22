@@ -18,6 +18,7 @@ from common.common import frame_ip
 from common.common import verify_cn_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
+from common.mtIpDict import mt_ip_dict
 import MySQLdb
 import time
 import urllib
@@ -314,6 +315,9 @@ if __name__ == "__main__":
     parsers = load_parsers(config)
 
     workers = Workers(workload, work, config.getint("slave", "thread_num"),recv_real_time_request = is_recv_real_time_request)
+
+    if host in mt_ip_dict:
+        host = mt_ip_dict[host]
 
     slave = Slave(host, port, master_host, workers,recv_real_time_request =  is_recv_real_time_request)
 
