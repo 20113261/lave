@@ -4,7 +4,7 @@
     Created on 2014-03-22
     @author: devin
     @desc:
-        
+
 '''
 import jsonlib
 import time
@@ -26,10 +26,13 @@ def set_proxy_client(client):
     global proxy_client2
     proxy_client2 = client
 
+frame_ip = '10.10.48.27|10.10.38.160|10.10.29.204|10.10.106.179|10.10.228.4|10.10.218.199'
+verify_cn_ip = '10.10.156.56|10.10.184.17|10.10.184.214|10.10.170.233|10.10.176.6'
+
 def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions = [], forbid_regions = [], user = 'realtime', passwd = 'realtime', proxy_info = {}):
-    special_ip = '10.10.156.56|10.10.184.17|10.10.184.214|10.10.170.233|10.10.176.6|10.10.48.27|10.10.38.160|10.10.29.204|10.10.106.179|10.10.228.4|10.10.218.199'
+    special_ip = frame_ip + '|' + verify_cn_ip
     try:
-        ip = getLocalIp() 
+        ip = getLocalIp()
         if ip not in special_ip:
             return 'REALTIME'
     except:
@@ -54,7 +57,7 @@ def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions 
     forbid_regions_str = ""
 
     if len(allow_ports) != 0:
-        allow = '_'.join( [str(i) for i in allow_ports] ) 
+        allow = '_'.join( [str(i) for i in allow_ports] )
     if len(forbid_ports) != 0:
         forbid = '_'.join( [str(i) for i in forbid_ports] )
 
@@ -62,7 +65,7 @@ def get_proxy(source = None, allow_ports = [], forbid_ports = [], allow_regions 
         allow_regions_str = '_'.join( [i for i in allow_regions] )
     if len(forbid_regions) != 0:
         forbid_regions_str = '_'.join( [i for i in forbid_regions] )
-    
+
     try:
         p = proxy_client2.get("/proxy?source=%s&user=crawler&passwd=spidermiaoji2014" % source)
         #p = proxy_client2.get("/proxy?source=%s&user=parser&passwd=parser" % source)

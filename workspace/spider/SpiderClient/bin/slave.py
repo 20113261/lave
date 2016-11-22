@@ -14,6 +14,8 @@ from workload import ControllerWorkload
 from common.task import Task
 from common.logger import logger
 from common.common import set_proxy_client
+from common.common import frame_ip
+from common.common import verify_cn_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 import MySQLdb
@@ -46,13 +48,29 @@ def getLocalIp(ifname = 'eth0'):
 
     return ret
 
-_uc_host = '10.10.154.38'
+_uc_host = '123.59.70.19'
 _uc_user = 'writer'
 _uc_pswd = 'miaoji1109'
 _uc_db = 'crawl'
 
-_uc_redis_host = '10.10.24.130'
+_uc_redis_host = '120.132.95.246'
 _uc_redis_port = 6379
+
+try:
+    cand_local_ip = getLocalIp()
+
+    #verify server, use validation DB
+    if cand_local_ip not in frame_ip:
+        _uc_db = 'validation'
+
+    #UC machine,use inner ip
+    if cand_local_ip.startswith('10.10.'):
+        _uc_host = '10.10.154.38'
+        _uc_redis_host = '10.10.24.130'
+
+except Exception,e:
+    logger.error("update uc_db fail. err " + str(e))
+
 
 uc_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,\
         host=_uc_host, port=3306, user=_uc_user, passwd=_uc_pswd,\
@@ -105,10 +123,10 @@ def work(task):
     import os
     import new
     cur_time_str = str(time.time()).replace('.','')
-    
+
     error = 0
     proxy_or_ticket = 'NULL'
-    
+
     if task.source not in parsers:
         logger.error("no parser for the task: %s" % task.task_data)
         error = PARSER_ERROR
@@ -144,7 +162,7 @@ def work(task):
     print task
     try:
         error_value = parser.parse(task, flag = is_recv_real_time_request)
-        
+
         logger.info("verify_result: " + str(task) + '\t' + str(error_value))
 
         if type(error_value) is int:
@@ -180,14 +198,14 @@ def request(params):
         return json.dumps(result)
 
     for req_task in req_tasks:
-        
+
         try:
             task.source = req_task.get('source')
             task.content = req_task.get('content')
             #task.proxy_info = proxy_info
             #task.ticket_info = req_task.get('ticket_info')
             task.req_md5 = task.ticket_info.get('md5','default_md5')
-           
+
 
             task.master_info = req_task.get('master_info','default_host')
             task.host = task.master_info.get('master_addr')
@@ -205,14 +223,14 @@ def request(params):
                 task.redis_key = each
                 task.other_info['redis_key'] = each
                 workload.add_workload(task)
-            
+
         except Exception,e:
             result['task'].append({'err_code':'task error'})
             continue
 
-        result['task'].append({'err_code':'0'})   
-    
-    return json.dumps(result) 
+        result['task'].append({'err_code':'0'})
+
+    return json.dumps(result)
 
 def getForbideSectionName():
     forbide_section_str = ''
@@ -289,14 +307,14 @@ if __name__ == "__main__":
     sources = getallSource(config)
 
     is_recv_real_time_request = config.getint("slave","recv_real_time_request")
-    
+
     workload = ControllerWorkload(master_host, sources, forbide_section_str, recv_real_time_request = is_recv_real_time_request )
 
 
     parsers = load_parsers(config)
-    
+
     workers = Workers(workload, work, config.getint("slave", "thread_num"),recv_real_time_request = is_recv_real_time_request)
-    
+
     slave = Slave(host, port, master_host, workers,recv_real_time_request =  is_recv_real_time_request)
 
     slave.info.name = config.get("slave", "name")
