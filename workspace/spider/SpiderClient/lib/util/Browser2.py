@@ -47,7 +47,7 @@ class MechanizeCrawler(object):
                     self.resp = self.br.post(url,data=paras,timeout = time_out)
 
             if html_flag:
-                html = self.resp.text
+                html = self.resp.content
         except Exception,e:
             error = str(e)
             #print error
@@ -107,4 +107,3 @@ if __name__ == '__main__':
     mc.set_debug(True)
     print mc.get_cookie('get','http://www.ebookers.com')
     pass
-
