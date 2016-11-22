@@ -30,21 +30,21 @@ class MechanizeCrawler(object):
             httplib.HTTPConnection.debuglevel=1
             httplib.HTTPSConnection.debuglevel=1
 
-    def req(self, mechod, url, paras = {}, paras_type=1, html_flag=False, time_out=60,**kw):
+    def req(self, mechod, url, paras = {}, paras_type=1, html_flag=False, time_out=(60, 180),**kw):
 
         html, error = '', ''
         try:
             if mechod.lower() == 'get':
                 url = url + urllib.urlencode(paras)
-                self.resp = self.br.get(url,timeout=time_out)
+                self.resp = self.br.get(url,timeout=time_out, **kw)
             else:
                 if paras_type == 0:
-                    self.resp = self.br.post(url,json=paras,timeout = time_out)
+                    self.resp = self.br.post(url,json=paras,timeout = time_out, **kw)
                 elif paras_type == 1:
                     paras = json.dumps(paras)
-                    self.resp = self.br.post(url,data=paras,timeout = time_out)
+                    self.resp = self.br.post(url,data=paras,timeout = time_out, **kw)
                 else:
-                    self.resp = self.br.post(url,data=paras,timeout = time_out)
+                    self.resp = self.br.post(url,data=paras,timeout = time_out, **kw)
 
             if html_flag:
                 html = self.resp.content
@@ -91,13 +91,13 @@ class MechanizeCrawler(object):
 
     def get_cookie_handle(self):
         pass
-    def get_cookie(self, method, url_base, paras = {}, paras_type = 1, time_out = 60):
-        page,_ = self.req(method, url_base, paras = {}, paras_type = 1, time_out = 60)
+    def get_cookie(self, method, url_base, paras = {}, paras_type = 1, **kw):
+        page,_ = self.req(method, url_base, paras = {}, paras_type = 1, **kw)
         dcookie = requests.utils.dict_from_cookiejar(self.resp.cookies)
         return dcookie,_
 
-    def get_url(self, method, url_base, paras = {}, paras_type = 1, time_out = 60):
-        page,_error = self.req(method, url_base, paras = {}  , paras_type = 1, time_out = 60)
+    def get_url(self, method, url_base, paras = {}, paras_type = 1, **kw):
+        page,_error = self.req(method, url_base, paras = {}  , paras_type = 1, **kw)
 
         return self.get_url_of_response(),_error
 
