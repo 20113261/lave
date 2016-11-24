@@ -235,7 +235,7 @@ def request(params):
 
 def getForbideSectionName():
     forbide_section_str = ''
-    conn = MySQLdb.connect(host='10.10.154.38', user='reader', charset='utf8',passwd='miaoji1109', db='onlinedb')
+    conn = MySQLdb.connect(host=_uc_host, user='reader', charset='utf8',passwd='miaoji1109', db='onlinedb')
     cursor = conn.cursor()
 
     sql = "select sectionName from parserSource2Module where forbide='1'"

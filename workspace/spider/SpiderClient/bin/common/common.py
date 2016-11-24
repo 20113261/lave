@@ -81,6 +81,14 @@ def invalid_proxy(proxy,source):
 
 
 def update_proxy(source_name, proxy, start_time, error_code):
+    special_ip = frame_ip + '|' + verify_cn_ip
+    try:
+        ip = getLocalIp()
+        if ip not in special_ip:
+            return None
+    except:
+        return None
+
     speed = time.time() - start_time
     if proxy != None or proxy != 'NULL':
         proxy_client2.get('/update_proxy?source=%s&proxy=%s&error=%s&speed=%s' % (source_name, proxy, \
