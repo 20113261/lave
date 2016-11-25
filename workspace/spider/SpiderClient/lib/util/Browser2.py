@@ -25,11 +25,12 @@ class MechanizeCrawler(object):
             self.set_proxy(p)
 
     def set_debug(self, flag = True):
-
+        pass
+        '''
         if flag:
             httplib.HTTPConnection.debuglevel=1
             httplib.HTTPSConnection.debuglevel=1
-
+        '''
     def req(self, mechod, url, paras = {}, paras_type=1, html_flag=False, time_out=(60, 180),**kw):
 
         html, error = '', ''
