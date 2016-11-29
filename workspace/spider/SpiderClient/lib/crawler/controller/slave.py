@@ -78,12 +78,15 @@ class Slave:
         '''
             向master发起心跳请求，上报目前状态
         '''
-        data = {"id": self.info.id,
-                "thread_num": self.__workers.get_thread_num(), 
-                "process_task_num": self.info.process_task_num,
-                "error_task_num": self.info.error_task_num,
-                "request_task_num": self.info.request_task_num}
-        path = "/heartbeat?" + urllib.urlencode(data)
+	
+        data = {"name": self.info.name,
+                "server": self.info.server,
+                "path": self.info.path,
+                "server_ip": self.info.server_ip,
+                "type": self.info.type,
+                'recv_real_time_request': self.info.recv_real_time_request}
+
+	path = "/heartbeat?" + urllib.urlencode(data)
         self.__client.get(path)
     
     def register_in_master(self):
