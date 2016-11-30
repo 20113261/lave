@@ -46,12 +46,16 @@ class Worker(threading.Thread):
         self.__busy = True
         
         while (self.__busy):
-            task = self.workload.assign_workload()
-            if task  == None:
-                time.sleep(0.5)
-                continue
-            self.__pool.spawn(self.task_entrance,task)
-             
+            try:
+                task = self.workload.assign_workload()
+                if task  == None:
+                    time.sleep(0.5)
+                    continue
+                self.__pool.spawn(self.task_entrance,task)
+            except:
+                logger.info('get  assign task failed sleep 3s')
+                time.sleep(3)
+
         self.__busy = False
        
         logger.info("%s stop" % self.thread_name)
@@ -78,8 +82,13 @@ class Workers:
             self.add_worker()
     def workload_run(self):
         while (True):
-            self.__workload.get_workloads()
-            time.sleep(0.5)
+            try:
+                self.__workload.get_workloads()
+                time.sleep(0.5)
+            except:
+                logger.info('from master get task thread is  killed , sleep 3s')
+                time.sleep(3)
+
     
     def start(self):
         '''
