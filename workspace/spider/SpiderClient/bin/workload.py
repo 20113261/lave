@@ -100,7 +100,7 @@ class ControllerWorkload(WorkloadStorable):
         try:
             rds = redis.Redis(host=task.redis_host, port=task.redis_port,  db=int(task.redis_db), password = task.redis_passwd)
             result = {"err_code":Error,"data":proxy }
-            rds.set(task.redis_key, json.dumps(result))
+            rds.setex(task.redis_key, json.dumps(result),600)
         except Exception,e:
             logger.info('writer redis fail.' + str(task.redis_key) + '\t' \
                     + task.redis_host + '\t' + str(task.redis_port) \
