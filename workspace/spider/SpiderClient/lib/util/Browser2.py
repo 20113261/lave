@@ -4,7 +4,7 @@ import json
 import httplib
 import requests
 from UserAgent import  GetUserAgent
-SOCKS_PROXY = '10.10.7.155|10.10.239.141|10.10.214.26'
+SOCKS_PROXY = '10.10.7.155|10.10.239.141|10.10.214.26|10.10.120.163'
 #SOCKS_PROXY = '139.129.231.218'
 #SOCKS_PROXY = '106.75.30.126'
 class MechanizeCrawler(object):
