@@ -113,7 +113,7 @@ class MultiFlight():
             results.append((k, str(v).decode("UTF-8")))
         return results
 
-    def tu_tuple(self):
+    def to_tuple(self):
         return (self.dept_id, self.dest_id, self.dept_day,
                 self.dest_day, self.price, self.tax, self.surcharge,
                 self.promotion, self.currency, self.source,
