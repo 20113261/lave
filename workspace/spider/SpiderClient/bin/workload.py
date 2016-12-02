@@ -151,7 +151,7 @@ class ControllerWorkload(WorkloadStorable):
         logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
         if len_task <= 0:
             return True
-        result = self.__client.get("/complete_workload?q=" + urllib.quote(jsonlib.write(self.__tasks_status[:len_task])))
+        result = self.__client.get("/complete_workload?q=" + urllib.quote(json.dumps(self.__tasks_status[:len_task])))
         self.__tasks_status = self.__tasks_status[len_task:]
         return True
     def remove_workload(self, task):
