@@ -49,6 +49,7 @@ class Worker(threading.Thread):
             try:
                 task = self.workload.assign_workload()
                 if task  == None:
+                    logger.info('******no task !')
                     time.sleep(0.5)
                     continue
                 self.__pool.spawn(self.task_entrance,task)
