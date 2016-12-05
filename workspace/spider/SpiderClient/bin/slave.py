@@ -133,8 +133,11 @@ def work(task):
         error = PARSER_ERROR
         workload.complete_workload(task, error, proxy_or_ticket)
         return error
+    try:
+        logger.info('[Start MiojiOPObserver,qid='+task.req_qid_md5+']')
+    except:
+        pass
 
-    logger.info('get a new task from tasks.data = ' + task.task_data)
     info.process_task_num += 1
     task_data = task.task_data
     parser = parsers[task.source]
@@ -155,12 +158,17 @@ def work(task):
         etime = time.time()
         logger.info('creating instance cost\t [%s ms] \t [%s]' % (str(etime-stime),task.source))
     except Exception, e:
+
         error_info = str(traceback.format_exc().split('\n'))
         error = WORK_ERROR
         workload.complete_workload(task, error, proxy_or_ticket)
-        logger.error("[create instance failed: task_data:%s] [traceback:%s]" %(task_data,error_info))
+        
+        try:
+            logger.error("[Stop MiojiOPObserver,qid="+task.req_qid_md5+"][create instance failed: task_data:%s] [traceback:%s]" %(task_data,error_info))
+        except:
+            pass
+
         return
-    print task
     try:
         error_value = parser.parse(task, flag = is_recv_real_time_request)
 
@@ -174,6 +182,12 @@ def work(task):
         error_info = str(traceback.format_exc().split('\n'))
         logger.error("[Parser Exception in slave: task_data:%s  error:%s][traceback:%s]" %(task_data, str(e),error_info))
         error = SLAVE_ERROR
+
+    try:
+        logger.info('[Stop MiojiOPObserver,qid='+task.req_qid_md5+']')
+    except:
+        pass
+
 
     #gc.collect()
 
@@ -217,7 +231,7 @@ def request(params):
             task.redis_db = task.master_info.get('redis_db')
             task.redis_passwd = task.master_info.get('redis_passwd')
 
-            task.req_qid_md5 = task.req_qid + '_' + task.req_md5
+            task.req_qid_md5 = task.req_qid + '-' + task.req_md5
             task.other_info = req_task.get('other_info','default_other_info')
             other_info =  task.other_info.get('redis_key')
             for each in  other_info:
