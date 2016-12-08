@@ -294,20 +294,20 @@ if __name__ == "__main__":
 
     import os
     #host, port = config.get("slave", "host"), config.getint("slave", "port")
-    cmd = 'mioji-host -a'
+    #cmd = 'mioji-host -a'
     #host = os.system(cmd)
-    host =  os.popen(cmd).read().strip()
-    print host
+    #host =  os.popen(cmd).read().strip()
+    #print host
 
-    if(None == host or '' == host.replace('.','')):
-        logger.error('get localhost Ip fail')
+    #if(None == host or '' == host.replace('.','')):
+    #    logger.error('get localhost Ip fail')
+    #    sys.exit(1)
+    #if (None == host or '' == host.replace('.','')):
+    try:
+        host = getLocalIp()
+    except Exception,e:
+        logger.error('call getLocalIp fail. error = ' + str(e))
         sys.exit(1)
-    if (None == host or '' == host.replace('.','')):
-        try:
-            host = getLocalIp()
-        except Exception,e:
-            logger.error('call getLocalIp fail. error = ' + str(e))
-            sys.exit(1)
 
     is_recv_real_time_request = config.getint("slave","recv_real_time_request")
 
