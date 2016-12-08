@@ -162,7 +162,7 @@ def work(task):
         error_info = str(traceback.format_exc().split('\n'))
         error = WORK_ERROR
         workload.complete_workload(task, error, proxy_or_ticket)
-        
+
         try:
             logger.error("[Stop MiojiOPObserver,qid="+task.req_qid_md5+"][create instance failed: task_data:%s] [traceback:%s]" %(task_data,error_info))
         except:
@@ -280,9 +280,8 @@ if __name__ == "__main__":
     config = ConfigParser.ConfigParser()
     config.read(sys.argv[2])
 
-    data_type = dict(config.items('data_type'))
-    
-   
+
+
     # set proxy client
     proxy_client = http_client.HttpClientPool(config.get("proxy", "host"),maxsize = 20)
     set_proxy_client(proxy_client)
@@ -292,12 +291,13 @@ if __name__ == "__main__":
 #    redis_db = config.getint("redis","db")
 #    redis_password = config.get("redis","password")
     setRedisConf(redis_host,redis_port)
-    
+
     import os
     #host, port = config.get("slave", "host"), config.getint("slave", "port")
     cmd = 'mioji-host -a'
     #host = os.system(cmd)
     host =  os.popen(cmd).read().strip()
+    print host
 
     if(None == host or '' == host.replace('.','')):
         logger.error('get localhost Ip fail')
@@ -309,14 +309,17 @@ if __name__ == "__main__":
             logger.error('call getLocalIp fail. error = ' + str(e))
             sys.exit(1)
 
+    is_recv_real_time_request = config.getint("slave","recv_real_time_request")
+
     try:
         forbide_section_str = str(getForbideSectionName())
     except Exception,e:
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
-    
-    print host
-    forbide_section_str += '&data_type='+data_type.get(host)
+    #例行抓取
+    if 0 == is_recv_real_time_request:
+        data_type = dict(config.items('data_type'))
+        forbide_section_str += '&data_type='+data_type.get(host)
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
@@ -325,7 +328,6 @@ if __name__ == "__main__":
 
     sources = getallSource(config)
 
-    is_recv_real_time_request = config.getint("slave","recv_real_time_request")
 
     workload = ControllerWorkload(master_host, sources, forbide_section_str, recv_real_time_request = is_recv_real_time_request )
 
