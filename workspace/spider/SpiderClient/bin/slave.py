@@ -115,7 +115,7 @@ def getallSource(config):
     sections.remove('slave')
     sections.remove('proxy')
     sections.remove('master')
-
+    sections.remove('data_type')
     return sections
 
 
@@ -267,7 +267,6 @@ def getForbideSectionName():
             pass
 
     forbide_section_str = '_'.join(forbide_section)
-
     return forbide_section_str
 
 
@@ -281,30 +280,28 @@ if __name__ == "__main__":
     config = ConfigParser.ConfigParser()
     config.read(sys.argv[2])
 
-    try:
-        forbide_section_str = getForbideSectionName()
-    except Exception,e:
-        logger.error('get forbide source fail.err = ' + str(e))
-        forbide_section_str = ''
-
-    logger.info('foorbide sectionName : ' + forbide_section_str)
+    data_type = dict(config.items('data_type'))
+    
+   
     # set proxy client
     proxy_client = http_client.HttpClientPool(config.get("proxy", "host"),maxsize = 20)
     set_proxy_client(proxy_client)
-
 
     redis_host = config.get("redis","host")
     redis_port = config.getint("redis","port")
 #    redis_db = config.getint("redis","db")
 #    redis_password = config.get("redis","password")
     setRedisConf(redis_host,redis_port)
-
+    
     import os
     #host, port = config.get("slave", "host"), config.getint("slave", "port")
     cmd = 'mioji-host -a'
     #host = os.system(cmd)
     host =  os.popen(cmd).read().strip()
 
+    if(None == host or '' == host.replace('.','')):
+        logger.error('get localhost Ip fail')
+        sys.exit(1)
     if (None == host or '' == host.replace('.','')):
         try:
             host = getLocalIp()
@@ -312,9 +309,16 @@ if __name__ == "__main__":
             logger.error('call getLocalIp fail. error = ' + str(e))
             sys.exit(1)
 
-    if(None == host or '' == host.replace('.','')):
-        logger.error('get localhost Ip fail')
-        sys.exit(1)
+    try:
+        forbide_section_str = str(getForbideSectionName())
+    except Exception,e:
+        logger.error('get forbide source fail.err = ' + str(e))
+        forbide_section_str = ''
+    
+    print host
+    forbide_section_str += '&data_type='+data_type.get(host)
+
+    logger.info('foorbide sectionName : ' + forbide_section_str)
 
     port = int(sys.argv[1])
     master_host = config.get("master", "host")
