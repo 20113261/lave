@@ -24,7 +24,7 @@ import sys
 from gevent.queue import Queue, Empty
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
-TASK_COUNT = 5
+TASK_COUNT = 1100
 TaskQsize = 1000
 MaxQsize = 85000
 class ControllerWorkload(WorkloadStorable):
