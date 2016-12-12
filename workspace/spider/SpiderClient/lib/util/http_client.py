@@ -52,7 +52,7 @@ class HttpClientPool:
         '''
         self.__host = host
         import urllib3
-        self.__pool = urllib3.HTTPConnectionPool(host, timeout = timeout, maxsize = maxsize)
+        self.__pool = urllib3.HTTPConnectionPool(host, timeout = timeout, maxsize = maxsize,block=block)
 
     def get(self, path):
         '''
