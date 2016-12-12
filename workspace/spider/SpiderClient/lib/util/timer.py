@@ -27,9 +27,11 @@ class Timer(threading.Thread):
 
     def run(self):
         while self.is_run:
-            time.sleep(self.sleep_time)
-            self.fun(**self.args)
-
+            try:
+                time.sleep(self.sleep_time)
+                self.fun(**self.args)
+            except:
+                pass
     def stop(self):
         self.is_run = False
         time.sleep(0.1)
