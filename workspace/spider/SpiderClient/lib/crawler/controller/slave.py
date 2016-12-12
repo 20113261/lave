@@ -47,15 +47,20 @@ class Slave:
             启动slave
         '''
         # register
-        self.register("/modify_thread_num", self.modify_thread_num)
-
+        try:
+            self.register("/modify_thread_num", self.modify_thread_num)
+        except:
+            pass
     
         # register to master
-        if not self.register_in_master():
-            logger.error("Can't register to master.")
-            return
+        try:
+            if not self.register_in_master():
+                logger.error("Can't register to master.")
+        except:
+            pass
     
         # start the timer
+    
         self.__timer.start()
     
         # start the workers
