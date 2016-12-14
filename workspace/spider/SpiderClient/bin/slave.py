@@ -218,7 +218,7 @@ def request(params):
             task.source = req_task.get('source')
             task.content = req_task.get('content')
             #task.proxy_info = proxy_info
-            #task.ticket_info = req_task.get('ticket_info')
+            task.ticket_info = req_task.get('ticket_info')
             task.req_md5 = task.ticket_info.get('md5','default_md5')
 
 
