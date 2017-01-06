@@ -28,7 +28,9 @@ class Slave:
             @param workers: 线程组
             @param recv_real_time_request: 是否能接收实时请求，True表示可以接收，其它表示不能
         '''
-        self.__server = http_server.HttpServer(host, port)
+
+        self.__server = http_server.HttpServer('0.0.0.0', port)
+
         self.__client = http_client.HttpClient(master_host)
         # 保存slave的相关信息
         self.info = SlaveInfo()
@@ -67,8 +69,8 @@ class Slave:
         self.__workers.start()
         
         # start the server
-        if self.info.recv_real_time_request:
-            self.__server.run()
+#        if self.info.recv_real_time_request
+        self.__server.run()
     
     def register(self, path, func):
         '''
@@ -76,8 +78,8 @@ class Slave:
             @param path: http服务的地址
             @param func: 响应请求的函数
         '''
-        if self.info.recv_real_time_request:
-            self.__server.register(path, func)
+        #if self.info.recv_real_time_request:
+        self.__server.register(path, func)
 
     def heartbeat(self):
         '''

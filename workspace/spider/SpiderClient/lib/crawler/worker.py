@@ -16,7 +16,6 @@ from util.logger import logger
 from gevent import monkey
 from gevent.pool import  Pool
 monkey.patch_all()
-
 class Worker(threading.Thread):
     '''
         工作线程
@@ -36,9 +35,13 @@ class Worker(threading.Thread):
 
     def task_entrance(self,task):
         try:
-           with gevent.Timeout(2395):
+           with gevent.Timeout(self.workload.timeout):
                self.__func(task)
         except gevent.Timeout:
+               if self.workload.timeout:
+                    self.workload.complete_workload(task, '52' , 'NULL')
+               else:
+                    self.workload.complete_workload(task,'53','NULL')
                logger.info('>>>>>>>>>>>>>> task timeout!'+str(task))
 
     def run(self):
@@ -46,12 +49,19 @@ class Worker(threading.Thread):
         self.__busy = True
         
         while (self.__busy):
+ 
+            task = self.workload.assign_workload()
             try:
-                task = self.workload.assign_workload()
                 if task  == None:
                     logger.info('******no task !')
                     time.sleep(0.5)
                     continue
+                if task not in self.workload.TaskingDict:
+                    self.workload.TaskingDict[task] = 0
+
+                self.workload.TaskingDict[task] += 1
+
+
                 self.__pool.spawn(self.task_entrance,task)
             except:
                 logger.info('get  assign task failed sleep 3s')
@@ -77,20 +87,26 @@ class Workers:
         self.__greents_num = greents_num
         self.__func = func
         self.__workload = workload
+
         self.__index = 0
         self.__flag = recv_real_time_request
         for i in range(thread_num):
             self.add_worker()
     def workload_run(self):
-        while (True):
+
+        while (self.__workload.workload_restart_flag):
+        
+            logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
             try:
                 self.__workload.get_workloads()
                 time.sleep(0.5)
-            except:
-                logger.info('from master get task thread is  killed , sleep 3s')
+            except Exception,e:
+                logger.info('from master get task thread is  killed , sleep 3s ' + str(e))
                 time.sleep(3)
 
-    
+        logger.info('get task thread is killed')
+            
+            
     def start(self):
         '''
             启动线程

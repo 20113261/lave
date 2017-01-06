@@ -34,33 +34,35 @@ class ControllerWorkload(WorkloadStorable):
     def __init__(self, host, sources,  forbide_section_str, recv_real_time_request = True):
 
         self.__client = HttpClientPool(host, timeout = 1000, maxsize = 500, block = True)
-
+        self.timeout = 2395
         self.__sources = sources
         self.__sem = threading.Semaphore()
         self.__complete_task_sem = threading.Semaphore()
-        self.__tasks = Queue(maxsize = MaxQsize)
+        self.tasks = Queue(maxsize = MaxQsize)
         self.__tasks_status = []
+        self.TaskingDict = {}
+        self.newtasks = []
         self.__flag = recv_real_time_request
         self.__forbide_section_str = forbide_section_str
-
+        self.workload_restart_flag = True
         #self.__timer = timer.Timer(TASK_TIME_SPAN, self.get_workloads)
         #self.__timer.start()
         self.__timer2 = timer.Timer(COMPLETE_TIME_SPAN, self.complete_workloads)
         self.__timer2.start()
 
     def add_workload(self, task):
-        while self.__tasks.qsize() > (MaxQsize - 100):
+        while self.tasks.qsize() > (MaxQsize - 100):
             logger.info('request is full, please wait !')
             time.sleep(10)
-        self.__tasks.put(task)
+        self.tasks.put(task)
 
     def get_workloads(self):
         '''
             从master取一批workloads
             get every TASK_TIME_SPAN (s), up to TASK_COUNT
         '''
-
-        task_length = TASK_COUNT - self.__tasks.qsize()
+        
+        task_length = TASK_COUNT - self.tasks.qsize()
 
         if task_length <= 0 :
             return True
@@ -71,27 +73,32 @@ class ControllerWorkload(WorkloadStorable):
         logger.info(result)
         if result == None or result == []:
             return False
-
+        list_len = []
         try:
             result = result.strip('\0').strip()
-            tasks = eval(result)
+            self.newtasks = eval(result)
         except Exception,e:
             logger.info('GET TASKS ERROR: '+str(e))
             return False
-        for task in tasks:
+        #logger.info('tasks '+str(type(tasks)))
+        for x in self.newtasks:
+            if x not in list_len:
+                list_len.append(x)
+        logger.info('from master get task = '+str(len(self.newtasks)))
+        logger.info('from master qu chong get task = '+str(len(list_len)) )
+        for task in self.newtasks:
             try:
                 if not isinstance(task,dict):
                     logger.error('task is not a dict. task=' + str(task))
                     continue
 
                 task_str = json.dumps(task)
-                self.__tasks.put(Task.parse(task_str))
-                while(self.__tasks.qsize() > TaskQsize):
+                self.tasks.put(Task.parse(task_str))
+                while(self.tasks.qsize() > MaxQsize):
                     time.sleep(0.5)
             except Exception,e:
                 logger.info('add task from master to tasks fail. error = ' + str(e))
                 return False
-
         return True
 
 
@@ -108,10 +115,10 @@ class ControllerWorkload(WorkloadStorable):
 
     def assign_workload(self):
 
-        if self.__tasks.qsize() <= 0:
+        if self.tasks.qsize() <= 0:
             return None
         try:
-            task = self.__tasks.get()
+            task = self.tasks.get()
         except:
             logger.info('self.__tasks is not task ')
             return None
@@ -133,10 +140,17 @@ class ControllerWorkload(WorkloadStorable):
 
             HttpClient(task.host).get(url)
             return True
-
-        task_status = {"id": task.id, "content": task.content, "source": task.source, \
-                "workload_key": task.workload_key, "error": Error,'proxy' : proxy,"timeslot": task.timeslot}
-        self.__tasks_status.append(task_status)
+        
+        len_key = 1
+        if task in self.TaskingDict:    
+            len_key = self.TaskingDict.pop(task)
+        if len_key > 1:
+            logger.info('chongfu  ??????????????????????????????')
+        while(len_key > 0):
+             task_status = {"id": task.id, "content": task.content, "source": task.source, \
+                    "workload_key": task.workload_key, "error": Error,'proxy' : proxy,"timeslot": task.timeslot}
+             self.__tasks_status.append(task_status)    
+             len_key -= 1
 
         return True
 
@@ -146,8 +160,8 @@ class ControllerWorkload(WorkloadStorable):
             return True
 
         len_task = len(self.__tasks_status)
-        if len_task > 50:
-            len_task = 50
+        if len_task > 200:
+            len_task = 200
         logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
         if len_task <= 0:
             return True

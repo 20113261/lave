@@ -196,6 +196,33 @@ def work(task):
     workload.complete_workload(task, error, proxy_or_ticket)
     return
 
+def restart_process(params): # receve 重启命令
+   
+    all_count = 0
+    
+    logger.info('------------------------> receve  restart mingling server is starting')
+    workload.workload_restart_flag = False   # stop get task thread
+    workers.stop()   # stop working thread
+    logger.info('------------------------> update workload.tasks.qsize = '+str(workload.tasks.qsize()))
+    while(workload.tasks.qsize() > 0): # fan kui tasks
+
+        task = workload.tasks.get()
+        workload.complete_workload(task, '53', 'NULL')
+   
+    len_keys = workload.TaskingDict.keys()
+
+    for key in len_keys:
+        len_item = workload.TaskingDict.pop(key)
+        while len_item > 0:
+              workload.complete_workload(task, '53', 'NULL')
+              len_item -= 1
+              all_count += 1 
+    logger.info('workload.newtasks = '+str(len(workload.newtasks)))
+    logger.info('all_count is much =  '+str(all_count) )
+    while(workload.newtasks.qsize() > 0):
+        task = workload.newtasks.get()
+        workload.complete_workload(task, '53', 'NULL')
+    return str(True)    
 
 def request(params):
     task = Task()
@@ -343,6 +370,6 @@ if __name__ == "__main__":
 
     slave.info.name = config.get("slave", "name")
     slave.register("/rtquery", request)
-
+    slave.register("/restart_process",restart_process)
     info = slave.info
     slave.run()
