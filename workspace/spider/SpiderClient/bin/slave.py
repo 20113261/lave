@@ -219,8 +219,8 @@ def restart_process(params): # receve 重启命令
               all_count += 1 
     logger.info('workload.newtasks = '+str(len(workload.newtasks)))
     logger.info('all_count is much =  '+str(all_count) )
-    while(workload.newtasks.qsize() > 0):
-        task = workload.newtasks.get()
+    while(len(workload.newtasks) > 0):
+        task = workload.newtasks.pop()
         workload.complete_workload(task, '53', 'NULL')
     return str(True)    
 
