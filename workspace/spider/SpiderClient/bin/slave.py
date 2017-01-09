@@ -197,9 +197,9 @@ def work(task):
     return
 
 def restart_process(params): # receve 重启命令
-   
+
     all_count = 0
-    
+
     logger.info('------------------------> receve  restart mingling server is starting')
     workload.workload_restart_flag = False   # stop get task thread
     workers.stop()   # stop working thread
@@ -208,7 +208,7 @@ def restart_process(params): # receve 重启命令
 
         task = workload.tasks.get()
         workload.complete_workload(task, '53', 'NULL')
-   
+
     len_keys = workload.TaskingDict.keys()
 
     for key in len_keys:
@@ -216,13 +216,13 @@ def restart_process(params): # receve 重启命令
         while len_item > 0:
               workload.complete_workload(task, '53', 'NULL')
               len_item -= 1
-              all_count += 1 
+              all_count += 1
     logger.info('workload.newtasks = '+str(len(workload.newtasks)))
     logger.info('all_count is much =  '+str(all_count) )
     while(len(workload.newtasks) > 0):
         task = workload.newtasks.pop()
         workload.complete_workload(task, '53', 'NULL')
-    return str(True)    
+    return str(True)
 
 def request(params):
     task = Task()
@@ -242,6 +242,7 @@ def request(params):
     for req_task in req_tasks:
 
         try:
+            task.task_data = json.dumps(req_task)
             task.source = req_task.get('source')
             task.content = req_task.get('content')
             #task.proxy_info = proxy_info
