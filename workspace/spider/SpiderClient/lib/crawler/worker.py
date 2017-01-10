@@ -56,10 +56,12 @@ class Worker(threading.Thread):
         self.__busy = True
         while (self.__busy):
             logger.info('worker is start')
+            '''
             if not self.dojudge():
                 time.sleep(10)
                 logger.info('Mem is not much and < 500 M ')
                 continue
+            '''
             task = self.workload.assign_workload()
             
             try:
