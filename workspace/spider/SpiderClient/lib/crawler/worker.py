@@ -11,6 +11,7 @@ import gevent
 import threading
 import time
 import gc
+import os
 import datetime
 from util.logger import logger
 from gevent import monkey
@@ -38,20 +39,31 @@ class Worker(threading.Thread):
            with gevent.Timeout(self.workload.timeout):
                self.__func(task)
         except gevent.Timeout:
-               if self.workload.timeout:
-                    self.workload.complete_workload(task, '52' , 'NULL')
-               else:
-                    self.workload.complete_workload(task,'53','NULL')
+               self.workload.complete_workload(task,'53','NULL')
                logger.info('>>>>>>>>>>>>>> task timeout!'+str(task))
+    def dojudge(self):
+
+        r = os.popen('free -am').readlines()[1].split(' ')[-1].strip()
+        
+        if int(r) < 500:
+            gc.collect()
+            return False
+
+        return True
 
     def run(self):
         
         self.__busy = True
-        
         while (self.__busy):
- 
+            logger.info('worker is start')
+            if not self.dojudge():
+                time.sleep(10)
+                logger.info('Mem is not much and < 500 M ')
+                continue
             task = self.workload.assign_workload()
+            
             try:
+
                 if task  == None:
                     logger.info('******no task !')
                     time.sleep(0.5)
