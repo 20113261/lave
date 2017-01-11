@@ -197,8 +197,8 @@ def work(task):
     return
 
 def restart_process(params): # receve 重启命令
-   
-    
+
+
     logger.info('------------------------> receve  restart mingling server is starting')
     workload.workload_restart_flag = False   # stop get task thread
     workers.stop()   # stop working thread
@@ -207,7 +207,7 @@ def restart_process(params): # receve 重启命令
 
         task = workload.tasks.get()
         workload.complete_workload(task, '53', 'NULL')
-   
+
     len_keys = workload.TaskingDict.keys()
 
     for key in len_keys:
@@ -220,7 +220,7 @@ def restart_process(params): # receve 重启命令
         task = workload.newtasks.pop()
 
         workload.complete_workload(Task.parse(json.dumps(task)), '53', 'NULL')
-    return str(True)    
+    return str(True)
 
 def request(params):
     task = Task()
@@ -342,9 +342,15 @@ if __name__ == "__main__":
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
     #例行抓取
+    greents_num = 100 #每个线程协程数默认为100
     if 0 == is_recv_real_time_request:
         data_type = dict(config.items('data_type'))
-        forbide_section_str += '&data_type='+data_type.get(host)
+        task_type = data_type.get(host,'NULL')
+
+        if 'ListHotel' in task_type:
+            greents_num = 50 #酒店协程数设置为50
+
+        forbide_section_str += '&data_type='+task_type
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
@@ -359,7 +365,7 @@ if __name__ == "__main__":
 
     parsers = load_parsers(config)
 
-    workers = Workers(workload, work, config.getint("slave", "thread_num"),recv_real_time_request = is_recv_real_time_request)
+    workers = Workers(workload, work, config.getint("slave", "thread_num"),greents_num = greents_num,recv_real_time_request = is_recv_real_time_request)
 
     if host in mt_ip_dict:
         host = mt_ip_dict[host]
