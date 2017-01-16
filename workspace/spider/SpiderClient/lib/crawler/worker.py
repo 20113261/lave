@@ -39,7 +39,7 @@ class Worker(threading.Thread):
            with gevent.Timeout(self.workload.timeout):
                self.__func(task)
         except gevent.Timeout:
-               self.workload.complete_workload(task,'53','NULL')
+               self.workload.complete_workload(task,'52','NULL')
                logger.info('>>>>>>>>>>>>>> task timeout!'+str(task))
     def dojudge(self):
 
