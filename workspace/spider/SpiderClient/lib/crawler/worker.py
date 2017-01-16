@@ -44,7 +44,7 @@ class Worker(threading.Thread):
     def dojudge(self):
 
         r = os.popen('free -am').readlines()[1].split(' ')[-1].strip()
-        
+
         if int(r) < 500:
             gc.collect()
             return False
@@ -52,7 +52,7 @@ class Worker(threading.Thread):
         return True
 
     def run(self):
-        
+
         self.__busy = True
         while (self.__busy):
             logger.info('worker is start')
@@ -63,12 +63,12 @@ class Worker(threading.Thread):
                 continue
             '''
             task = self.workload.assign_workload()
-            
+
             try:
 
                 if task  == None:
                     logger.info('******no task !')
-                    time.sleep(0.5)
+                    time.sleep(2)
                     continue
                 self.__pool.spawn(self.task_entrance,task)
             except:
@@ -76,9 +76,9 @@ class Worker(threading.Thread):
                 time.sleep(3)
 
         self.__busy = False
-       
+
         logger.info("%s stop" % self.thread_name)
-    
+
     def is_busy(self):
         return self.__busy
 
@@ -103,18 +103,18 @@ class Workers:
     def workload_run(self):
 
         while (self.__workload.workload_restart_flag):
-        
+
             logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
             try:
                 self.__workload.get_workloads()
-                time.sleep(0.5)
+                time.sleep(2)
             except Exception,e:
                 logger.info('from master get task thread is  killed , sleep 3s ' + str(e))
                 time.sleep(3)
 
         logger.info('get task thread is killed')
-            
-            
+
+
     def start(self):
         '''
             启动线程
@@ -130,7 +130,7 @@ class Workers:
             logger.info('get_workload is start!')
             T = threading.Thread(target = self.workload_run,args = ())
             T.start()
-    
+
     def add_worker(self):
         '''
             添加一个worker
@@ -139,8 +139,8 @@ class Workers:
         worker = Worker(self, "work_thread_" + str(self.__index),self.__greents_num, self.__func, self.__workload)
         self.__workers.append(worker)
         return worker
-    
-          
+
+
     def stop_worker(self, worker):
         '''
             停止一个worker
