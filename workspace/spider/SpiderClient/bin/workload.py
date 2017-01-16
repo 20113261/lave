@@ -87,7 +87,12 @@ class ControllerWorkload(WorkloadStorable):
                     continue
 
                 task_str = json.dumps(task)
-                self.tasks.put(Task.parse(task_str))
+                task_strs = Task.parse(task_str) 
+                self.tasks.put(task_strs)
+                if task_strs not in self.TaskingDict:
+                    self.TaskingDict[task_strs] = 0
+                self.TaskingDict[task_strs] += 1
+
             except Exception,e:
                 logger.info('add task from master to tasks fail. error = ' + str(e))
                 return False

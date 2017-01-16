@@ -39,7 +39,7 @@ class Worker(threading.Thread):
            with gevent.Timeout(self.workload.timeout):
                self.__func(task)
         except gevent.Timeout:
-               self.workload.complete_workload(task,'52','NULL')
+               self.workload.complete_workload(task,'53','NULL')
                logger.info('>>>>>>>>>>>>>> task timeout!'+str(task))
     def dojudge(self):
 
@@ -70,12 +70,6 @@ class Worker(threading.Thread):
                     logger.info('******no task !')
                     time.sleep(0.5)
                     continue
-                if task not in self.workload.TaskingDict:
-                    self.workload.TaskingDict[task] = 0
-
-                self.workload.TaskingDict[task] += 1
-
-
                 self.__pool.spawn(self.task_entrance,task)
             except:
                 logger.info('get  assign task failed sleep 3s')
