@@ -156,8 +156,8 @@ class ControllerWorkload(WorkloadStorable):
             return True
 
         len_task = len(self.__tasks_status)
-        if len_task > 200:
-            len_task = 200
+        if len_task > 400:
+            len_task = 400
         logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
         if len_task <= 0:
             return True
