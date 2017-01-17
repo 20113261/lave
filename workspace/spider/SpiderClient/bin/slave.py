@@ -340,12 +340,14 @@ if __name__ == "__main__":
         forbide_section_str = ''
     #例行抓取
     greents_num = 100 #每个线程协程数默认为100
-    if 'ListHotel' in task_type:
-        greents_num = 50
-
     if 0 == is_recv_real_time_request:
         data_type = dict(config.items('data_type'))
         forbide_section_str += '&data_type='+data_type.get(host)
+        task_type = data_type.get(host,'NULL')
+    
+    if 'ListHotel' in task_type:
+        greents_num = 50
+
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
