@@ -114,22 +114,13 @@ class MultiFlight():
         return results
 
     def to_tuple(self):
-        return (self.dept_id, self.dest_id, self.dept_day,
-                self.dest_day, self.price, self.tax, self.surcharge,
-                self.promotion, self.currency, self.source,
-                self.return_rule, self.flight_no_A, self.airline_A,
-                self.plane_no_A, self.dept_time_A, self.dest_time_A,
-                self.dur_A, self.seat_type_A, self.real_class_A,
-                self.stop_id_A, self.stop_time_A, self.daydiff_A,
-                self.stop_A, self.flight_no_B, self.airline_B,
-                self.plane_no_B, self.dept_time_B, self.dest_time_B,
-                self.dur_B, self.seat_type_B, self.real_class_B,
-                self.stop_id_B,self.stop_time_B, self.daydiff_B,
-                self.stop_B, self.change_rule, self.share_flight_A,
-                self.share_flight_B, self.stopby_A, self.stopby_B,
-                self.baggage, self.transit_visa, self.reimbursement,
-                self.flight_meals, self.ticket_type,
-                self.others_info, self.rest)
+        return (self.flight_no, self.plane_type, self.flight_corp, self.dept_id,
+                self.dest_id, self.dept_day, self.dept_time, self.dest_time, self.dur,
+                self.rest, self.price, self.tax, self.surcharge, self.promotion, self.currency,
+                self.seat_type, self.real_class, self.package, self.stop_id, self.stop_time,
+                self.daydiff, self.source, self.return_rule, self.change_rule, self.stop,
+                self.share_flight, self.stopby, self.baggage, self.transit_visa,
+                self.reimbursement, self.flight_meals, self.ticket_type, self.others_info)
 
 
 class RoundFlight():
@@ -187,6 +178,24 @@ class RoundFlight():
         for k,v in self.__dict__.items():
             results.append((k, str(v).decode('UTF-8')))
         return results
+
+    def to_tuple(self):
+        return (self.dept_id, self.dest_id, self.dept_day,
+                self.dest_day, self.price, self.tax, self.surcharge,
+                self.promotion, self.currency, self.source,
+                self.return_rule, self.flight_no_A, self.airline_A,
+                self.plane_no_A, self.dept_time_A, self.dest_time_A,
+                self.dur_A, self.seat_type_A, self.real_class_A,
+                self.stop_id_A, self.stop_time_A, self.daydiff_A,
+                self.stop_A, self.flight_no_B, self.airline_B,
+                self.plane_no_B, self.dept_time_B, self.dest_time_B,
+                self.dur_B, self.seat_type_B, self.real_class_B,
+                self.stop_id_B,self.stop_time_B, self.daydiff_B,
+                self.stop_B, self.change_rule, self.share_flight_A,
+                self.share_flight_B, self.stopby_A, self.stopby_B,
+                self.baggage, self.transit_visa, self.reimbursement,
+                self.flight_meals, self.ticket_type,
+                self.others_info, self.rest)
 
 
 class EachFlight():
