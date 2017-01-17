@@ -339,6 +339,10 @@ if __name__ == "__main__":
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
     #例行抓取
+    greents_num = 100 #每个线程协程数默认为100
+    if 'ListHotel' in task_type:
+        greents_num = 50
+
     if 0 == is_recv_real_time_request:
         data_type = dict(config.items('data_type'))
         forbide_section_str += '&data_type='+data_type.get(host)
@@ -356,7 +360,7 @@ if __name__ == "__main__":
 
     parsers = load_parsers(config)
 
-    workers = Workers(workload, work, config.getint("slave", "thread_num"),recv_real_time_request = is_recv_real_time_request)
+    workers = Workers(workload, work, config.getint("slave", "thread_num"),greents_num = greents_num,recv_real_time_request = is_recv_real_time_request)
 
     if host in mt_ip_dict:
         host = mt_ip_dict[host]
