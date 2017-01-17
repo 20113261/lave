@@ -21,7 +21,7 @@ class Worker(threading.Thread):
     '''
         工作线程
     '''
-    def __init__(self, workers, thread_name,greents_num=100, func, workload):
+    def __init__(self, workers, thread_name,greents_num, func, workload):
         '''
         '''
         self.__workers = workers
