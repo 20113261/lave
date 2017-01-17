@@ -345,8 +345,8 @@ if __name__ == "__main__":
         forbide_section_str += '&data_type='+data_type.get(host)
         task_type = data_type.get(host,'NULL')
     
-    if 'ListHotel' in task_type:
-        greents_num = 50
+        if 'ListHotel' in task_type:
+            greents_num = 50
 
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
