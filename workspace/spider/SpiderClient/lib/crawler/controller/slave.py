@@ -32,6 +32,7 @@ class Slave:
         self.__server = http_server.HttpServer('0.0.0.0', port)
 
         self.__client = http_client.HttpClient(master_host)
+        self.__master_host = master_host
         # 保存slave的相关信息
         self.info = SlaveInfo()
         self.info.recv_real_time_request = recv_real_time_request
@@ -93,8 +94,13 @@ class Slave:
                 "type": self.info.type,
                 'recv_real_time_request': self.info.recv_real_time_request}
 
-	path = "/heartbeat?" + urllib.urlencode(data)
-        self.__client.get(path)
+    	path = "/heartbeat?" + urllib.urlencode(data)
+        #try:
+        http_client.HttpClient(self.__master_host).get(path)
+        #except Exception,e:
+         #   import traceback
+          #  error_info = str(traceback.format_exc().split('\n'))
+           # print 'heartbeat_error:' + error_info
     
     def register_in_master(self):
         '''
