@@ -125,7 +125,6 @@ class ControllerWorkload(WorkloadStorable):
         try:
             task = self.tasks.get()
         except:
-            logger.info('self.__tasks is not task ')
             return None
         return task
 
@@ -134,7 +133,6 @@ class ControllerWorkload(WorkloadStorable):
             if self.__flag:
                 if proxy == 'NULL':  proxy = []
 
-                logger.info('server is start! ')
                 query = {"other_info":task.other_info}
                 try:
                     self.write_redis_ticket(task, proxy,Error)
@@ -142,7 +140,6 @@ class ControllerWorkload(WorkloadStorable):
                     logger.info('not redis con'+str(e))
 
                 url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
-                logger.info(url)
 
                 HttpClient(task.host).get(url)
                 return True
@@ -151,13 +148,11 @@ class ControllerWorkload(WorkloadStorable):
             if  task in self.TaskingDict:
                 len_key = self.TaskingDict.pop(task)
 
-            logger.info("finish tasks: " + str(len_key))
             while(len_key > 0):
                  task_status = {"id": task.id, "content": task.content, "source": task.source, \
                         "workload_key": task.workload_key, "error": int(Error),'proxy' : proxy,"timeslot": task.timeslot}
                  self.__tasks_status.append(task_status)
 
-                 logger.info("complete task: " + json.dumps(task_status) + '\n')
                  len_key -= 1
 
         except Exception,e:
@@ -177,11 +172,11 @@ class ControllerWorkload(WorkloadStorable):
         if len_task <= 0:
             return True
 
-        logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
+        #logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             result = self.__client.get("/complete_workload?q=" + urllib.quote(completed_task))
-            logger.info("complete_tasks_data: " + completed_task + '\n')
+         #   logger.info("complete_tasks_data: " + completed_task + '\n')
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception,e:
             logger.info("complete task to master fail. task_count=" + str(len_task) + ' err = ' + str(e))

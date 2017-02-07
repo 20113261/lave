@@ -55,7 +55,7 @@ class Worker(threading.Thread):
 
         self.__busy = True
         while (self.__busy):
-            logger.info('worker is start')
+            #logger.info('worker is start')
             '''
             if not self.dojudge():
                 time.sleep(10)
@@ -67,7 +67,7 @@ class Worker(threading.Thread):
             try:
 
                 if task  == None:
-                    logger.info('******no task !')
+                   # logger.info('******no task !')
                     time.sleep(2)
                     continue
                 self.__pool.spawn(self.task_entrance,task)
@@ -104,7 +104,7 @@ class Workers:
 
         while (self.__workload.workload_restart_flag):
 
-            logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
+#            logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
             try:
                 self.__workload.get_workloads()
                 time.sleep(2)
@@ -127,7 +127,7 @@ class Workers:
             worker.start()
         logger.info(self.__flag)
         if not self.__flag:
-            logger.info('get_workload is start!')
+#            logger.info('get_workload is start!')
             T = threading.Thread(target = self.workload_run,args = ())
             T.start()
 

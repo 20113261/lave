@@ -226,7 +226,6 @@ def request(params):
     try:
         task.error = '12'
         req_tasks = eval(urllib.unquote(params.get('req')))
-        logger.info('Task :: '+str(req_tasks))
         task.req_qid = params.get('qid')
         task.req_uid = params.get('uid')
     except Exception,e:
