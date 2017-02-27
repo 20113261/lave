@@ -69,7 +69,7 @@ class ControllerWorkload(WorkloadStorable):
         logger.info('Need %d New Tasks'%task_length)
         url = "/workload?forbid="  + self.__forbide_section_str + "&count=" + str(task_length)
         result = self.__client.get(url)
-        logger.info('from master get result ::' + result)
+        logger.info('from master get result is ::' + str(len(eval(result))))
         if result == None or result == []:
             return False
 
@@ -172,7 +172,7 @@ class ControllerWorkload(WorkloadStorable):
         if len_task <= 0:
             return True
 
-        #logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
+        logger.info('send complete workload finish.task = %s. get response: ' % str(len_task))
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             result = self.__client.get("/complete_workload?q=" + urllib.quote(completed_task))
