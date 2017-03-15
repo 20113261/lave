@@ -4,12 +4,13 @@ import json
 import httplib
 import requests
 from UserAgent import  GetUserAgent
+from common.common import get_proxy
 SOCKS_PROXY = '10.10.7.155|10.10.239.141|10.10.214.26|10.10.120.163|10.10.128.62|10.10.137.138|10.10.119.18|10.10.'
 #SOCKS_PROXY = '139.129.231.218'
 #SOCKS_PROXY = '106.75.30.126'
 class MechanizeCrawler(object):
 
-    def __init__(self, referer='', headers={}, p='', md5 = '', qid = '',**kw):
+    def __init__(self, retry_flag=False, source='', referer='', headers={}, p='', md5 = '', qid = '',**kw):
 
         self.proxy = p
         self.md5 = md5
@@ -21,6 +22,11 @@ class MechanizeCrawler(object):
         headers['User-Agent'] = GetUserAgent()
         self.br.headers.update(headers)
         self.resp = ''
+        self.times = 0
+        self.html = ''
+        self.error = ''
+        self.flag = retry_flag
+        self.source = source
         if  p:
             self.set_proxy(p)
 
@@ -31,6 +37,26 @@ class MechanizeCrawler(object):
             httplib.HTTPConnection.debuglevel=1
             httplib.HTTPSConnection.debuglevel=1
         '''
+
+    def retry(func):
+        def wrapper(self, *args, **kw):
+            if not self.flag:
+                return func(self, *args, **kw)
+            else:
+                while self.times < 3:
+                    print "重试次数 %d " % self.times
+                    self.html, self.error = func(self, *args, **kw)
+                    if self.error == '':
+                        break
+                    else:
+                        p = get_proxy(source=self.source)
+                        self.set_proxy(p)
+                        self.times += 1
+                return self.html, self.error
+
+        return wrapper
+
+    @retry
     def req(self, mechod, url, paras = {}, paras_type=1, html_flag=False, time_out=(60, 180),**kw):
 
         html, error = '', ''
@@ -106,5 +132,5 @@ class MechanizeCrawler(object):
 if __name__ == '__main__':
     mc = MechanizeCrawler()
     mc.set_debug(True)
-    print mc.get_cookie('get','http://www.ebookers.com')
+    print mc.get_cookie('get', 'http://www.ebookers.com')
     pass
