@@ -72,7 +72,10 @@ class ControllerWorkload(WorkloadStorable):
         if result == None or result == []:
             return False
 
-        #result = '[{"priority": 0, "update_time": "NULL", "task_data":"", "success_times": 0, "is_assigned": 1, "error": -1, "proxy": "NULL", "workload_key": "LEN_ZAZ_raileuropecomRail_20170119", "id": "NULL", "priority": 0, "update_times": 0, "content": "PEK&CDG&20170219", "source": "cheapticketsFlight", "timeslot": "176" }]'
+        #result = '[{"priority": 0, "update_time": "NULL", "task_data":"", "success_times": 0,\
+        #        "is_assigned": 1, "error": -1, "proxy": "NULL", "workload_key": "LEN_ZAZ_raileuropecomRail_20170119",
+        #        "id": "NULL", "priority": 0, "update_times": 0, "content": "PEK&CDG&20170219",
+        #       "source": "cheapticketsFlight", "timeslot": "176" }]'
         try:
             result = result.strip('\0').strip()
             self.newtasks = eval(result)
@@ -139,7 +142,7 @@ class ControllerWorkload(WorkloadStorable):
                 except Exception,e:
                     logger.info('not redis con'+str(e))
 
-                url = 'http://'+task.host+'/?type=scv100&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
+                url = 'http://'+task.host+'/?type=' + task.callback_type + '&qid='+task.req_qid+'&uid='+task.req_uid+'&query='+ urllib.quote(json.dumps(query))
 
                 HttpClient(task.host).get(url)
                 return True

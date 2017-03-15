@@ -197,13 +197,13 @@ def work(task):
     return
 
 def restart_process(params): # receve 重启命令
-   
-    
+
+
     logger.info('------------------------> receve  restart mingling server is starting')
     workload.workload_restart_flag = False   # stop get task thread
     workers.stop()   # stop working thread
     logger.info('------------------------> update workload.tasks.qsize = '+str(workload.tasks.qsize()))
-  
+
     len_keys = workload.TaskingDict.keys()
 
     for key in len_keys:
@@ -217,7 +217,7 @@ def restart_process(params): # receve 重启命令
         workload.complete_workload(Task.parse(json.dumps(task)), '53', 'NULL')
 
 
-    return str(True)    
+    return str(True)
 
 def request(params):
     task = Task()
@@ -253,11 +253,20 @@ def request(params):
             task.redis_passwd = task.master_info.get('redis_passwd')
 
             task.req_qid_md5 = task.req_qid + '-' + task.req_md5
-            task.other_info = req_task.get('other_info','default_other_info')
-            other_info =  task.other_info.get('redis_key')
-            for each in  other_info:
+            task.other_info = req_task.get('other_info',{})
+
+            callback_type = 'scv100'
+            if 'callback_type' in task.other_info:
+                callback_type = task.other_info['callback_type']
+
+            task.callback_type = callback_type
+
+            redis_key_list =  task.other_info.get('redis_key',[])
+
+            for each in  redis_key_list:
                 task.redis_key = each
                 task.other_info['redis_key'] = each
+
                 workload.add_workload(task)
 
         except Exception,e:
@@ -343,7 +352,7 @@ if __name__ == "__main__":
         data_type = dict(config.items('data_type'))
         forbide_section_str += '&data_type='+data_type.get(host)
         task_type = data_type.get(host,'NULL')
-    
+
         if 'ListHotel' in task_type:
             greents_num = 30
 
