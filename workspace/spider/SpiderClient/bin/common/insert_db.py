@@ -6,6 +6,8 @@
 
 import sys
 import db       #222:crawl
+import json
+import pika
 
 def InsertFlight(args):
     #sql = "INSERT INTO flight" + table_name_date + " (flight_no,plane_no,airline,dept_id,dest_id,dept_day,dept_time," + \
@@ -25,6 +27,16 @@ def InsertNewFlight(args):
         'baggage, transit_visa, reimbursement, flight_meals, ticket_type, others_info) VALUES' + \
         '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,' + \
         '%s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+    credentials = pika.PlainCredentials(username='master', password='master')
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='10.10.38.166', virtual_host='TrafficDataPush', credentials=credentials))
+    channel = connection.channel()
+    channel.exchange_declare(exchange='TrafficDataPush',durable=True)
+    fight_type = ['dflight_dev', 'dflight_ol', 'sflight']
+    for ty in fight_type:
+        channel.queue_declare(queue=ty, durable=True)
+    p = json.dumps(args, ensure_ascii=False)
+    channel.basic_publish(exchange='TrafficDataPush', routing_key='flight', body=p, properties=pika.BasicProperties(delivery_mode=2))
+    connection.close()
 
     return db.ExecuteSQLs(sql, args)
 
