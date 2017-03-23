@@ -344,6 +344,7 @@ if __name__ == "__main__":
     proxy_client = http_client.HttpClientPool(
         config.get("proxy", "host"), maxsize=20)
     set_proxy_client(proxy_client)
+    reload_and_config()
 
     redis_host = config.get("redis", "host")
     redis_port = config.getint("redis", "port")
