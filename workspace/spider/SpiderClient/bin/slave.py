@@ -26,6 +26,7 @@ import traceback
 import sys
 import new
 from gevent import monkey
+
 monkey.patch_all()
 
 from spider_adapter import *
@@ -75,7 +76,6 @@ try:
 except Exception, e:
     logger.error("update uc_db fail. err " + str(e))
 
-
 uc_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                       host=_uc_host, port=3306, user=_uc_user, passwd=_uc_pswd,
                       db=_uc_db, charset='utf8', use_unicode=False)
@@ -103,7 +103,6 @@ def UCConnection():
 
 
 def load_parsers(config):
-
     parsers = {}
     import os
     import sys
@@ -119,7 +118,6 @@ def load_parsers(config):
 
 
 def getallSource(config):
-
     sections = config.sections()
     sections.remove('slave')
     sections.remove('proxy')
@@ -197,9 +195,14 @@ def work(task):
     else:  # 新框架获得爬虫
         try:
             ret_val, error = parser.crawl()
-            data_type = parser.crawl_type()
-            if error is 0 and is_recv_real_time_request:  # 返回0错误码且实时验证的时候返回机票
-                proxy_or_ticket = ret_val[data_type]
+            proxy_or_ticket = []
+            if error is 0:
+                # 返回0错误码且实时验证的时候返回机票
+                if is_recv_real_time_request:
+                    for per_data_type in parser.crawl_targets_required:
+                        proxy_or_ticket.extend(ret_val[per_data_type])
+                else:
+                    parser.store()
         except ParserException as e:
             error_info = e.msg
             error = e.code
@@ -228,8 +231,8 @@ def restart_process(params):  # receve 重启命令
 
     logger.info(
         '------------------------> receve  restart mingling server is starting')
-    workload.workload_restart_flag = False   # stop get task thread
-    workers.stop()   # stop working thread
+    workload.workload_restart_flag = False  # stop get task thread
+    workers.stop()  # stop working thread
     logger.info('------------------------> update workload.tasks.qsize = ' +
                 str(workload.tasks.qsize()))
 
@@ -241,7 +244,7 @@ def restart_process(params):  # receve 重启命令
             workload.complete_workload(key, '53', 'NULL')
             len_item -= 1
 
-    while(len(workload.newtasks) > 0):
+    while (len(workload.newtasks) > 0):
         task = workload.newtasks.pop()
         workload.complete_workload(Task.parse(json.dumps(task)), '53', 'NULL')
 
@@ -267,7 +270,7 @@ def request(params):
         try:
             task.source = req_task.get('source')
             task.content = req_task.get('content')
-            #task.proxy_info = proxy_info
+            # task.proxy_info = proxy_info
             task.ticket_info = req_task.get('ticket_info')
             task.req_md5 = task.ticket_info.get('md5', 'default_md5')
 
@@ -337,6 +340,7 @@ if __name__ == "__main__":
 
     # 读取配置文件
     import ConfigParser
+
     config = ConfigParser.ConfigParser()
     config.read(sys.argv[2])
 
