@@ -18,6 +18,7 @@ from common.common import frame_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
+from mioji.controller.admin import AdminHandler
 import MySQLdb
 import time
 import urllib
@@ -403,5 +404,6 @@ if __name__ == "__main__":
     slave.info.name = config.get("slave", "name")
     slave.register("/rtquery", request)
     slave.register("/restart_process", restart_process)
+    slave.register("/admin", AdminHandler)
     info = slave.info
     slave.run()
