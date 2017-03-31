@@ -6,6 +6,10 @@
     @desc:
 
 '''
+from gevent import monkey
+
+monkey.patch_all()
+
 import os
 import redis
 import mioji.common.spider
@@ -27,10 +31,6 @@ import traceback
 import sys
 import new
 import gevent.pool
-from gevent import monkey
-
-monkey.patch_all()
-
 from spider_adapter import *
 from mioji.common.parser_except import ParserException
 
