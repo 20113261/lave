@@ -8,6 +8,7 @@
 '''
 import os
 import redis
+import mioji.common.spider
 from crawler.controller.slave import Slave
 from crawler.worker import Workers
 from workload import ControllerWorkload
@@ -25,6 +26,7 @@ import json
 import traceback
 import sys
 import new
+import gevent.pool
 from gevent import monkey
 
 monkey.patch_all()
@@ -378,6 +380,9 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
+            mioji.common.spider.pool = gevent.pool.Pool(128)
+        else:
+            mioji.common.spider.pool = gevent.pool.Pool(256)
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 

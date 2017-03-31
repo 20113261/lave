@@ -5,6 +5,7 @@ import common.insert_db
 from common.common import get_proxy
 from mioji import spider_factory
 from mioji.spider_factory import factory
+
 # from mioji.common.task_info import Task
 
 insert_db = common.insert_db
