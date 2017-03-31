@@ -382,7 +382,7 @@ if __name__ == "__main__":
             greents_num = 30
             mioji.common.spider.pool = gevent.pool.Pool(128)
         else:
-            mioji.common.spider.pool = gevent.pool.Pool(256)
+            mioji.common.spider.pool = gevent.pool.Pool(512)
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
