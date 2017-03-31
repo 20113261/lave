@@ -70,6 +70,11 @@ def InsertMultiFlight(args):
           '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,' + \
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
+    routing_key = 'interline'
+    # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
+    q_list = ['dinterline_dev']
+    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+
     return db.ExecuteSQLs(sql, args)
 
 
@@ -242,6 +247,10 @@ def InsertNewTrain(args):
           '(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,' + \
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
+    routing_key = 'train'
+    q_list = ['dtrain_dev']
+    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+
     return db.ExecuteSQLs(sql, args)
 
 
@@ -318,6 +327,10 @@ def InsertBus(args):
           'insurance, service_fee, stop, bus_no, stop_id, stop_time, transfer_interval, has_wifi, has_charge, ' + \
           'has_extended_seat, free_baggage_num, free_baggage_weight, has_meals, has_wc, arrive_gate' + \
           ') VALUES (%s,%s,%s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s)'
+
+    routing_key = 'bus'
+    q_list = ['dbus_dev']
+    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
     return db.ExecuteSQLs(sql, args)
 
 
