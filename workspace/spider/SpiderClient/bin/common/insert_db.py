@@ -32,7 +32,8 @@ def InsertNewFlight(args):
           '%s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
     routing_key = 'flight'
-    q_list = ['dflight_dev', 'dflight_ol', 'sflight']
+    # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
+    q_list = ['dflight_dev']
     insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
 
     return db.ExecuteSQLs(sql, args)
