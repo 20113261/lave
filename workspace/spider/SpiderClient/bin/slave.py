@@ -18,6 +18,7 @@ from common.common import frame_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
+from mioji import spider_factory
 import MySQLdb
 import time
 import urllib
@@ -307,6 +308,10 @@ def request(params):
         result['task'].append({'err_code': '0'})
 
     return json.dumps(result)
+
+
+def slave_admin(params):
+    pass
 
 
 def getForbideSectionName():
