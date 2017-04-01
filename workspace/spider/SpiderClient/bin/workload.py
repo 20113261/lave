@@ -22,6 +22,7 @@ import redis
 import sys
 
 from gevent.queue import Queue, Empty
+
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
 TASK_COUNT = 300
@@ -34,7 +35,7 @@ class ControllerWorkload(WorkloadStorable):
         通过Controller进行workload管理
     '''
 
-    def __init__(self, host, sources,  forbide_section_str, recv_real_time_request=True):
+    def __init__(self, host, sources, forbide_section_str, recv_real_time_request=True):
 
         self.__client = HttpClientPool(
             host, timeout=1000, maxsize=500, block=True)
@@ -49,7 +50,7 @@ class ControllerWorkload(WorkloadStorable):
         self.__flag = recv_real_time_request
         self.__forbide_section_str = forbide_section_str
         self.workload_restart_flag = True
-        #self.__timer = timer.Timer(TASK_TIME_SPAN, self.get_workloads)
+        # self.__timer = timer.Timer(TASK_TIME_SPAN, self.get_workloads)
         # self.__timer.start()
         self.__timer2 = timer.Timer(
             COMPLETE_TIME_SPAN, self.complete_workloads)
@@ -73,7 +74,7 @@ class ControllerWorkload(WorkloadStorable):
 
         logger.info('Need %d New Tasks' % task_length)
         url = "/workload?forbid=" + self.__forbide_section_str + \
-            "&count=" + str(task_length)
+              "&count=" + str(task_length)
         result = self.__client.get(url)
         if result == None or result == []:
             return False
@@ -85,8 +86,7 @@ class ControllerWorkload(WorkloadStorable):
         try:
             result = result.strip('\0').strip()
             self.newtasks = eval(result)
-            logger.info('from master get taskcount is :' +
-                        str(len(self.newtasks)))
+            logger.info('from master get taskcount is : {0} / {1}'.format(len(self.newtasks), task_length))
         except Exception, e:
             logger.info('GET TASKS ERROR: ' + str(e))
             return False
@@ -119,7 +119,7 @@ class ControllerWorkload(WorkloadStorable):
 
     def write_redis_ticket(self, task, proxy, Error):
         try:
-            rds = redis.Redis(host=task.redis_host, port=task.redis_port,  db=int(
+            rds = redis.Redis(host=task.redis_host, port=task.redis_port, db=int(
                 task.redis_db), password=task.redis_passwd)
             result = {"err_code": Error, "data": proxy}
             rds.setex(task.redis_key, json.dumps(result), 600)
@@ -151,8 +151,8 @@ class ControllerWorkload(WorkloadStorable):
                     logger.info('not redis con' + str(e))
 
                 url = 'http://' + task.host + '/?type=' + task.callback_type + '&qid=' + \
-                    task.req_qid + '&uid=' + task.req_uid + \
-                    '&query=' + urllib.quote(json.dumps(query))
+                      task.req_qid + '&uid=' + task.req_uid + \
+                      '&query=' + urllib.quote(json.dumps(query))
 
                 HttpClient(task.host).get(url)
                 return True
@@ -161,9 +161,10 @@ class ControllerWorkload(WorkloadStorable):
             if task in self.TaskingDict:
                 len_key = self.TaskingDict.pop(task)
 
-            while(len_key > 0):
+            while (len_key > 0):
                 task_status = {"id": task.id, "content": task.content, "source": task.source,
-                               "workload_key": task.workload_key, "error": int(Error), 'proxy': proxy, "timeslot": task.timeslot}
+                               "workload_key": task.workload_key, "error": int(Error), 'proxy': proxy,
+                               "timeslot": task.timeslot}
                 self.__tasks_status.append(task_status)
 
                 len_key -= 1
@@ -175,7 +176,6 @@ class ControllerWorkload(WorkloadStorable):
 
     def complete_workloads(self):
         if self.__flag:
-
             return True
 
         len_task = len(self.__tasks_status)
@@ -191,7 +191,7 @@ class ControllerWorkload(WorkloadStorable):
             completed_task = json.dumps(self.__tasks_status[:len_task])
             result = self.__client.get(
                 "/complete_workload?q=" + urllib.quote(completed_task))
-         #   logger.info("complete_tasks_data: " + completed_task + '\n')
+            #   logger.info("complete_tasks_data: " + completed_task + '\n')
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
             logger.info("complete task to master fail. task_count=" +
