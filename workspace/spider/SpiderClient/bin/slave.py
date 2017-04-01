@@ -208,7 +208,7 @@ def work(task):
         except ParserException as e:
             error_info = e.msg
             error = e.code
-            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
+            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s [traceback: %s]', error, error_info, traceback.format_exc())
         except Exception, e:
             error_info = str(traceback.format_exc().split('\n'))
             logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s][traceback:%s]",
@@ -380,7 +380,7 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
-            mioji.common.spider.pool = gevent.pool.Pool(128)
+            mioji.common.spider.pool = gevent.pool.Pool(256)
         else:
             mioji.common.spider.pool = gevent.pool.Pool(512)
 
