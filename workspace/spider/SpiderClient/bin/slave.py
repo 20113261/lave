@@ -6,8 +6,13 @@
     @desc:
 
 '''
+from gevent import monkey
+
+monkey.patch_all()
+
 import os
 import redis
+import mioji.common.spider
 from crawler.controller.slave import Slave
 from crawler.worker import Workers
 from workload import ControllerWorkload
@@ -18,6 +23,7 @@ from common.common import frame_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
+from mioji import spider_factory
 import MySQLdb
 import time
 import urllib
@@ -25,10 +31,7 @@ import json
 import traceback
 import sys
 import new
-from gevent import monkey
-
-monkey.patch_all()
-
+import gevent.pool
 from spider_adapter import *
 from mioji.common.parser_except import ParserException
 
@@ -206,7 +209,7 @@ def work(task):
         except ParserException as e:
             error_info = e.msg
             error = e.code
-            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
+            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s [traceback: %s]', error, error_info, traceback.format_exc())
         except Exception, e:
             error_info = str(traceback.format_exc().split('\n'))
             logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s][traceback:%s]",
@@ -309,6 +312,10 @@ def request(params):
     return json.dumps(result)
 
 
+def slave_admin(params):
+    pass
+
+
 def getForbideSectionName():
     forbide_section_str = ''
     conn = MySQLdb.connect(host=_uc_host, user='reader',
@@ -378,6 +385,9 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
+            mioji.common.spider.pool = gevent.pool.Pool(256)
+        else:
+            mioji.common.spider.pool = gevent.pool.Pool(512)
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
