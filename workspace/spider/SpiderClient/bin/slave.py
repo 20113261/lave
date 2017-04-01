@@ -6,8 +6,13 @@
     @desc:
 
 '''
+from gevent import monkey
+
+monkey.patch_all()
+
 import os
 import redis
+import mioji.common.spider
 from crawler.controller.slave import Slave
 from crawler.worker import Workers
 from workload import ControllerWorkload
@@ -26,10 +31,7 @@ import json
 import traceback
 import sys
 import new
-from gevent import monkey
-
-monkey.patch_all()
-
+import gevent.pool
 from spider_adapter import *
 from mioji.common.parser_except import ParserException
 
@@ -207,7 +209,7 @@ def work(task):
         except ParserException as e:
             error_info = e.msg
             error = e.code
-            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
+            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s [traceback: %s]', error, error_info, traceback.format_exc())
         except Exception, e:
             error_info = str(traceback.format_exc().split('\n'))
             logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s][traceback:%s]",
@@ -383,6 +385,9 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
+            mioji.common.spider.pool = gevent.pool.Pool(256)
+        else:
+            mioji.common.spider.pool = gevent.pool.Pool(512)
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
