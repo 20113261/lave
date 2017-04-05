@@ -225,6 +225,7 @@ def work(task):
 
     if error:
         info.error_task_num += 1
+    logger.info("[爬虫反馈 code: %s] task: %s", error, task)
     workload.complete_workload(task, error, proxy_or_ticket)
     return
 

@@ -146,6 +146,7 @@ class ControllerWorkload(WorkloadStorable):
 
                 query = {"other_info": task.other_info}
                 try:
+                    logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(task, proxy, Error))
                     self.write_redis_ticket(task, proxy, Error)
                 except Exception, e:
                     logger.info('not redis con' + str(e))
@@ -155,6 +156,7 @@ class ControllerWorkload(WorkloadStorable):
                       '&query=' + urllib.quote(json.dumps(query))
 
                 HttpClient(task.host).get(url)
+                logger.info("[error_code 信息入库 http code: {0} url: {1}]".format(Error, url))
                 return True
 
             len_key = 1
