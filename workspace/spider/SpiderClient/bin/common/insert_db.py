@@ -8,6 +8,7 @@ import sys
 import db  # 222:crawl
 import json
 import pika
+from logger import logger
 from insert_rabbitmq import insert_rabbitmq
 
 
@@ -34,9 +35,24 @@ def InsertNewFlight(args):
     routing_key = 'flight'
     # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
     q_list = ['dflight_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
 
-    return db.ExecuteSQLs(sql, args)
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 # 新增了一列package
@@ -73,9 +89,24 @@ def InsertMultiFlight(args):
     routing_key = 'interline'
     # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
     q_list = ['dinterline_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
 
-    return db.ExecuteSQLs(sql, args)
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 def InsertFlightInfo(args):
@@ -107,9 +138,24 @@ def InsertRoundFlight(args):
 
     routing_key = 'round'
     q_list = ['dround_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
 
-    return db.ExecuteSQLs(sql, args)
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 def InsertRoundFlight2(args):
@@ -127,9 +173,24 @@ def InsertRoundFlight2(args):
 
     routing_key = 'round'
     q_list = ['dround_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
 
-    return db.ExecuteSQLs(sql, args)
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 def InsertExtraFlight(args):
@@ -249,9 +310,24 @@ def InsertNewTrain(args):
 
     routing_key = 'train'
     q_list = ['dtrain_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
 
-    return db.ExecuteSQLs(sql, args)
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 def InsertTrainTMP(args):
@@ -330,8 +406,24 @@ def InsertBus(args):
 
     routing_key = 'bus'
     q_list = ['dbus_dev']
-    insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
-    return db.ExecuteSQLs(sql, args)
+    insert_rabbitmq_ok = False
+    insert_db_ok = False
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
+
+    try:
+        res = db.ExecuteSQLs(sql, args)
+        if res:
+            insert_db_ok = True
+        else:
+            raise Exception('mysql 入库失败')
+    except Exception:
+        logger.exception('[mysql 入库异常]')
+
+    return insert_rabbitmq_ok, insert_db_ok
 
 
 def InsertPickup(args):
