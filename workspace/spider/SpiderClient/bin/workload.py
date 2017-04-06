@@ -68,13 +68,13 @@ class ControllerWorkload(WorkloadStorable):
             get every TASK_TIME_SPAN (s), up to TASK_COUNT
         '''
         task_length = TASK_COUNT - self.tasks.qsize()
-
-        if task_length <= 0:
+        need_task = task_length / 2
+        if need_task <= 0:
             return True
 
         logger.info('Need %d New Tasks' % task_length)
         url = "/workload?forbid=" + self.__forbide_section_str + \
-              "&count=" + str(task_length)
+              "&count=" + str(need_task)
         result = self.__client.get(url)
         if result == None or result == []:
             return False
@@ -87,7 +87,7 @@ class ControllerWorkload(WorkloadStorable):
             result = result.strip('\0').strip()
             self.newtasks = eval(result)
             logger.info(
-                'from master get taskcount is : {0} / {1}，tasks: {2}'.format(len(self.newtasks), task_length, result))
+                'from master get taskcount is : {0} / {1}，tasks: {2}'.format(len(self.newtasks), need_task, result))
         except Exception, e:
             logger.info('GET TASKS ERROR: ' + str(e))
             return False
