@@ -381,7 +381,7 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
-            mioji.common.spider.pool = gevent.pool.Pool(256)
+            mioji.common.spider.pool = gevent.pool.Pool(128)
         else:
             mioji.common.spider.pool = gevent.pool.Pool(512)
 
