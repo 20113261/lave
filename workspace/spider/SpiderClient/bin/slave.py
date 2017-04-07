@@ -196,13 +196,13 @@ def work(task):
 
     else:  # 新框架获得爬虫
         try:
-            ret_val, error = parser.crawl()
+            error = parser.crawl()
             proxy_or_ticket = []
             if error is 0:
                 # 返回0错误码且实时验证的时候返回机票
                 if is_recv_real_time_request:
                     for per_data_type in parser.crawl_targets_required:
-                        proxy_or_ticket.extend(ret_val[per_data_type])
+                        proxy_or_ticket.extend(parser.result[per_data_type])
                 else:
                     parser.store()
         except ParserException as e:
