@@ -87,7 +87,7 @@ class ControllerWorkload(WorkloadStorable):
             result = result.strip('\0').strip()
             self.newtasks = eval(result)
             logger.info(
-                'from master get taskcount is : {0} / {1}，tasks: {2}'.format(len(self.newtasks), need_task, result))
+                'from master get taskcount is : {0} / {1} \n tasks: {2}'.format(len(self.newtasks), need_task, result))
         except Exception, e:
             logger.info('GET TASKS ERROR: ' + str(e))
             return False
