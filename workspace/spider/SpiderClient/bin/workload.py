@@ -68,7 +68,7 @@ class ControllerWorkload(WorkloadStorable):
             get every TASK_TIME_SPAN (s), up to TASK_COUNT
         '''
         task_length = TASK_COUNT - self.tasks.qsize()
-        need_task = task_length / 2
+        need_task = task_length
         if need_task <= 0:
             return True
 
