@@ -13,6 +13,7 @@ monkey.patch_all()
 import os
 import redis
 import mioji.common.spider
+import mioji.common.pool
 from crawler.controller.slave import Slave
 from crawler.worker import Workers
 from workload import ControllerWorkload
@@ -254,6 +255,23 @@ def restart_process(params):  # receve 重启命令
     return str(True)
 
 
+def spider_pool_size(params):
+    try:
+        size = int(params.get('size', 0))
+        e_result = ''
+    except Exception:
+        size = 0
+        e_result = traceback.format_exc()
+    if size != 0:
+        # 设置 spider 协程池数量
+        logger.info('[设置 Spider 协程数][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
+        mioji.common.pool.pool.set_size(size)
+        logger.info('[设置协程数完成][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
+        return str('协程数设置成功')
+    else:
+        return str('协程数设置失败, 失败信息：{0}'.format(e_result))
+
+
 def request(params):
     task = Task()
     task.source = 'source_100'
@@ -381,10 +399,10 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             greents_num = 30
-            mioji.common.spider.pool = gevent.pool.Pool(128)
+            mioji.common.pool.pool.set_size(128)
             mioji.common.spider.need_compress = False
         else:
-            mioji.common.spider.pool = gevent.pool.Pool(2048)
+            mioji.common.pool.pool.set_size(2048)
             mioji.common.spider.need_compress = True
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
@@ -411,5 +429,6 @@ if __name__ == "__main__":
     slave.info.name = config.get("slave", "name")
     slave.register("/rtquery", request)
     slave.register("/restart_process", restart_process)
+    slave.register("/spider_pool_size", spider_pool_size)
     info = slave.info
     slave.run()
