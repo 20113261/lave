@@ -15,10 +15,12 @@ spider_factory.config_spider(insert_db, get_proxy, debug)
 
 
 def entry_test(task):
-    spider = factory.get_spider_by_old_source(task.source)
+    spider = factory.get_spider_by_old_task(task)
     if spider is None:
-        return None
-    spider.task = task
+        spider = factory.get_spider_by_old_source(task.source)
+        if spider is None:
+            return None
+        spider.task = task
     return spider
 
 

@@ -384,7 +384,7 @@ if __name__ == "__main__":
             mioji.common.spider.pool = gevent.pool.Pool(128)
             mioji.common.spider.need_compress = False
         else:
-            mioji.common.spider.pool = gevent.pool.Pool(1024)
+            mioji.common.spider.pool = gevent.pool.Pool(2048)
             mioji.common.spider.need_compress = True
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
