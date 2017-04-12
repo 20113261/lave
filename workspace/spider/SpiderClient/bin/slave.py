@@ -257,7 +257,7 @@ def restart_process(params):  # receve 重启命令
 
 def spider_pool_size(params):
     try:
-        size = int(params.get('size', 0))
+        size = int(params.get('size'))
         e_result = ''
     except Exception:
         size = 0
@@ -267,9 +267,11 @@ def spider_pool_size(params):
         logger.info('[设置 Spider 协程数][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
         mioji.common.pool.pool.set_size(size)
         logger.info('[设置协程数完成][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
-        return str('协程数设置成功')
+        return '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' \
+               '协程数设置成功'
     else:
-        return str('协程数设置失败, 失败信息：{0}'.format(e_result))
+        return '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' \
+               '协程数设置失败, 失败信息：{0}'.format(e_result)
 
 
 def request(params):
