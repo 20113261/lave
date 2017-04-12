@@ -33,8 +33,8 @@ def InsertNewFlight(args):
           '%s, %s, %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
     routing_key = 'flight'
-    # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
-    q_list = ['dflight_dev']
+    q_list = ['dflight_dev', 'dflight_ol', 'sflight']
+    # q_list = ['dflight_dev']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
@@ -88,7 +88,7 @@ def InsertMultiFlight(args):
 
     routing_key = 'interline'
     # q_list = ['dflight_dev', 'dflight_ol', 'sflight']
-    q_list = ['dinterline_dev']
+    q_list = ['dinterline_dev', 'dinterline_ol']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
@@ -137,7 +137,7 @@ def InsertRoundFlight(args):
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
     routing_key = 'round'
-    q_list = ['dround_dev']
+    q_list = ['dround_dev', 'dround_ol']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
@@ -172,7 +172,7 @@ def InsertRoundFlight2(args):
           '%s, %s,  %s, %s, %s, %s, %s, %s)'
 
     routing_key = 'round'
-    q_list = ['dround_dev']
+    q_list = ['dround_dev', 'dround_ol']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
@@ -309,7 +309,7 @@ def InsertNewTrain(args):
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
     routing_key = 'train'
-    q_list = ['dtrain_dev']
+    q_list = ['dtrain_dev', 'dtrain_ol', 'strain']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
@@ -405,7 +405,7 @@ def InsertBus(args):
           ') VALUES (%s,%s,%s,%s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s)'
 
     routing_key = 'bus'
-    q_list = ['dbus_dev']
+    q_list = ['dbus_dev', 'dbus_ol', 'sbus']
     insert_rabbitmq_ok = False
     insert_db_ok = False
     try:
