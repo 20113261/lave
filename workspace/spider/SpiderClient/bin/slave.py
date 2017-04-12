@@ -262,16 +262,21 @@ def spider_pool_size(params):
     except Exception:
         size = 0
         e_result = traceback.format_exc()
+
+    result = {
+        'error': e_result
+    }
     if size != 0:
         # 设置 spider 协程池数量
         logger.info('[设置 Spider 协程数][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
         mioji.common.pool.pool.set_size(size)
         logger.info('[设置协程数完成][当前值 {0}][期望值 {1}]'.format(mioji.common.pool.pool.size, size))
-        return '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' \
-               '协程数设置成功'
+        result['status'] = 'OK'
     else:
-        return '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' \
-               '协程数设置失败, 失败信息：{0}'.format(e_result)
+        result['status'] = 'Error'
+
+    result['pool_size'] = mioji.common.pool.pool.size
+    return json.dumps(result)
 
 
 def request(params):
