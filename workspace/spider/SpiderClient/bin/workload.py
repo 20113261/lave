@@ -25,7 +25,7 @@ from gevent.queue import Queue, Empty
 
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
-TASK_COUNT = 300
+TASK_COUNT = 600
 TaskQsize = 1000
 MaxQsize = 1000
 
