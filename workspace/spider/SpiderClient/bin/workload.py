@@ -166,7 +166,7 @@ class ControllerWorkload(WorkloadStorable):
 
             while (len_key > 0):
                 task_status = {"id": task.id, "content": task.content, "source": task.source,
-                               "workload_key": task.workload_key, "error": int(Error), 'proxy': proxy,
+                               "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                "timeslot": task.timeslot}
                 self.__tasks_status.append(task_status)
 
