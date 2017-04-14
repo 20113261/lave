@@ -407,10 +407,10 @@ if __name__ == "__main__":
         if 'ListHotel' in task_type:
             greents_num = 30
             mioji.common.pool.pool.set_size(128)
-            mioji.common.spider.need_compress = False
-        else:
-            mioji.common.pool.pool.set_size(2048)
             mioji.common.spider.need_compress = True
+        else:
+            mioji.common.pool.pool.set_size(4096)
+            mioji.common.spider.need_compress = False
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
