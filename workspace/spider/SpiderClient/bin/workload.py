@@ -125,6 +125,7 @@ class ControllerWorkload(WorkloadStorable):
             result = {"err_code": Error, "data": proxy}
             rds.setex(task.redis_key, json.dumps(result), 600)
         except Exception, e:
+            logger.info('writer redis fail. result:{0}'.fromat(proxy))
             logger.info('writer redis fail.' + str(task.redis_key) + '\t'
                         + task.redis_host + '\t' + str(task.redis_port)
                         + '\t' + str(task.redis_db) + '\t' + str(task.redis_passwd) + '\t' + str(e))
