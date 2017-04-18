@@ -1,6 +1,8 @@
 #!/usr/bin/env python
+# coding=utf-8
 import pika
 import json
+from logger import logger
 
 # test
 # HOST = '10.10.213.148'
@@ -15,6 +17,7 @@ PASSWD = 'master'
 
 
 def insert_rabbitmq(args, queue_list, routing_key):
+    logger.debug('[rabbitmq 入库开始]')
     try:
         credentials = pika.PlainCredentials(username=USER, password=PASSWD)
         connection = pika.BlockingConnection(
@@ -40,6 +43,7 @@ def insert_rabbitmq(args, queue_list, routing_key):
         connection.close()
         if not res:
             raise Exception('RabbitMQ Result False')
+        logger.debug('[rabbitmq 入库结束]')
     except Exception as exc:
         raise exc
 
