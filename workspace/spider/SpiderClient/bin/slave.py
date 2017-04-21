@@ -226,7 +226,7 @@ def work(task):
 
     if error:
         info.error_task_num += 1
-    logger.info("[爬虫反馈 code: %s] task: %s", error, task)
+    logger.info("[爬虫反馈 code: %s][source: %s] task: %s", error, task.source, task)
     workload.complete_workload(task, error, proxy_or_ticket)
     return
 
@@ -405,9 +405,8 @@ if __name__ == "__main__":
         task_type = data_type.get(host, 'NULL')
 
         if 'ListHotel' in task_type:
-            greents_num = 60
-            mioji.common.pool.pool.set_size(3072)
-            mioji.common.spider.need_compress = True
+            mioji.common.pool.pool.set_size(2048)
+            mioji.common.spider.need_compress = False
         else:
             mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_compress = False
