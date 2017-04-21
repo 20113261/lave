@@ -25,7 +25,7 @@ from gevent.queue import Queue, Empty
 
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
-TASK_COUNT = 450
+TASK_COUNT = 600
 TaskQsize = 1000
 MaxQsize = 1000
 
@@ -76,7 +76,7 @@ class ControllerWorkload(WorkloadStorable):
         url = "/workload?forbid=" + self.__forbide_section_str + \
               "&count=" + str(need_task)
         result = self.__client.get(url)
-        if result == None or result == []:
+        if result is None or result == []:
             return False
 
         # result = '[{"priority": 0, "update_time": "NULL", "task_data":"", "success_times": 0,\
