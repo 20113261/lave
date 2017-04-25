@@ -125,7 +125,7 @@ class ControllerWorkload(WorkloadStorable):
             result = {"err_code": Error, "data": proxy}
             rds.setex(task.redis_key, json.dumps(result), 600)
         except Exception, e:
-            logger.info('writer redis fail. result:{0}'.fromat(proxy))
+            logger.info('writer redis fail. result:{0}'.format(proxy))
             logger.info('writer redis fail.' + str(task.redis_key) + '\t'
                         + task.redis_host + '\t' + str(task.redis_port)
                         + '\t' + str(task.redis_db) + '\t' + str(task.redis_passwd) + '\t' + str(e))
@@ -148,10 +148,17 @@ class ControllerWorkload(WorkloadStorable):
 
                 query = {"other_info": task.other_info}
                 try:
-                    logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(task, proxy, Error))
+                    try:
+                        logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(task, proxy, Error))
+                    except Exception:
+                        try:
+                            logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(
+                                str(task).decode('gbk').encode('utf8'), proxy, Error))
+                        except Exception:
+                            pass
                     self.write_redis_ticket(task, proxy, Error)
                 except Exception, e:
-                    logger.info('not redis con' + str(e))
+                    logger.exception('not redis con' + str(e))
 
                 url = 'http://' + task.host + '/?type=' + task.callback_type + '&qid=' + \
                       task.req_qid + '&uid=' + task.req_uid + \
@@ -174,7 +181,7 @@ class ControllerWorkload(WorkloadStorable):
                 len_key -= 1
 
         except Exception, e:
-            logger.info("complete a task fail. error = " + str(e))
+            logger.exception("complete a task fail. error = " + str(e))
 
         return True
 

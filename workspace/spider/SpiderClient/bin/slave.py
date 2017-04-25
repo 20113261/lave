@@ -138,10 +138,6 @@ def work(task):
         error = PARSER_ERROR
         workload.complete_workload(task, error, proxy_or_ticket)
         return error
-    try:
-        logger.info('[Start MiojiOPObserver,qid=' + task.req_qid_md5 + ']')
-    except:
-        pass
 
     info.process_task_num += 1
     # 新框架获取爬虫
@@ -171,12 +167,6 @@ def work(task):
             error_info = str(traceback.format_exc().split('\n'))
             error = WORK_ERROR
             workload.complete_workload(task, error, proxy_or_ticket)
-
-            try:
-                logger.error("[Stop MiojiOPObserver,qid=" + task.req_qid_md5 +
-                             "][create instance failed: task_data:%s] [traceback:%s]" % (task_data, error_info))
-            except:
-                pass
             return
 
         try:
@@ -216,13 +206,6 @@ def work(task):
                          task.task_data, str(e), error_info)
             error = SLAVE_ERROR
         logger.info("[新框架 爬虫结束] source: %s     content: %s    code: %s", task.source, task.content, error)
-
-    try:
-        logger.info('[Stop MiojiOPObserver,qid=' + task.req_qid_md5 + ']')
-    except:
-        pass
-
-    # gc.collect()
 
     if error:
         info.error_task_num += 1
