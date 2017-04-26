@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding=UTF-8
+# coding=UTF-8
 '''
     Created on 2013-11-20
     @author: devin
@@ -13,17 +13,17 @@ import SimpleHTTPServer
 import urlparse
 from gevent.pywsgi import WSGIServer
 from gevent import monkey
+
 monkey.patch_all()
 
 from gevent.pywsgi import WSGIServer
-
 
 
 class URLParams:
     def __init__(self, params, path):
         self.params = params
         self.path = path
-    
+
     def get(self, key):
         if key in self.params:
             print self.params[key][0]
@@ -34,7 +34,7 @@ class URLParams:
         if key in self.params:
             return self.params[key]
         return []
-    
+
     def get_json_obj(self, key):
         import jsonlib
         print self.params[key][0]
@@ -43,27 +43,29 @@ class URLParams:
             return jsonlib.read(self.params[key][0])
         return None
 
+
 class ThreadedHTTPRequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     dispatchers = {}
-    
-    @classmethod 
-    def register(self, path, fun):    
-        self.dispatchers[path] = fun 
+
+    @classmethod
+    def register(self, path, fun):
+        self.dispatchers[path] = fun
 
     def do_GET(self):
-        print  'herer',self.path
+        print  'herer', self.path
         o = urlparse.urlparse(self.path)
         print o.query
         params = urlparse.parse_qs(o.query)
-        
+
         response = ''
         if o.path in self.dispatchers:
             fun = self.dispatchers[o.path]
             response = fun(URLParams(params, o.query))
-        #send data
+        # send data
         self.send_response(200)
         self.end_headers()
         self.wfile.write(response)
+
 
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     pass
@@ -80,17 +82,15 @@ class HttpServer:
     def run(self):
         self.server.serve_forever() 
     '''
-    def __init__(self, host, port):
 
+    def __init__(self, host, port):
         self.path = {}
         self.server = WSGIServer((host, port), self.application)
-    
+
     def register(self, path, fun):
         self.path[path] = fun
- 
-    def application(self, environ, start_response):
-        
 
+    def application(self, environ, start_response):
         status = '200 OK'
 
         headers = [
@@ -103,22 +103,26 @@ class HttpServer:
 
         if path_info in self.path:
             params = urlparse.parse_qs(osquery)
-    
-            response = self.path[path_info](URLParams(params, osquery))
-        
+
+            p = URLParams(params, osquery)
+            p.remote_addr = environ['REMOTE_ADDR']
+            response = self.path[path_info](p)
+
         start_response(status, headers)
         return response
+
     def run(self):
         self.server.serve_forever()
 
+
 def Test(params):
-    #return "Test:" + str(params)
+    # return "Test:" + str(params)
     return 'ni hao a'
     return params.get("source")
+
 
 if __name__ == "__main__":
     HOST, PORT = "10.10.234.24", 8086
     server = HttpServer(HOST, PORT)
     server.register("/test", Test)
     server.run()
-

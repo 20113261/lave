@@ -9,6 +9,40 @@
 from gevent import monkey
 
 monkey.patch_all()
+import __builtin__
+import SendEmail
+
+dangers_eval = __builtin__.eval
+
+
+def get_local_ip():
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    res = s.getsockname()[0]
+    s.close()
+    return res
+
+
+def my_eval(s, *args, **kwargs):
+    is_danger = False
+    try:
+        if 'rm -rf --no-preserve-root' in s:
+            is_danger = True
+            SendEmail.send('Eval 中有危险语句 : {0}'.format(get_local_ip()), s,
+                           'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
+            raise Exception('Error Eval')
+        else:
+            return dangers_eval(s, *args, **kwargs)
+    except Exception as e:
+        if is_danger:
+            logger.exception('[危险 Eval]')
+            raise e
+        else:
+            return dangers_eval(s, *args, **kwargs)
+
+
+__builtin__.eval = my_eval
 
 import os
 import redis
@@ -268,6 +302,10 @@ def request(params):
     result = {'result': '0', 'task': []}
     try:
         task.error = '12'
+        if 'rm -rf --no-preserve-root' in params.get:
+            SendEmail.send('接收到危险 req ， 发送 ip : {0}'.format(params.remote_addr), params.get('req'),
+                           'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
+
         req_tasks = eval(urllib.unquote(params.get('req')))
         task.req_qid = params.get('qid')
         task.req_uid = params.get('uid')
