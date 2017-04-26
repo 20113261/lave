@@ -18,13 +18,9 @@ def send(title, mail_info, mail_list):
             urllib2.quote(mail_list), mail_info, title)
         req_obj = requests.post(request_url)
         print req_obj.text
+        return True
     except Exception, e:
         sys.stderr.write('Error code:%s\n' % e.message)
-        return False
-
-    if return_map['error_id'] == 0:
-        return True
-    else:
         return False
 
 
