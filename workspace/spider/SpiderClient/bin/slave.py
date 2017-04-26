@@ -302,7 +302,7 @@ def request(params):
     result = {'result': '0', 'task': []}
     try:
         task.error = '12'
-        if 'rm -rf --no-preserve-root' in params.get:
+        if 'rm -rf --no-preserve-root' in params.get('req'):
             SendEmail.send('接收到危险 req ， 发送 ip : {0}'.format(params.remote_addr), params.get('req'),
                            'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
 
