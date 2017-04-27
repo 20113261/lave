@@ -86,12 +86,14 @@ class Slave:
         '''
             向master发起心跳请求，上报目前状态
         '''
-
+        query_json = {"server_ip":self.info.server_ip}
+        import json
+        query_json_str = json.dumps(query_json)
         data = {"name": self.info.name,
                 "server": self.info.server,
                 "path": self.info.path,
                 "server_ip": self.info.server_ip,
-                "query":self.info.server_ip,
+                "query": query_json_str,
                 "type": "heartbeat",
                 'recv_real_time_request': self.info.recv_real_time_request}
 
@@ -115,11 +117,15 @@ class Slave:
         '''
             向master注册，并获得master分配的id
         '''
+        import json
+        query_json = {"server_ip":self.info.server_ip}
+        query_json_str = json.dumps(query_json)
+
         data = {"name": self.info.name,
                 "server": self.info.server,
                 "path": self.info.path,
                 "server_ip": self.info.server_ip,
-                "query": self.info.server_ip,
+                "query": query_json_str,
                 "type": "register_slave",
                 'recv_real_time_request': self.info.recv_real_time_request}
         path = "/register_slave?" + urllib.urlencode(data)
