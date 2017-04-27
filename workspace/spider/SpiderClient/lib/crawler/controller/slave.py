@@ -97,6 +97,14 @@ class Slave:
 
     	path = "/heartbeat?" + urllib.urlencode(data)
         try:
+            ###test for router
+            try:
+                router_test_host = '10.10.244.26:48068'
+                http_client.HttpClient(router_test_host).get(path)
+            except Exception,e:
+                print 'heartbeat for eouter test fail'
+            #test for router done
+
             http_client.HttpClient(self.__master_host).get(path)
         except Exception,e:
             import traceback
@@ -116,6 +124,14 @@ class Slave:
                 'recv_real_time_request': self.info.recv_real_time_request}
         path = "/register_slave?" + urllib.urlencode(data)
         try:
+            #router test
+            try:
+                router_test_host = '10.10.244.26:48068'
+                http_client.HttpClient(router_test_host).get(path)
+            except Exception,e:
+                print 'regist for eouter test fail'''
+
+
             id = self.__client.get(path).strip()
             id = id.strip('\0')
             if len(id) == 0 or not id.isdigit():
