@@ -44,7 +44,7 @@ class Slave:
         # 互斥信号量
         self.__sem = threading.Semaphore()
         self.__workers = workers
-    
+
     def run(self):
         '''
             启动slave
@@ -54,25 +54,25 @@ class Slave:
             self.register("/modify_thread_num", self.modify_thread_num)
         except:
             pass
-    
+
         # register to master
         try:
             if not self.register_in_master():
                 logger.error("Can't register to master.")
         except:
             pass
-    
+
         # start the timer
-    
+
         self.__timer.start()
-    
+
         # start the workers
         self.__workers.start()
-        
+
         # start the server
 #        if self.info.recv_real_time_request
         self.__server.run()
-    
+
     def register(self, path, func):
         '''
             注册http服务
@@ -86,39 +86,69 @@ class Slave:
         '''
             向master发起心跳请求，上报目前状态
         '''
-	
+        query_json = {"server_ip":self.info.server_ip}
+        import json
+        query_json_str = json.dumps(query_json)
         data = {"name": self.info.name,
                 "server": self.info.server,
                 "path": self.info.path,
                 "server_ip": self.info.server_ip,
-                "type": self.info.type,
+                "query": query_json_str,
+                "type": "heartbeat",
                 'recv_real_time_request': self.info.recv_real_time_request}
 
     	path = "/heartbeat?" + urllib.urlencode(data)
-        #try:
-        http_client.HttpClient(self.__master_host).get(path)
-        #except Exception,e:
-         #   import traceback
-          #  error_info = str(traceback.format_exc().split('\n'))
-           # print 'heartbeat_error:' + error_info
-    
+        try:
+            ###test for router
+            try:
+                router_test_host = '10.10.244.26:48068'
+                http_client.HttpClient(router_test_host).get(path)
+            except Exception,e:
+                print 'heartbeat for eouter test fail'
+            #test for router done
+
+            http_client.HttpClient(self.__master_host).get(path)
+        except Exception,e:
+            import traceback
+            error_info = str(traceback.format_exc().split('\n'))
+            print 'heartbeat_error:' + error_info
+
     def register_in_master(self):
         '''
             向master注册，并获得master分配的id
         '''
+        import json
+        query_json = {"server_ip":self.info.server_ip}
+        query_json_str = json.dumps(query_json)
+
         data = {"name": self.info.name,
                 "server": self.info.server,
                 "path": self.info.path,
                 "server_ip": self.info.server_ip,
-                "type": self.info.type,
+                "query": query_json_str,
+                "type": "register_slave",
                 'recv_real_time_request': self.info.recv_real_time_request}
         path = "/register_slave?" + urllib.urlencode(data)
-        id = self.__client.get(path).strip()
-        id = id.strip('\0')
-        if len(id) == 0 or not id.isdigit():
-            return False
-        self.info.id = int(id)
-        logger.info("slave register id is : %d" % self.info.id)
+        try:
+            #router test
+            try:
+                router_test_host = '10.10.244.26:48068'
+                http_client.HttpClient(router_test_host).get(path)
+            except Exception,e:
+                print 'regist for eouter test fail'''
+
+
+            id = self.__client.get(path).strip()
+            id = id.strip('\0')
+            if len(id) == 0 or not id.isdigit():
+                return False
+            self.info.id = int(id)
+            logger.info("slave register id is : %d" % self.info.id)
+        except Exception,e:
+            import traceback
+            error_info = str(traceback.format_exc().split('\n'))
+            print 'register_slave:' + error_info
+
         return True
 
     def modify_thread_num(self, params):
@@ -130,5 +160,5 @@ class Slave:
             return False
         thread_num = int(thread_num)
         self.__workers.set_thread_num(thread_num)
-        
+
         return True

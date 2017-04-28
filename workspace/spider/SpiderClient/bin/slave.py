@@ -233,11 +233,10 @@ def work(task):
         except ParserException as e:
             error_info = e.msg
             error = e.code
-            logger.info('[新框架 爬虫抛出异常: error:%s], msg: %s [traceback: %s]', error, error_info, traceback.format_exc())
+            logger.exception('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
         except Exception, e:
-            error_info = str(traceback.format_exc().split('\n'))
-            logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s][traceback:%s]",
-                         task.task_data, str(e), error_info)
+            logger.exception("[新框架 爬虫抛出异常: task_data:%s  error:%s]",
+                         task.task_data, str(e))
             error = SLAVE_ERROR
         logger.info("[新框架 爬虫结束] source: %s     content: %s    code: %s", task.source, task.content, error)
 
