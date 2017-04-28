@@ -2,6 +2,7 @@
 # coding=utf-8
 import pika
 import json
+import logging
 from logger import logger
 
 # test
@@ -9,6 +10,8 @@ from logger import logger
 # USER = 'hourong'
 # PASSWD = '1220'
 
+logging.getLogger("pika").setLevel(logging.WARNING)
+logging.getLogger("pika").propagate = False
 
 # online
 HOST = '10.10.38.166'
