@@ -11,6 +11,8 @@ from gevent import monkey
 monkey.patch_all()
 import __builtin__
 import SendEmail
+from math import *
+
 
 dangers_eval = __builtin__.eval
 
