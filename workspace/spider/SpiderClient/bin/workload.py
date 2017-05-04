@@ -149,11 +149,11 @@ class ControllerWorkload(WorkloadStorable):
                 query = {"other_info": task.other_info}
                 try:
                     try:
-                        logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(task, proxy, Error))
+                        logger.info("[error_code 信息入库 redis error:%s, task:%s]".format(Error, task))
                     except Exception:
                         try:
-                            logger.info("[error_code 信息入库 redis error:{2} task:{0} proxy:{1}]".format(
-                                str(task).decode('gbk').encode('utf8'), proxy, Error))
+                            logger.info("[error_code 信息入库 redis error:%s task:%s ]".format(Error,
+                                str(task).decode('gbk').encode('utf8')))
                         except Exception:
                             pass
                     self.write_redis_ticket(task, proxy, Error)
