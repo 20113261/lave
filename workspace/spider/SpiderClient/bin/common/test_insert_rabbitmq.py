@@ -16,7 +16,7 @@ import pika
 import json
 import logging
 import functools
-from logger import logger
+from mioji.common.spider import logger
 
 # test
 HOST = '10.10.213.148'

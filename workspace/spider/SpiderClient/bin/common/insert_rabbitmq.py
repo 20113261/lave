@@ -6,7 +6,7 @@ gevent.monkey.patch_all()
 import pika
 import json
 import logging
-from logger import logger
+from mioji.common.logger import logger
 
 # test
 # HOST = '10.10.213.148'
