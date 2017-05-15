@@ -56,5 +56,5 @@ def insert_rabbitmq(args, queue_list, routing_key):
 
 if __name__ == '__main__':
     a = [(1, 2, 3), (2, 3, 4)]
-    q_list = ['dround_dev', 'dround_ol', 'sround']
+    q_list = ['dround_dev', 'dround_ol']
     insert_rabbitmq(args=a, queue_list=q_list, routing_key='round')
