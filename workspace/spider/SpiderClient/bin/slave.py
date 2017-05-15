@@ -169,18 +169,18 @@ def work(task):
     error = 0
     proxy_or_ticket = 'NULL'
 
-    if task.source not in parsers:
-        logger.error("no parser for the task: %s" % task.task_data)
-        error = PARSER_ERROR
-        workload.complete_workload(task, error, proxy_or_ticket)
-        return error
-
     info.process_task_num += 1
     # 新框架获取爬虫
     parser = entry_test(task)
     if not parser:
-        task_data = task.task_data
-        parser = parsers[task.source]
+        if task.source not in parsers:
+            logger.error("no parser for the task: %s" % task.task_data)
+            error = PARSER_ERROR
+            workload.complete_workload(task, error, proxy_or_ticket)
+            return error
+            task_data = task.task_data
+            parser = parsers[task.source]
+            
         try:
             abspath = os.path.abspath(os.getcwd())
             dirname = os.path.dirname(abspath)
