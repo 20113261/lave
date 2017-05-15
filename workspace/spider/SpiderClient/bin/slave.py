@@ -428,10 +428,10 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             mioji.common.pool.pool.set_size(2048)
-            mioji.common.spider.need_compress = True
+            mioji.common.spider.need_write_file = True
         else:
             mioji.common.pool.pool.set_size(4096)
-            mioji.common.spider.need_compress = False
+            mioji.common.spider.need_write_file = False
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
