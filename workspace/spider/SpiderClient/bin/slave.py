@@ -13,7 +13,6 @@ import __builtin__
 import SendEmail
 from math import *
 
-
 dangers_eval = __builtin__.eval
 
 
@@ -180,7 +179,7 @@ def work(task):
             return error
             task_data = task.task_data
             parser = parsers[task.source]
-            
+
         try:
             abspath = os.path.abspath(os.getcwd())
             dirname = os.path.dirname(abspath)
@@ -225,12 +224,13 @@ def work(task):
         try:
             error = parser.crawl()
             proxy_or_ticket = []
+            if is_recv_real_time_request:
+                for per_data_type in parser.crawl_targets_required:
+                    proxy_or_ticket.extend(parser.result[per_data_type])
+
             if error is 0:
-                # 返回0错误码且实时验证的时候返回机票
-                if is_recv_real_time_request:
-                    for per_data_type in parser.crawl_targets_required:
-                        proxy_or_ticket.extend(parser.result[per_data_type])
-                else:
+                # 返回0错误码的时候保存机票
+                if not is_recv_real_time_request:
                     parser.store()
         except ParserException as e:
             error_info = e.msg
@@ -238,7 +238,7 @@ def work(task):
             logger.exception('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
         except Exception, e:
             logger.exception("[新框架 爬虫抛出异常: task_data:%s  error:%s]",
-                         task.task_data, str(e))
+                             task.task_data, str(e))
             error = SLAVE_ERROR
         logger.info("[新框架 爬虫结束] source: %s     content: %s    code: %s", task.source, task.content, error)
 
