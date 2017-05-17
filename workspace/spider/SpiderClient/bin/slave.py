@@ -55,8 +55,6 @@ from crawler.worker import Workers
 from workload import ControllerWorkload
 from common.task import Task
 from common.logger import logger
-from common.common import set_proxy_client
-from common.common import frame_ip
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
@@ -68,7 +66,6 @@ import traceback
 import sys
 import new
 import gevent.pool
-from spider_adapter import *
 from mioji.common.parser_except import ParserException
 
 SINGLE_REQUEST_TIMEOUT = 15
@@ -86,65 +83,42 @@ def getLocalIp(ifname='eth0'):
     import struct
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
-
     ret = socket.inet_ntoa(inet[20:24])
-
     return ret
 
-
-_uc_host = '123.59.70.19'
-_uc_user = 'writer'
-_uc_pswd = 'miaoji1109'
-_uc_db = 'crawl'
-
-_uc_redis_host = '120.132.95.246'
-_uc_redis_port = 6379
-
-try:
-    cand_local_ip = getLocalIp()
-
-    # verify server, use validation DB
-    if cand_local_ip not in frame_ip:
-        _uc_db = 'validation'
-
-    # UC machine,use inner ip
-    if cand_local_ip.startswith('10.10.'):
-        _uc_host = '10.10.154.38'
-        _uc_redis_host = '10.10.24.130'
-
-except Exception, e:
-    logger.error("update uc_db fail. err " + str(e))
-
-uc_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
-                      host=_uc_host, port=3306, user=_uc_user, passwd=_uc_pswd,
-                      db=_uc_db, charset='utf8', use_unicode=False)
-
-uc_redis_pool = redis.ConnectionPool()
+mysql_db_pool = None
 
 
-def UCRedisConnection(db=0, redis_host=_uc_redis_host, redis_port=_uc_redis_port):
-    r = redis.Redis(host=redis_host, port=redis_port,
-                    db=db, connection_pool=uc_redis_pool)
-    return r
-
-
-def setRedisConf(host, port):
-    global _uc_redis_host
-    _uc_redis_host = host
-
-    global _uc_redis_port
-    _uc_redis_port = port
+def init_mysql_connections(host='123.59.70.19', user='writer', passwd='miaoji1109', db='crawl'):
+    # try:
+    #     cand_local_ip = getLocalIp()
+    #
+    #     # verify server, use validation DB
+    #     if cand_local_ip not in frame_ip:
+    #         _uc_db = 'validation'
+    #
+    #     # UC machine,use inner ip
+    #     if cand_local_ip.startswith('10.10.'):
+    #         _uc_host = '10.10.154.38'
+    #
+    # except Exception, e:
+    #     logger.error("update uc_db fail. err " + str(e))
+    global mysql_db_pool
+    mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
+                          host=host, port=3306, user=user, passwd=passwd,
+                          db=db, charset='utf8', use_unicode=False)
 
 
 def UCConnection():
-    conn = uc_db_pool.connection()
+    global mysql_db_pool
+    if mysql_db_pool is None:
+        init_mysql_connections()
+    conn = mysql_db_pool.connection()
     return conn
 
 
 def load_parsers(config):
     parsers = {}
-    import os
-    import sys
 
     sections = config.sections()
     sections.remove('slave')
@@ -174,13 +148,11 @@ def work(task):
     parser = entry_test(task)
     if not parser:
         if task.source not in parsers:
-            logger.error("no parser for the task: %s" % task.task_data)
+            logger.error("no parser for the task: %s", task.task_data)
             error = PARSER_ERROR
             workload.complete_workload(task, error, proxy_or_ticket)
             return error
-            task_data = task.task_data
-            parser = parsers[task.source]
-            
+
         try:
             abspath = os.path.abspath(os.getcwd())
             dirname = os.path.dirname(abspath)
@@ -359,10 +331,10 @@ def request(params):
     return json.dumps(result)
 
 
-def getForbideSectionName():
+def getForbideSectionName(host, user, passwd):
     forbide_section_str = ''
-    conn = MySQLdb.connect(host=_uc_host, user='reader',
-                           charset='utf8', passwd='miaoji1109', db='onlinedb')
+    conn = MySQLdb.connect(host=host, user=user,
+                           charset='utf8', passwd=passwd, db='onlinedb')
     cursor = conn.cursor()
 
     sql = "select sectionName from parserSource2Module where forbide='1'"
@@ -387,23 +359,19 @@ if __name__ == "__main__":
     if len(sys.argv) < 3:
         print "Usage: %s config_file_path" % sys.argv[0]
         sys.exit()
+    os.environ["CONFIG_FILE"] = sys.argv[2]
 
-    # 读取配置文件
-    import ConfigParser
+    from common.conf_manage import ConfigHelper
 
-    config = ConfigParser.ConfigParser()
-    config.read(sys.argv[2])
-
-    # set proxy client
+    config_helper = ConfigHelper(sys.argv[2])
+    '''# set proxy client
     proxy_client = http_client.HttpClientPool(
         config.get("proxy", "host"), maxsize=20)
-    set_proxy_client(proxy_client)
+
+    set_proxy_client(proxy_client)  # 改common'''
+    from spider_adapter import *
+
     reload_and_config()
-
-    redis_host = config.get("redis", "host")
-    redis_port = config.getint("redis", "port")
-
-    setRedisConf(redis_host, redis_port)
 
     try:
         host = getLocalIp()
@@ -411,18 +379,21 @@ if __name__ == "__main__":
         logger.error('call getLocalIp fail. error = ' + str(e))
         sys.exit(1)
 
-    is_recv_real_time_request = config.getint(
-        "slave", "recv_real_time_request")
+    is_recv_real_time_request = config_helper.is_recv_real_time_request
 
     try:
-        forbide_section_str = str(getForbideSectionName())
+        host = config_helper.mysql_host
+        user = config_helper.mysql_user
+        passwd = config_helper.mysql_passwd
+
+        forbide_section_str = str(getForbideSectionName(host, user, passwd))
     except Exception, e:
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
     # 例行抓取
     greents_num = 100  # 每个线程协程数默认为100
     if 0 == is_recv_real_time_request:
-        data_type = dict(config.items('data_type'))
+        data_type = config_helper.data_type
         forbide_section_str += '&data_type=' + data_type.get(host)
         task_type = data_type.get(host, 'NULL')
 
@@ -436,16 +407,16 @@ if __name__ == "__main__":
     logger.info('foorbide sectionName : ' + forbide_section_str)
 
     port = int(sys.argv[1])
-    master_host = config.get("master", "host")
+    master_host = config_helper.master_host
 
-    sources = getallSource(config)
+    sources = getallSource(config_helper.config)
 
     workload = ControllerWorkload(
         master_host, sources, forbide_section_str, recv_real_time_request=is_recv_real_time_request)
 
-    parsers = load_parsers(config)
+    parsers = load_parsers(config_helper.config)
 
-    workers = Workers(workload, work, config.getint("slave", "thread_num"),
+    workers = Workers(workload, work, config_helper.thread_num,
                       greents_num=greents_num, recv_real_time_request=is_recv_real_time_request)
 
     if host in mt_ip_dict:
@@ -454,7 +425,7 @@ if __name__ == "__main__":
     slave = Slave(host, port, master_host, workers,
                   recv_real_time_request=is_recv_real_time_request)
 
-    slave.info.name = config.get("slave", "name")
+    slave.info.name = 'random_client'
     slave.register("/rtquery", request)
     slave.register("/restart_process", restart_process)
     slave.register("/spider_pool_size", spider_pool_size)

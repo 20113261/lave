@@ -10,10 +10,13 @@ import jsonlib
 import time
 from util import http_client
 from logger import logger
+from conf_manage import ConfigHelper
+
+config_helper = ConfigHelper()
 
 proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 #proxy_client2 = http_client.HttpClientPool("10.136.11.134:8087")
-proxy_client2 = http_client.HttpClientPool("10.10.239.46:8087")
+proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
 
 def getLocalIp(ifname = 'eth0'):
     import socket, fcntl, struct
