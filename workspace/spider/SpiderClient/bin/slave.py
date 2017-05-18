@@ -390,6 +390,8 @@ if __name__ == "__main__":
     except Exception, e:
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
+
+    init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
     # 例行抓取
     greents_num = 100  # 每个线程协程数默认为100
     if 0 == is_recv_real_time_request:
