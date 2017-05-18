@@ -13,7 +13,6 @@ import __builtin__
 import SendEmail
 from math import *
 
-
 dangers_eval = __builtin__.eval
 
 
@@ -197,12 +196,13 @@ def work(task):
         try:
             error = parser.crawl()
             proxy_or_ticket = []
+            if is_recv_real_time_request:
+                for per_data_type in parser.crawl_targets_required:
+                    proxy_or_ticket.extend(parser.result[per_data_type])
+
             if error is 0:
-                # 返回0错误码且实时验证的时候返回机票
-                if is_recv_real_time_request:
-                    for per_data_type in parser.crawl_targets_required:
-                        proxy_or_ticket.extend(parser.result[per_data_type])
-                else:
+                # 返回0错误码的时候保存机票
+                if not is_recv_real_time_request:
                     parser.store()
         except ParserException as e:
             error_info = e.msg
@@ -210,7 +210,7 @@ def work(task):
             logger.exception('[新框架 爬虫抛出异常: error:%s], msg: %s', error, error_info)
         except Exception, e:
             logger.exception("[新框架 爬虫抛出异常: task_data:%s  error:%s]",
-                         task.task_data, str(e))
+                             task.task_data, str(e))
             error = SLAVE_ERROR
         logger.info("[新框架 爬虫结束] source: %s     content: %s    code: %s", task.source, task.content, error)
 
@@ -399,10 +399,10 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             mioji.common.pool.pool.set_size(2048)
-            mioji.common.spider.need_compress = True
+            mioji.common.spider.need_write_file = True
         else:
             mioji.common.pool.pool.set_size(4096)
-            mioji.common.spider.need_compress = False
+            mioji.common.spider.need_write_file = False
 
     logger.info('foorbide sectionName : ' + forbide_section_str)
 

@@ -37,9 +37,11 @@ def insert_rabbitmq(args, queue_list, routing_key):
                                  # exchange_type='fanout',
                                  durable=True,
                                  auto_delete=False)
-        for q in queue_list:
-            channel.queue_declare(queue=q, durable=True)
-            channel.queue_bind(queue=q, exchange='TrafficDataPush', routing_key=routing_key)
+
+        # 此部分代码会修改 exchange 以及定义 queue
+        # for q in queue_list:
+        #     channel.queue_declare(queue=q, durable=True)
+        #     channel.queue_bind(queue=q, exchange='TrafficDataPush', routing_key=routing_key)
 
         msg = json.dumps(args, ensure_ascii=False)
 
@@ -57,4 +59,5 @@ def insert_rabbitmq(args, queue_list, routing_key):
 if __name__ == '__main__':
     a = [(1, 2, 3), (2, 3, 4)]
     q_list = ['dround_dev', 'dround_ol']
-    insert_rabbitmq(args=a, queue_list=q_list, routing_key='round')
+    for i in range(100):
+        insert_rabbitmq(args=a, queue_list=q_list, routing_key='round')

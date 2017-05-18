@@ -8,6 +8,7 @@ import sys
 import db  # 222:crawl
 import json
 import pika
+import MySQLdb
 from logger import logger
 from insert_rabbitmq import insert_rabbitmq
 
