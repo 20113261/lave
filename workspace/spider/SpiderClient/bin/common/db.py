@@ -13,31 +13,12 @@ from MySQLdb.cursors import DictCursor
 import datetime
 from logger import logger
 
-# MySQL 连接信息
-#MYSQL_HOST = '10.136.54.159'
-#MYSQL_PORT = 3306
-#MYSQL_USER = 'crawl'
-#MYSQL_PWD = 'miaoji3202'
-#MYSQL_DB = 'crawl'
 
-'''
-def GetConnection():
-    #conn = MySQLdb.connect(host=MYSQL_HOST, user=MYSQL_USER, passwd=MYSQL_PWD, \
-                           #db=MYSQL_DB, charset="utf8")
-    #return conn
-    return Connection()
-'''
 
 def GetUCConnection():
     return UCConnection()
 
-'''
-def Connect():
-    conn = MySQLdb.connect(host=MYSQL_HOST, user=MYSQL_USER, passwd=MYSQL_PWD, \
-            db=MYSQL_DB, charset="utf8")
 
-    return conn
-'''
 
 
 def ExecuteSQL(sql, args = None):
@@ -46,13 +27,13 @@ def ExecuteSQL(sql, args = None):
     '''
     ret = 0
     try:
-        conn = GetConnection()
+        conn = GetUCConnection()
         cur = conn.cursor()
 
         ret = cur.execute(sql, args)
         conn.commit()
     except MySQLdb.Error, e:
-        logger.error("ExecuteSQL error: %s" %str(e))
+        logger.error("ExecuteSQL error: %s" % str(e))
         return False
     finally:
         pass

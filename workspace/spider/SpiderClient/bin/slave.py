@@ -88,7 +88,7 @@ def getLocalIp(ifname='eth0'):
 mysql_db_pool = None
 
 
-def init_mysql_connections(host='123.59.70.19', user='writer', passwd='miaoji1109', db='crawl'):
+def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji1109', db='crawl'):
     # try:
     #     cand_local_ip = getLocalIp()
     #
@@ -380,12 +380,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     is_recv_real_time_request = config_helper.is_recv_real_time_request
+    mysql_host = config_helper.mysql_host
+    mysql_user = config_helper.mysql_user
+    mysql_passwd = config_helper.mysql_passwd
 
     try:
-        mysql_host = config_helper.mysql_host
-        mysql_user = config_helper.mysql_user
-        mysql_passwd = config_helper.mysql_passwd
-
         forbide_section_str = str(getForbideSectionName(mysql_host, mysql_user, mysql_passwd))
     except Exception, e:
         logger.error('get forbide source fail.err = ' + str(e))
