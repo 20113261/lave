@@ -13,6 +13,7 @@ class ConfigHelper:
     def __init__(self, file_path=config_file_path):
         self.config = ConfigParser.ConfigParser()
         self.config.read(file_path)
+        self.redis_db = 0
         self.read_config()
 
     def read_config(self):
@@ -20,7 +21,7 @@ class ConfigHelper:
         self.master_host = self.config.get("master", "host")
         self.redis_host = self.config.get("redis", "host")
         self.redis_port = self.config.getint("redis", "port")
-        self.redis_db = self.config.getint('redis', 'db')
+        #  self.redis_db = self.config.getint('redis', 'db')
 
         self.mysql_host = self.config.get('mysql', 'host')
         self.mysql_user = self.config.get('mysql', 'user')
