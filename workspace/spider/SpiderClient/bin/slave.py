@@ -382,11 +382,11 @@ if __name__ == "__main__":
     is_recv_real_time_request = config_helper.is_recv_real_time_request
 
     try:
-        host = config_helper.mysql_host
-        user = config_helper.mysql_user
-        passwd = config_helper.mysql_passwd
+        mysql_host = config_helper.mysql_host
+        mysql_user = config_helper.mysql_user
+        mysql_passwd = config_helper.mysql_passwd
 
-        forbide_section_str = str(getForbideSectionName(host, user, passwd))
+        forbide_section_str = str(getForbideSectionName(mysql_host, mysql_user, mysql_passwd))
     except Exception, e:
         logger.error('get forbide source fail.err = ' + str(e))
         forbide_section_str = ''
