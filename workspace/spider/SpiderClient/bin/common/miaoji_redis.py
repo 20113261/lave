@@ -13,7 +13,7 @@ from conf_manage import ConfigHelper
 
 
 uc_redis_pool = redis.ConnectionPool()
-
+config_helper = ConfigHelper()
 
 def get_connection(db=0, redis_host=None, redis_port=None):
     if redis_host != None and redis_port != None:
@@ -22,7 +22,7 @@ def get_connection(db=0, redis_host=None, redis_port=None):
         return redis_connection(db)
 
 
-def redis_connection(redis_host=ConfigHelper.redis_host, redis_port=ConfigHelper.redis_port, db=0):
+def redis_connection(redis_host=config_helper.redis_host, redis_port=config_helper.redis_port, db=0):
     r = redis.Redis(host=redis_host, port=redis_port,
                     db=db, connection_pool=uc_redis_pool)
     return r
