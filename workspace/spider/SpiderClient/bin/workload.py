@@ -146,6 +146,7 @@ class ControllerWorkload(WorkloadStorable):
                 if proxy == 'NULL':
                     proxy = []
 
+                task.other_info['parser_error'] = int(Error)
                 query = {"other_info": task.other_info}
                 try:
                     try:
