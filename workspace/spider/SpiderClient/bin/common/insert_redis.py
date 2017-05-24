@@ -21,7 +21,6 @@ def InsertFlight(tickets):
         插入航班价格
         redis数据库为0
     '''
-
     #飞机例行数据不再入redis,飞机预测已经不再使用
     return
 
@@ -123,6 +122,7 @@ def InsertFlight(tickets):
 
 
 def InsertFlightNo(tickets):
+    return
     result = {}
     result1 = {}
     for ticket in tickets:
@@ -172,6 +172,7 @@ def InsertFlightInfo(flight_no, plane_type, flight_corp, dept_id, dest_id, dept_
 
 
 def InsertTrain(tickets):
+    return
     # redis数据库为2
     result = {}
     for ticket in tickets:
@@ -244,6 +245,7 @@ def InsertTrain(tickets):
         logger.error("%s" % str(e))
 
 def InsertTrain1(tickets):
+    return
     #redis数据库为1
     result = {}
 
@@ -413,6 +415,7 @@ def InsertCars(cars):
 
 
 def InsertFlightMonitor(result):
+    return
     '''
     插入监控信息
     redis key: workload_key
