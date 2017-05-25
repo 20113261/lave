@@ -23,6 +23,10 @@ class ConfigHelper:
         self.mysql_user = "writer"
         self.mysql_passwd = "miaoji1109"
         self.mysql_db = 'crawl'
+        self.spiderbase_host = '10.19.118.147'
+        self.spiderbase_user = 'reader'
+        self.spiderbase_passwd = 'mioji109'
+        self.spiderbase_db = 'source_info'
         self.is_recv_real_time_request = 0
         self.thread_num = 1
         self.data_type = {}
@@ -40,6 +44,10 @@ class ConfigHelper:
         self.mysql_user = self.config.get('mysql', 'user')
         self.mysql_passwd = self.config.get('mysql', 'pswd')
         self.mysql_db = self.config.get('mysql', 'db')
+        self.spiderbase_host = self.config.get('spiderbase', 'host')
+        self.spiderbase_user = self.config.get('spiderbase', 'user')
+        self.spiderbase_passwd = self.config.get('spiderbase', 'pswd')
+        self.spiderbase_db = self.config.get('spiderbase', 'db')
 
         self.is_recv_real_time_request = self.config.getint("slave", "recv_real_time_request")
         self.thread_num = self.config.getint("slave", "thread_num")
