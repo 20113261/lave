@@ -400,7 +400,7 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             import workload
-            workload.TASK_COUNT = 400
+            workload.TASK_COUNT = 240
             #greents_num = 30
             mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
