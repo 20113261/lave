@@ -399,6 +399,9 @@ if __name__ == "__main__":
         task_type = data_type.get(host, 'NULL')
 
         if 'ListHotel' in task_type:
+            import workload
+            workload.TASK_COUNT = 150
+            greents_num = 30
             mioji.common.pool.pool.set_size(1024)
             mioji.common.spider.need_write_file = False
         else:
