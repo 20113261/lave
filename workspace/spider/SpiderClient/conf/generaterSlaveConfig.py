@@ -43,6 +43,13 @@ def generaterSlaveConfig():
             config.set('mysql', 'pswd', 'miaoji1109')
             config.set('mysql', 'db', 'crawl')
 
+            # spiderbase
+            config.add_section('spiderbase')
+            config.set('spiderbase', 'host', '10.19.118.147')
+            config.set('spiderbase', 'user', 'reader')
+            config.set('spiderbase', 'pswd', 'mioji1109')
+            config.set('spiderbase', 'db', 'source_info')
+
             config.add_section('redis')
             config.set('redis', 'host', '10.10.24.130')
             config.set('redis', 'port', 6379)
@@ -67,13 +74,20 @@ def generaterSlaveConfig():
             config.set('mysql', 'pswd', 'miaoji1109')
             config.set('mysql', 'db', 'validation')
 
+            # spiderbase
+            config.add_section('spiderbase')
+            config.set('spiderbase', 'host', '10.19.118.147')
+            config.set('spiderbase', 'user', 'reader')
+            config.set('spiderbase', 'pswd', 'mioji1109')
+            config.set('spiderbase', 'db', 'source_info')
+
             config.add_section('redis')
             config.set('redis', 'host', '10.10.24.130')
             config.set('redis', 'port', 6379)
 
         elif cfg_file_name == 'slave.startwithD.ini':
             config.add_section('master')
-            config.set('master', 'host', '10.10.216.3:48068')
+            config.set('master', 'host', '10.19.102.211:48068')
 
             config.add_section('proxy')
             config.set('proxy', 'host', '10.19.191.121:8087')
@@ -89,6 +103,13 @@ def generaterSlaveConfig():
             config.set('mysql', 'user', 'writer')
             config.set('mysql', 'pswd', 'miaoji1109')
             config.set('mysql', 'db', 'validation')
+
+            # spiderbase
+            config.add_section('spiderbase')
+            config.set('spiderbase', 'host', '10.19.118.147')
+            config.set('spiderbase', 'user', 'reader')
+            config.set('spiderbase', 'pswd', 'mioji1109')
+            config.set('spiderbase', 'db', 'source_info')
 
             config.add_section('redis')
             config.set('redis', 'host', '10.10.24.130')
