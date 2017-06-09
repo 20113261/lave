@@ -294,6 +294,9 @@ def request(params):
             task.content = req_task.get('content')
             # task.proxy_info = proxy_info
             task.ticket_info = req_task.get('ticket_info')
+            # todo 验证信息
+            task.verify = req_task.get('verify', {'type': 'pre', 'set_type': 'E'})
+
             task.req_md5 = task.ticket_info.get('md5', 'default_md5')
 
             task.master_info = req_task.get('master_info', 'default_host')
@@ -319,7 +322,7 @@ def request(params):
             for each in redis_key_list:
                 task.redis_key = each
                 task.other_info['redis_key'] = each
-
+                logger.info('new verify task:{0}'.format(task))
                 workload.add_workload(task)
 
         except Exception, e:
