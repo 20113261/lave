@@ -84,7 +84,9 @@ class MechanizeCrawler(object):
 
     def set_proxy(self, p, https = False):
         if p != None and p != "REALTIME":
-            if p.split(':')[0] in SOCKS_PROXY:
+            # socks都是内网socks服务转发，所以以 10. 开头判断
+            if p.startswith('10.'):
+            # if p.split(':')[0] in SOCKS_PROXY:
                 print 'socks --- '+p
                 self.br.proxies = {
                         'http':'socks5://'+p,
