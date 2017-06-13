@@ -161,9 +161,8 @@ class ControllerWorkload(WorkloadStorable):
                 except Exception, e:
                     logger.exception('not redis con' + str(e))
 
-                url = 'http://' + task.host + '/?type=' + task.callback_type + '&qid=' + \
-                      task.req_qid + '&uid=' + task.req_uid + \
-                      '&query=' + urllib.quote(json.dumps(query))
+                url = 'http://{0}/?type={1}&qid={2}&uid={3}&query={4}'\
+                    .format(task.host, task.callback_type, task.req_qid, task.req_uid, urllib.quote(json.dumps(query)))
 
                 HttpClient(task.host).get(url)
                 logger.info("[error_code 信息入库 http code: {0} url: {1}]".format(Error, url))
