@@ -7,18 +7,18 @@
         数据访问
 '''
 import sys
-import MySQLdb
+import MySQLdb, traceback
 from slave import UCConnection
 from MySQLdb.cursors import DictCursor
 import datetime
 from logger import logger
-
-
+try:
+    import pymysql
+except:
+    pass
 
 def GetUCConnection():
     return UCConnection()
-
-
 
 
 def ExecuteSQL(sql, args = None):
@@ -42,7 +42,35 @@ def ExecuteSQL(sql, args = None):
 
     return ret
 
+
+def execute_many_bypymsql(sql, args):
+    host = '10.10.154.38'
+    user = 'writer'
+    passwd = 'miaoji1109'
+    db_name = 'crawl'
+    # 打开数据库连接
+    try:
+        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
+        cursor = db.cursor()
+        cursor.executemany(sql, args)
+        db.commit()
+    except:
+        logger.warn(traceback.format_exc())
+        return False
+    finally:
+        close_db(db)
+    return True
+
+def close_db(db):
+    if db:
+        try:
+            db.close()
+        except:
+            pass
+
 def ExecuteSQLs(sql, args = None):
+    if pymysql:
+        return execute_many_bypymsql(sql, args)
     '''
         执行多条SQL语句, 正常执行返回影响的行数，出错返回Flase 
     '''
@@ -53,7 +81,7 @@ def ExecuteSQLs(sql, args = None):
         #cur = conn.cursor()
         #ret = cur.executemany(sql, args)
         #conn.commit()
-    
+
         uc_conn = GetUCConnection()
         uc_cur = uc_conn.cursor()
         uc_ret = uc_cur.executemany(sql, args)
@@ -90,3 +118,7 @@ def QueryBySQL(sql, args = None, size = None):
         #conn.close()
 
     return results
+
+if __name__ == '__main__':
+    if pymysql:
+        print 'ss'
