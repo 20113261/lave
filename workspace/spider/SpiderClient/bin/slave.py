@@ -374,8 +374,8 @@ if __name__ == "__main__":
             import workload
 
             workload.TASK_COUNT = 240
-            greents_num = 80
-            mioji.common.pool.pool.set_size(4096)
+            greents_num = 40
+            mioji.common.pool.pool.set_size(2048)
             mioji.common.spider.need_write_file = False
         else:
             mioji.common.pool.pool.set_size(4096)
