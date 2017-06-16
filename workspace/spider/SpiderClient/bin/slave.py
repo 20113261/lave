@@ -58,12 +58,11 @@ from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
 
-try:
-    import pymysql
-
-    pymysql.install_as_MySQLdb()
-except Exception:
-    pass
+# try:
+#     import pymysql
+#     pymysql.install_as_MySQLdb()
+# except Exception:
+#     pass
 import MySQLdb
 import time
 import urllib
@@ -113,7 +112,7 @@ def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji110
     global mysql_db_pool
     mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                              host=host, port=3306, user=user, passwd=passwd,
-                             db=db, charset='utf8', use_unicode=False)
+                             db=db, charset='utf8', use_unicode=False, blocking=True)
 
 
 def UCConnection():
