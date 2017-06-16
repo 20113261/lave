@@ -16,16 +16,18 @@ import MySQLdb
 
 import traceback
 from MySQLdb.cursors import DictCursor
-from DBUtils.PooledDB import PooledDB
+# from DBUtils.PooledDB import PooledDB
 from logger import logger
 
+
+# 由于消耗过高，弃用连接池方案
 # 建立数据库连接池
-mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
-                         host='10.10.154.38', port=3306, user='writer', passwd='miaoji1109',
-                         db='crawl', charset='utf8', use_unicode=False)
-mysql_spider_data_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
-                                  host='10.10.228.253', port=3306, user='writer', passwd='miaoji1109',
-                                  db='spider_db', charset='utf8', use_unicode=False)
+# mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
+#                          host='10.10.154.38', port=3306, user='writer', passwd='miaoji1109',
+#                          db='crawl', charset='utf8', use_unicode=False)
+# mysql_spider_data_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
+#                                   host='10.10.228.253', port=3306, user='writer', passwd='miaoji1109',
+#                                   db='spider_db', charset='utf8', use_unicode=False)
 
 
 def get_uc_connection():
@@ -48,15 +50,42 @@ def ExecuteSQL(sql, args=None):
     return ret
 
 
-def execute_many_into_spider_db(sql, args):
+def execute_many_by_pymsql(sql, args):
+    host = '10.10.154.38'
+    user = 'writer'
+    passwd = 'miaoji1109'
+    db_name = 'crawl'
+    # 打开数据库连接
     try:
-        db = mysql_spider_data_pool.connection()
+        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
+        cursor = db.cursor()
+        cursor.executemany(sql, args)
+        db.commit()
+    except:
+        logger.warn(traceback.format_exc())
+        return False
+    finally:
+        close_db(db)
+    return True
+
+
+def execute_many_into_spider_db(sql, args):
+    host = '10.10.228.253'
+    user = 'writer'
+    passwd = 'miaoji1109'
+    db_name = 'spider_db'
+    db = None
+    # 打开数据库连接
+    try:
+        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
         cursor = db.cursor()
         cursor.executemany(sql, args)
         db.commit()
     except Exception as e:
         logger.warn(traceback.format_exc(e))
         return False
+    finally:
+        close_db(db)
     return True
 
 
@@ -72,6 +101,9 @@ def ExecuteSQLs(sql, args=None):
     """
         执行多条SQL语句, 正常执行返回影响的行数，未影响返回 None，出错返回 False
     """
+    if pymysql:
+        return execute_many_into_spider_db(sql=sql, args=args)
+
     try:
         uc_conn = get_uc_connection()
         uc_cur = uc_conn.cursor()
