@@ -57,7 +57,7 @@ from common.logger import logger
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
-import MySQLdb
+import MySQLdb, pymysql
 import time
 import urllib
 import json
@@ -103,7 +103,7 @@ def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji110
     # except Exception, e:
     #     logger.error("update uc_db fail. err " + str(e))
     global mysql_db_pool
-    mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
+    mysql_db_pool = PooledDB(creator=pymysql, mincached=1, maxcached=2, maxconnections=10,
                           host=host, port=3306, user=user, passwd=passwd,
                           db=db, charset='utf8', use_unicode=False)
 

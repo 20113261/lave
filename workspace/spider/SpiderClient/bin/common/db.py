@@ -93,8 +93,6 @@ def close_db(db):
 
 
 def ExecuteSQLs(sql, args=None):
-    if pymysql:
-        return execute_many_bypymsql(sql, args)
     '''
         执行多条SQL语句, 正常执行返回影响的行数，出错返回Flase 
     '''
