@@ -55,14 +55,7 @@ from workload import ControllerWorkload
 from common.task import Task
 from common.logger import logger
 from util import http_client
-from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
-
-# try:
-#     import pymysql
-#     pymysql.install_as_MySQLdb()
-# except Exception:
-#     pass
 import MySQLdb
 import time
 import urllib
@@ -90,37 +83,6 @@ def getLocalIp(ifname='eth0'):
     inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
     ret = socket.inet_ntoa(inet[20:24])
     return ret
-
-
-mysql_db_pool = None
-
-
-def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji1109', db='crawl'):
-    # try:
-    #     cand_local_ip = getLocalIp()
-    #
-    #     # verify server, use validation DB
-    #     if cand_local_ip not in frame_ip:
-    #         _uc_db = 'validation'
-    #
-    #     # UC machine,use inner ip
-    #     if cand_local_ip.startswith('10.10.'):
-    #         _uc_host = '10.10.154.38'
-    #
-    # except Exception, e:
-    #     logger.error("update uc_db fail. err " + str(e))
-    global mysql_db_pool
-    mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
-                             host=host, port=3306, user=user, passwd=passwd,
-                             db=db, charset='utf8', use_unicode=False, blocking=True)
-
-
-def UCConnection():
-    global mysql_db_pool
-    if mysql_db_pool is None:
-        init_mysql_connections()
-    conn = mysql_db_pool.connection()
-    return conn
 
 
 def load_parsers(config):
