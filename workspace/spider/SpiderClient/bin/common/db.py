@@ -13,11 +13,12 @@ from MySQLdb.cursors import DictCursor
 import datetime
 from logger import logger
 
-try:
-    import pymysql
-    pymysql.install_as_MySQLdb()
-except Exception:
-    pass
+# try:
+#     import pymysql
+#     pymysql.install_as_MySQLdb()
+# except Exception:
+#     pass
+import pymysql
 import MySQLdb
 
 
