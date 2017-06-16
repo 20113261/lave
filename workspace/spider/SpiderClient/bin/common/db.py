@@ -22,7 +22,7 @@ from logger import logger
 # 建立数据库连接池
 mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                          host='10.10.154.38', port=3306, user='writer', passwd='miaoji1109',
-                         db='crawl', charset='utf8', use_unicode=False, blocking=True)
+                         db='crawl', charset='utf8', use_unicode=False)
 mysql_spider_data_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                                   host='10.10.228.253', port=3306, user='writer', passwd='miaoji1109',
                                   db='spider_db', charset='utf8', use_unicode=False)
