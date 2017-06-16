@@ -57,7 +57,14 @@ from common.logger import logger
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
-import MySQLdb, pymysql
+
+try:
+    import pymysql
+
+    pymysql.install_as_MySQLdb()
+except Exception:
+    pass
+import MySQLdb
 import time
 import urllib
 import json
@@ -85,6 +92,7 @@ def getLocalIp(ifname='eth0'):
     ret = socket.inet_ntoa(inet[20:24])
     return ret
 
+
 mysql_db_pool = None
 
 
@@ -103,9 +111,9 @@ def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji110
     # except Exception, e:
     #     logger.error("update uc_db fail. err " + str(e))
     global mysql_db_pool
-    mysql_db_pool = PooledDB(creator=pymysql, mincached=1, maxcached=2, maxconnections=10,
-                          host=host, port=3306, user=user, passwd=passwd,
-                          db=db, charset='utf8', use_unicode=False)
+    mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
+                             host=host, port=3306, user=user, passwd=passwd,
+                             db=db, charset='utf8', use_unicode=False)
 
 
 def UCConnection():
@@ -403,6 +411,7 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             import workload
+
             workload.TASK_COUNT = 240
             greents_num = 80
             mioji.common.pool.pool.set_size(4096)

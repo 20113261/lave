@@ -7,7 +7,7 @@
         数据访问
 '''
 import sys
-import MySQLdb, traceback
+import traceback
 from slave import UCConnection
 from MySQLdb.cursors import DictCursor
 import datetime
@@ -15,8 +15,10 @@ from logger import logger
 
 try:
     import pymysql
-except:
+    pymysql.install_as_MySQLdb()
+except Exception:
     pass
+import MySQLdb
 
 
 def GetUCConnection():
