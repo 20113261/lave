@@ -13,6 +13,14 @@ from logger import logger
 from insert_rabbitmq import insert_rabbitmq
 
 
+def insert_hotel_base_data_task_info(args):
+    sql = "REPLACE INTO hotel_base_data_task (source, source_id, city_id, hotel_url) VALUES (%s, %s, %s, %s)"
+    try:
+        db.execute_many_into_spider_db(sql=sql, args=args)
+    except Exception:
+        logger.exception("Insert Task Data Error")
+
+
 def InsertFlight(args):
     # sql = "INSERT INTO flight" + table_name_date + " (flight_no,plane_no,airline,dept_id,dest_id,dept_day,dept_time," + \
     # "dest_time,dur,price,tax,surcharge,currency,seat_type,source,return_rule," + \
@@ -253,6 +261,8 @@ def InsertHotel_room4(args):
           'is_cancel_free, extrabed_rule, return_rule, change_rule, room_desc, ' + \
           'others_info,guest_info, hotel_url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, ' + \
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
+
+    insert_hotel_base_data_task_info(list(map(lambda x: (x[2], x[3], x[1], x[-1]), args)))
 
     return db.ExecuteSQLs(sql, args)
 
