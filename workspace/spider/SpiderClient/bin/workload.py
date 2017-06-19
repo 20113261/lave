@@ -74,7 +74,7 @@ class ControllerWorkload(WorkloadStorable):
 
         logger.info('Need %d New Tasks' % task_length)
         url = "/workload?forbid=" + self.__forbide_section_str + \
-              "&count=" + str(need_task)
+              "&count=" + str(need_task) + '&qid=' + str(int(1000 * time.time()))
         result = self.__client.get(url)
         if result is None or result == []:
             return False
