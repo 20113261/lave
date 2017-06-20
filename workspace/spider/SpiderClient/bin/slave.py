@@ -341,30 +341,6 @@ def request(params):
     return json.dumps(result)
 
 
-def getForbideSectionName(host, user, passwd):
-    forbide_section_str = ''
-    conn = MySQLdb.connect(host=host, user=user,
-                           charset='utf8', passwd=passwd, db='onlinedb')
-    cursor = conn.cursor()
-
-    sql = "select sectionName from parserSource2Module where forbide='1'"
-
-    cursor.execute(sql)
-
-    datas = cursor.fetchall()
-
-    forbide_section = set()
-
-    for cand_data in datas:
-        try:
-            forbide_section.add(cand_data[0].encode('utf-8'))
-        except Exception, e:
-            pass
-
-    forbide_section_str = '_'.join(forbide_section)
-    return forbide_section_str
-
-
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print "Usage: %s config_file_path" % sys.argv[0]
@@ -394,18 +370,12 @@ if __name__ == "__main__":
     mysql_user = config_helper.mysql_user
     mysql_passwd = config_helper.mysql_passwd
 
-    try:
-        forbide_section_str = str(getForbideSectionName(mysql_host, mysql_user, mysql_passwd))
-    except Exception, e:
-        logger.error('get forbide source fail.err = ' + str(e))
-        forbide_section_str = ''
-
     init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
     # 例行抓取
     greents_num = 100  # 每个线程协程数默认为100
     if 0 == is_recv_real_time_request:
         data_type = config_helper.data_type
-        forbide_section_str += '&data_type=' + data_type.get(host)
+        data_type_str = data_type.get(host)
         task_type = data_type.get(host, 'NULL')
 
         if 'ListHotel' in task_type:
@@ -419,15 +389,13 @@ if __name__ == "__main__":
             mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
 
-    logger.info('foorbide sectionName : ' + forbide_section_str)
-
     port = int(sys.argv[1])
     master_host = config_helper.master_host
 
     sources = getallSource(config_helper.config)
 
     workload = ControllerWorkload(
-        master_host, sources, forbide_section_str, recv_real_time_request=is_recv_real_time_request)
+        master_host, sources, data_type_str, recv_real_time_request=is_recv_real_time_request)
 
     parsers = load_parsers(config_helper.config)
 

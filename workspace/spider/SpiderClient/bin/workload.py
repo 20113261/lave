@@ -34,7 +34,7 @@ class ControllerWorkload(WorkloadStorable):
         通过Controller进行workload管理
     """
 
-    def __init__(self, host, sources, forbide_section_str, recv_real_time_request=True):
+    def __init__(self, host, sources, data_type_str, recv_real_time_request=True):
 
         self.__client = HttpClientPool(
             host, timeout=1000, maxsize=500, block=True)
@@ -45,9 +45,9 @@ class ControllerWorkload(WorkloadStorable):
         self.tasks = Queue(maxsize=MaxQsize)
         self.__tasks_status = []
         self.TaskingDict = {}
-        self.newtasks = []
+        self.new_tasks = []
         self.__flag = recv_real_time_request
-        self.__forbide_section_str = forbide_section_str
+        self.data_type_str = data_type_str
         self.workload_restart_flag = True
         self.__timer2 = timer.Timer(
             COMPLETE_TIME_SPAN, self.complete_workloads)
@@ -70,23 +70,24 @@ class ControllerWorkload(WorkloadStorable):
             return True
 
         logger.info('Need %d New Tasks' % task_length)
-        url = "/workload?count=" + str(need_task) + '&qid=' + str(int(1000 * time.time())) + '&type=routine001'
+        url = "/workload?count={0}&qid={1}&type=routine001&data_type={2}".format(need_task, int(1000 * time.time()),
+                                                                                 self.data_type_str)
         result = self.__client.get(url)
         if result is None or result == []:
             return False
 
         try:
             result = result.strip('\0').strip()
-            self.newtasks = eval(result)
+            self.new_tasks = eval(result)
             logger.info(
-                'from master get taskcount is : {0} / {1}'.format(len(self.newtasks), need_task))
+                'from master get task count is : {0} / {1}'.format(len(self.new_tasks), need_task))
 
         except Exception, e:
             logger.info('GET TASKS ERROR: ' + str(e))
             return False
 
         get_task_count = 0
-        for task in self.newtasks:
+        for task in self.new_tasks:
             try:
                 if not isinstance(task, dict):
                     logger.error('task is not a dict. task=' + str(task))
@@ -129,7 +130,7 @@ class ControllerWorkload(WorkloadStorable):
             return None
         try:
             task = self.tasks.get()
-        except:
+        except Exception:
             return None
         return task
 
