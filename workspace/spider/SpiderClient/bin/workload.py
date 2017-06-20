@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding=UTF-8
-'''
+"""
     Overwrite on 2016-11-15
     @author: wyl
     @desc:
         作业管理
-'''
+"""
 import os
 import random
 import json
@@ -19,7 +19,6 @@ from common.logger import logger
 from crawler.workload import WorkloadStorable
 from util.http_client import HttpClientPool, HttpClient
 import redis
-import sys
 
 from gevent.queue import Queue, Empty
 
@@ -31,9 +30,9 @@ MaxQsize = 1000
 
 
 class ControllerWorkload(WorkloadStorable):
-    '''
+    """
         通过Controller进行workload管理
-    '''
+    """
 
     def __init__(self, host, sources, forbide_section_str, recv_real_time_request=True):
 
@@ -50,8 +49,6 @@ class ControllerWorkload(WorkloadStorable):
         self.__flag = recv_real_time_request
         self.__forbide_section_str = forbide_section_str
         self.workload_restart_flag = True
-        # self.__timer = timer.Timer(TASK_TIME_SPAN, self.get_workloads)
-        # self.__timer.start()
         self.__timer2 = timer.Timer(
             COMPLETE_TIME_SPAN, self.complete_workloads)
         self.__timer2.start()
@@ -63,31 +60,27 @@ class ControllerWorkload(WorkloadStorable):
         self.tasks.put(task)
 
     def get_workloads(self):
-        '''
+        """
             从master取一批workloads
             get every TASK_TIME_SPAN (s), up to TASK_COUNT
-        '''
+        """
         task_length = TASK_COUNT - self.tasks.qsize()
         need_task = task_length
         if need_task <= 0:
             return True
 
         logger.info('Need %d New Tasks' % task_length)
-        url = "/workload?forbid=" + self.__forbide_section_str + \
-              "&count=" + str(need_task) + '&qid=' + str(int(1000 * time.time())) + '&type=routine001'
+        url = "/workload?count=" + str(need_task) + '&qid=' + str(int(1000 * time.time())) + '&type=routine001'
         result = self.__client.get(url)
         if result is None or result == []:
             return False
 
-        # result = '[{"priority": 0, "update_time": "NULL", "task_data":"", "success_times": 0,\
-        #        "is_assigned": 1, "error": -1, "proxy": "NULL", "workload_key": "LEN_ZAZ_raileuropecomRail_20170119",
-        #        "id": "NULL", "priority": 0, "update_times": 0, "content": "PEK&CDG&20170219",
-        #       "source": "cheapticketsFlight", "timeslot": "176" }]'
         try:
             result = result.strip('\0').strip()
             self.newtasks = eval(result)
             logger.info(
                 'from master get taskcount is : {0} / {1}'.format(len(self.newtasks), need_task))
+
         except Exception, e:
             logger.info('GET TASKS ERROR: ' + str(e))
             return False
@@ -154,14 +147,15 @@ class ControllerWorkload(WorkloadStorable):
                     except Exception:
                         try:
                             logger.info("[error_code 信息入库 redis error:%s task:%s ]".format(Error,
-                                str(task).decode('gbk').encode('utf8')))
+                                                                                           str(task).decode(
+                                                                                               'gbk').encode('utf8')))
                         except Exception:
                             pass
                     self.write_redis_ticket(task, proxy, Error)
                 except Exception, e:
                     logger.exception('not redis con' + str(e))
 
-                url = 'http://{0}/?type={1}&qid={2}&uid={3}&query={4}'\
+                url = 'http://{0}/?type={1}&qid={2}&uid={3}&query={4}' \
                     .format(task.host, task.callback_type, task.req_qid, task.req_uid, urllib.quote(json.dumps(query)))
 
                 HttpClient(task.host).get(url)
@@ -172,7 +166,7 @@ class ControllerWorkload(WorkloadStorable):
             if task in self.TaskingDict:
                 len_key = self.TaskingDict.pop(task)
 
-            while (len_key > 0):
+            while len_key > 0:
                 task_status = {"id": task.id, "content": task.content, "source": task.source,
                                "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                "timeslot": task.timeslot}
@@ -201,9 +195,8 @@ class ControllerWorkload(WorkloadStorable):
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             other_query = '&type=routine002&qid={0}&cur_id=&'.format(int(1000 * time.time()))
-            result = self.__client.get(
+            self.__client.get(
                 "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
-            #   logger.info("complete_tasks_data: " + completed_task + '\n')
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
             logger.info("complete task to master fail. task_count=" +
@@ -218,19 +211,19 @@ class ControllerWorkload(WorkloadStorable):
         pass
 
     def clear(self):
-        '''
+        """
             清空作业
-        '''
+        """
         pass
 
     def add_workloads(self, tasks):
-        '''
+        """
             添加作业
-        '''
+        """
         pass
 
     def get_task_status(self, task):
-        '''
+        """
             获得指定任务的状态
-        '''
+        """
         pass
