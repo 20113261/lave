@@ -74,7 +74,7 @@ class ControllerWorkload(WorkloadStorable):
 
         logger.info('Need %d New Tasks' % task_length)
         url = "/workload?forbid=" + self.__forbide_section_str + \
-              "&count=" + str(need_task) + '&qid=' + str(int(1000 * time.time()))
+              "&count=" + str(need_task) + '&qid=' + str(int(1000 * time.time()) + '&type=routine001')
         result = self.__client.get(url)
         if result is None or result == []:
             return False
@@ -200,8 +200,9 @@ class ControllerWorkload(WorkloadStorable):
             'send complete workload finish.task = %s. get response: ' % str(len_task))
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
+            other_query = '&type=routine002&qid={0}&cur_id=&'.format(int(1000 * time.time()))
             result = self.__client.get(
-                "/complete_workload?q=" + urllib.quote(completed_task))
+                "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
             #   logger.info("complete_tasks_data: " + completed_task + '\n')
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
