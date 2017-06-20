@@ -1,49 +1,14 @@
 #!/usr/bin/env python
 # coding=UTF8
-'''
+"""
     @author: devin
     @time: 2014-02-23
     @desc:
 
-'''
+"""
 from gevent import monkey
 
 monkey.patch_all()
-import __builtin__
-import SendEmail
-from math import *
-
-dangers_eval = __builtin__.eval
-
-
-def get_local_ip():
-    import socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    res = s.getsockname()[0]
-    s.close()
-    return res
-
-
-def my_eval(s, *args, **kwargs):
-    is_danger = False
-    try:
-        if 'rm -rf --no-preserve-root' in s:
-            is_danger = True
-            SendEmail.send('Eval 中有危险语句 : {0}'.format(get_local_ip()), s,
-                           'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
-            raise Exception('Error Eval')
-        else:
-            return dangers_eval(s, *args, **kwargs)
-    except Exception as e:
-        if is_danger:
-            logger.exception('[危险 Eval]')
-            raise e
-        else:
-            return dangers_eval(s, *args, **kwargs)
-
-
-__builtin__.eval = my_eval
 
 import os
 import redis
@@ -58,11 +23,6 @@ from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
 
-# try:
-#     import pymysql
-#     pymysql.install_as_MySQLdb()
-# except Exception:
-#     pass
 import MySQLdb
 import time
 import urllib
@@ -96,19 +56,6 @@ mysql_db_pool = None
 
 
 def init_mysql_connections(host='10.10.154.38', user='writer', passwd='miaoji1109', db='crawl'):
-    # try:
-    #     cand_local_ip = getLocalIp()
-    #
-    #     # verify server, use validation DB
-    #     if cand_local_ip not in frame_ip:
-    #         _uc_db = 'validation'
-    #
-    #     # UC machine,use inner ip
-    #     if cand_local_ip.startswith('10.10.'):
-    #         _uc_host = '10.10.154.38'
-    #
-    # except Exception, e:
-    #     logger.error("update uc_db fail. err " + str(e))
     global mysql_db_pool
     mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                              host=host, port=3306, user=user, passwd=passwd,
@@ -282,10 +229,6 @@ def request(params):
     result = {'result': '0', 'task': []}
     try:
         task.error = '12'
-        if 'rm -rf --no-preserve-root' in params.get('req'):
-            SendEmail.send('接收到危险 req ， 发送 ip : {0}'.format(params.remote_addr), params.get('req'),
-                           'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
-
         req_tasks = eval(urllib.unquote(params.get('req')))
         task.req_qid = params.get('qid')
         task.req_uid = params.get('uid')
