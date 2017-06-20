@@ -66,7 +66,7 @@ class Worker(threading.Thread):
 
             try:
 
-                if task  == None:
+                if task == None:
                    # logger.info('******no task !')
                     time.sleep(2)
                     continue
@@ -103,14 +103,13 @@ class Workers:
     def workload_run(self):
 
         while (self.__workload.workload_restart_flag):
-
-#            logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
+            #logger.info('***********************************self.__work'+ str(self.__workload.workload_restart_flag))
             try:
                 self.__workload.get_workloads()
-                time.sleep(2)
-            except Exception,e:
+                time.sleep(5)
+            except Exception, e:
                 logger.info('from master get task thread is  killed , sleep 3s ' + str(e))
-                time.sleep(3)
+                time.sleep(8)
 
         logger.info('get task thread is killed')
 
