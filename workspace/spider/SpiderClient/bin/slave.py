@@ -22,7 +22,8 @@ from common.logger import logger
 from util import http_client
 from DBUtils.PooledDB import PooledDB
 from common.mtIpDict import mt_ip_dict
-
+from mioji import spider_factory
+from mioji.controller.admin import MyEncoder
 import MySQLdb
 import time
 import urllib
@@ -284,6 +285,23 @@ def request(params):
     return json.dumps(result)
 
 
+def new_spider_info(params):
+    try:
+        func = params.get('func')
+        if not func:
+            func = 'status'
+
+        if func == 'status':
+            return '<pre>{0}</pre>'.format(
+                json.dumps(spider_factory.factory.all(), indent=2, cls=MyEncoder, sort_keys=True))
+
+        elif func == 'reload':
+            return '<pre>{0}</pre>'.format(
+                json.dumps(spider_factory.factory.reload(), indent=2, cls=MyEncoder, sort_keys=True))
+    except Exception, e:
+        logger.error('Get params Error' + str(e))
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 3:
         print "Usage: %s config_file_path" % sys.argv[0]
@@ -356,5 +374,6 @@ if __name__ == "__main__":
     slave.register("/rtquery", request)
     slave.register("/restart_process", restart_process)
     slave.register("/spider_pool_size", spider_pool_size)
+    slave.register("/new_spider_info", new_spider_info)
     info = slave.info
     slave.run()
