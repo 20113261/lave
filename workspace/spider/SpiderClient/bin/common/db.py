@@ -87,6 +87,26 @@ def execute_many_into_spider_db(sql, args):
     return True
 
 
+def execute_into_spider_db(sql, args):
+    host = '10.10.228.253'
+    user = 'writer'
+    passwd = 'miaoji1109'
+    db_name = 'spider_db'
+    db = None
+    # 打开数据库连接
+    try:
+        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
+        cursor = db.cursor()
+        cursor.execute(sql, args)
+        db.commit()
+    except Exception as e:
+        logger.warn(traceback.format_exc(e))
+        return False
+    finally:
+        close_db(db)
+    return True
+
+
 def close_db(db):
     if db:
         try:
