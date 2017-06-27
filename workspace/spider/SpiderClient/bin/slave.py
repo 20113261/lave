@@ -350,6 +350,8 @@ if __name__ == "__main__":
         else:
             mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
+    else:
+        mioji.common.pool.pool.set_size(512)
 
     port = int(sys.argv[1])
     master_host = config_helper.master_host
