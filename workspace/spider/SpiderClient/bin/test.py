@@ -1,8 +1,2 @@
-import mechanize
-p = '212.19.8.185:80'
 
-brow = mechanize.Browser()
-
-brow.set_proxies({'http':p,'https':p})
-
-print brow.open('http://www.tripsta.cn/flights/results?dep=PEK&arr=CDG&isRoundtrip=0&obDate=12%2F10%2F2016&ibDate=29%2F12%2F2015&obTime=&ibTime=&extendedDates=0&resetStaticSearchResults=1&passengersAdult=2&passengersChild=0&passengersInfant=0&airlineCode=&class=Y&directFlightsOnly=0').read()
+print '\xe8\xae\xa2\xe5\x8d\x95\xe6\x8a\xa5\xe4\xbb\xb7\xe9\x94\x99\xe8\xaf\xaf:\xe5\xbe\x88\xe6\x8a\xb1\xe6\xad\x89\xef\xbc\x8c\xe8\xaf\xa5\xe5\x9f\x8e\xe5\xb8\x82\xe6\x9a\x82\xe6\x97\xa0\xe5\x8f\xaf\xe6\x9c\x8d\xe5\x8a\xa1\xe7\x9a\x84\xe5\x8f\xb8\xe5\xaf\xbc'

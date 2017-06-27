@@ -6,20 +6,34 @@
     @desc:
         数据访问
 '''
-import sys
-import traceback
+
 from slave import UCConnection
 from MySQLdb.cursors import DictCursor
-import datetime
 from logger import logger
-
-# try:
-#     import pymysql
-#     pymysql.install_as_MySQLdb()
-# except Exception:
-#     pass
-import pymysql
 import MySQLdb
+
+
+# pymysql pool
+import pymysql
+from DBUtils.PooledDB import PooledDB
+
+
+def INIT_SQLPOOL(host='10.10.154.38', user='writer', passwd='miaoji1109', db='crawl', maxconnections=20):
+    mysql_db_pool = PooledDB(creator=pymysql, mincached=1, maxcached=2, maxconnections=maxconnections,
+                             host=host, port=3306, user=user, passwd=passwd,
+                             db=db, charset='utf8', use_unicode=False, blocking=True)
+    return mysql_db_pool
+
+PY_POOL = INIT_SQLPOOL()
+DATA_PY_POOL = INIT_SQLPOOL(host='10.10.228.253', user='writer', passwd='miaoji1109', db='spider_db')
+
+
+def close_db(db):
+    if db:
+        try:
+            db.close()
+        except:
+            pass
 
 
 def GetUCConnection():
@@ -48,97 +62,42 @@ def ExecuteSQL(sql, args=None):
     return ret
 
 
-def execute_many_bypymsql(sql, args):
-    host = '10.10.154.38'
-    user = 'writer'
-    passwd = 'miaoji1109'
-    db_name = 'crawl'
-    # 打开数据库连接
-    try:
-        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
-        cursor = db.cursor()
-        cursor.executemany(sql, args)
-        db.commit()
-    except:
-        logger.warn(traceback.format_exc())
-        return False
-    finally:
-        close_db(db)
-    return True
-
-
-def execute_many_into_spider_db(sql, args):
-    host = '10.10.228.253'
-    user = 'writer'
-    passwd = 'miaoji1109'
-    db_name = 'spider_db'
-    db = None
-    # 打开数据库连接
-    try:
-        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
-        cursor = db.cursor()
-        cursor.executemany(sql, args)
-        db.commit()
-    except Exception as e:
-        logger.warn(traceback.format_exc(e))
-        return False
-    finally:
-        close_db(db)
-    return True
-
-
 def execute_into_spider_db(sql, args):
-    host = '10.10.228.253'
-    user = 'writer'
-    passwd = 'miaoji1109'
-    db_name = 'spider_db'
-    db = None
-    # 打开数据库连接
+    uc_conn = None
     try:
-        db = pymysql.connect(host, user, passwd, db_name, charset='utf8')
-        cursor = db.cursor()
-        cursor.execute(sql, args)
-        db.commit()
-    except Exception as e:
-        logger.warn(traceback.format_exc(e))
-        return False
-    finally:
-        close_db(db)
-    return True
-
-
-def close_db(db):
-    if db:
-        try:
-            db.close()
-        except Exception:
-            pass
-
-
-def ExecuteSQLs(sql, args=None):
-    '''
-        执行多条SQL语句, 正常执行返回影响的行数，出错返回Flase 
-    '''
-    # ret = 0
-    uc_ret = 0
-    try:
-        # conn = GetConnection()
-        # cur = conn.cursor()
-        # ret = cur.executemany(sql, args)
-        # conn.commit()
-
-        uc_conn = GetUCConnection()
-        uc_cur = uc_conn.cursor()
-        uc_ret = uc_cur.executemany(sql, args)
+        uc_conn = DATA_PY_POOL.connection()
+        cursor = uc_conn.cursor()
+        cursor.executemany(sql, args)
         uc_conn.commit()
-
-    except MySQLdb.Error, e:
+        cursor.close()
+    except Exception, e:
         logger.error("ExecuteSQLs error: %s" % str(e))
         return False
     finally:
-        pass
-        # cur.close()
-        # conn.close()
+        close_db(uc_conn)
+
+    return True
+
+
+def ExecuteSQLs(sql, args=None):
+    """
+          执行多条SQL语句, 正常执行返回影响的行数，出错返回Flase 
+    """
+    uc_ret = 0
+    uc_conn = None
+
+    try:
+        uc_conn = PY_POOL.connection()
+        cursor = uc_conn.cursor()
+        uc_ret = cursor.executemany(sql, args)
+        uc_conn.commit()
+        cursor.close()
+
+    except Exception, e:
+        logger.error("ExecuteSQLs error: %s" % str(e))
+        return False
+    finally:
+        close_db(uc_conn)
 
     return uc_ret
 
@@ -149,7 +108,7 @@ def QueryBySQL(sql, args=None, size=None):
     '''
     results = []
     try:
-        conn = GetConnection()
+        conn = GetUCConnection()
         cur = conn.cursor(cursorclass=DictCursor)
 
         cur.execute(sql, args)
