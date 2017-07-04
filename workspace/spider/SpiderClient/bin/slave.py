@@ -228,11 +228,15 @@ def request(params):
     task = Task()
     task.source = 'source_100'
     result = {'result': '0', 'task': []}
+    req_qid = None
+    req_uid = None
     try:
         task.error = '12'
         req_tasks = eval(urllib.unquote(params.get('req')))
-        task.req_qid = params.get('qid')
-        task.req_uid = params.get('uid')
+        req_qid = params.get('qid')
+        task.req_qid = req_qid
+        req_uid = params.get('uid')
+        task.req_uid = req_uid
     except Exception, e:
         logger.error('get request params error: ' + str(task.source) + str(e))
         result['err_code'] = 'Not enough arguments'
@@ -241,6 +245,9 @@ def request(params):
     for req_task in req_tasks:
 
         try:
+            task = Task()
+            task.req_qid = req_qid
+            task.req_uid = req_uid
             task.source = req_task.get('source')
             task.content = req_task.get('content')
             # task.proxy_info = proxy_info
@@ -273,7 +280,7 @@ def request(params):
             for each in redis_key_list:
                 task.redis_key = each
                 task.other_info['redis_key'] = each
-                logger.info('new verify task:{0}'.format(task))
+                logger.info('s[{0}] id[{1}]new verify task:{2}'.format(task.source, task.new_task_id, task))
                 workload.add_workload(task)
 
         except Exception, e:

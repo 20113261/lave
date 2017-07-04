@@ -8,12 +8,17 @@
 '''
 import jsonlib
 import json
+import time, uuid
+
 class Task:
     '''
         抓取任务
     '''
 
     def __init__(self, **kws):
+        # 增加任务创建时间，便于跟踪任务堆积
+        self.create_time = time.time()
+        self.new_task_id = str(uuid.uuid1())
         self.id = 0
         self.task_data = ''
         self.content = None         # 任务内容，不同source的格式可以不同，各个抓取下自行定义
