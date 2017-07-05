@@ -97,7 +97,7 @@ class Slave:
                 "type": "heartbeat",
                 'recv_real_time_request': self.info.recv_real_time_request}
 
-    	path = "/heartbeat?" + urllib.urlencode(data)
+        path = "/heartbeat?" + urllib.urlencode(data)
         try:
             ###test for router
             #try:
@@ -138,18 +138,15 @@ class Slave:
             #    print 'regist for eouter test fail'''
 
             logger.info('slave register to host:{0}'.format(self.__client.host))
-            id = self.__client.get(path).strip()
-            logger.info('slave register to host:{0} res:{1}'.format(self.__client.host, id))
-            id = id.strip('\0')
-            if len(id) == 0 or not id.isdigit():
+            res = self.__client.get(path).strip()
+            logger.info('slave register to host:{0} res:{1}'.format(self.__client.host, res))
+            if json.loads(res)['error']['error_id'] != 0:
                 return False
-            self.info.id = int(id)
-            logger.info("slave register id is : %d" % self.info.id)
         except Exception,e:
             import traceback
             error_info = str(traceback.format_exc().split('\n'))
             print 'register_slave:' + error_info
-
+            logger.info('slave register to host:{0} success'.format(self.__client.host))
         return True
 
     def modify_thread_num(self, params):

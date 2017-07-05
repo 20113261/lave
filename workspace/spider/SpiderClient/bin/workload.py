@@ -125,13 +125,8 @@ class ControllerWorkload(WorkloadStorable):
                         + '\t' + str(task.redis_db) + '\t' + str(task.redis_passwd) + '\t' + str(e))
 
     def assign_workload(self):
-
-        if self.tasks.qsize() <= 0:
-            return None
-        try:
-            task = self.tasks.get()
-        except Exception:
-            return None
+        # 使用队列block分配任务
+        task = self.tasks.get(block=True)
         return task
 
     def complete_workload(self, task, Error=0, proxy='NULL'):

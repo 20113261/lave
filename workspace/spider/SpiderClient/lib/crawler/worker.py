@@ -58,17 +58,9 @@ class Worker(threading.Thread):
 
         self.__busy = True
         while self.__busy:
+            # 没任务会阻塞的，不用自己线程自己sleep ...
             task = self.workload.assign_workload()
-
-            try:
-
-                if task is None:
-                    time.sleep(2)
-                    continue
-                self.__pool.spawn(self.task_entrance, task)
-            except Exception:
-                logger.info('get  assign task failed sleep 3s')
-                time.sleep(3)
+            self.__pool.spawn(self.task_entrance, task)
 
         self.__busy = False
 
