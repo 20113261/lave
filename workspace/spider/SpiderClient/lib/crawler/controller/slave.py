@@ -137,8 +137,9 @@ class Slave:
             #except Exception,e:
             #    print 'regist for eouter test fail'''
 
-
+            logger.info('slave register to host:{0}'.format(self.__client.host))
             id = self.__client.get(path).strip()
+            logger.info('slave register to host:{0} res:{1}'.format(self.__client.host, id))
             id = id.strip('\0')
             if len(id) == 0 or not id.isdigit():
                 return False
