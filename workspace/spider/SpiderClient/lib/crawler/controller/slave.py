@@ -146,7 +146,7 @@ class Slave:
             import traceback
             error_info = str(traceback.format_exc().split('\n'))
             print 'register_slave:' + error_info
-            logger.info('slave register to host:{0} success'.format(self.__client.host))
+        logger.info('slave register to host:{0} success'.format(self.__client.host))
         return True
 
     def modify_thread_num(self, params):
