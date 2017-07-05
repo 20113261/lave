@@ -60,6 +60,7 @@ class Worker(threading.Thread):
         while self.__busy:
             # 没任务会阻塞的，不用自己线程自己sleep ...
             task = self.workload.assign_workload()
+            logger.info('workload assign task pool size: {0} free count: {1}'.format(self.__pool.size, self.__pool.free_count()))
             self.__pool.spawn(self.task_entrance, task)
 
         self.__busy = False

@@ -58,6 +58,7 @@ class ControllerWorkload(WorkloadStorable):
             logger.info('request is full, please wait !')
             time.sleep(10)
         self.tasks.put(task)
+        logger.info('workload task queue size: {0}'.format(self.tasks.qsize()))
 
     def get_workloads(self):
         """
