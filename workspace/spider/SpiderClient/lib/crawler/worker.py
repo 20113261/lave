@@ -19,6 +19,20 @@ from gevent.pool import Pool
 
 monkey.patch_all()
 
+def get_local_ip():
+    import socket
+    res = ''
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        res = s.getsockname()[0]
+        s.close()
+    except Exception:
+        pass
+    return res
+
+local_ip = get_local_ip()
+
 
 class Worker(threading.Thread):
     """
@@ -61,6 +75,11 @@ class Worker(threading.Thread):
             # 没任务会阻塞的，不用自己线程自己sleep ...
             task = self.workload.assign_workload()
             logger.info('workload assign task pool size: {0} free count: {1}'.format(self.__pool.size, self.__pool.free_count()))
+            if self.__pool.free_count() < 2:
+                logger.warn('[Exception MJOPObserver,type=ex78000,uid=,csuid=,qid={ts},'
+                            'ts={ts},ip={ip},refer_id=,cur_id=spider_slave,debug=任务堆积-空闲池:{free}/{size}]'
+                            .format(ts=int(time.time()*1000), ip=local_ip,
+                                    size=self.__pool.size, free=self.__pool.free_count()))
             self.__pool.spawn(self.task_entrance, task)
 
         self.__busy = False
@@ -171,3 +190,6 @@ class Workers(object):
                 i -= 1
                 worker = self.__workers.pop()
                 worker.stop()
+
+
+
