@@ -76,10 +76,11 @@ class Worker(threading.Thread):
             task = self.workload.assign_workload()
             logger.info('workload assign task pool size: {0} free count: {1}'.format(self.__pool.size, self.__pool.free_count()))
             if self.__pool.free_count() < 2:
-                logger.warn('[Exception MJOPObserver,type=ex78000,uid=,csuid=,qid={ts},'
-                            'ts={ts},ip={ip},refer_id=,cur_id=spider_slave,debug=任务堆积-空闲池:{free}/{size}]'
+                logger.warn('[Exception MJOPObserver,type=ex78000,uid=,csuid=,qid={ts},ts={ts},ip={ip},'
+                            'refer_id=,cur_id=spider_slave,debug=任务堆积-空闲池:{free}/{size}]-等待任务:{count}'
                             .format(ts=int(time.time()*1000), ip=local_ip,
-                                    size=self.__pool.size, free=self.__pool.free_count()))
+                                    size=self.__pool.size, free=self.__pool.free_count(),
+                                    count=self.workload.tasks.qsize()))
             self.__pool.spawn(self.task_entrance, task)
 
         self.__busy = False
