@@ -12,7 +12,7 @@ from insert_rabbitmq import insert_rabbitmq
 def insert_hotel_base_data_task_info(args):
     sql = "REPLACE INTO hotel_base_data_task (source, source_id, city_id, hotel_url) VALUES (%s, %s, %s, %s)"
     try:
-        db.execute_many_into_spider_db(sql=sql, args=args)
+        db.execute_into_spider_db(sql=sql, args=args)
     except Exception:
         logger.exception("Insert Task Data Error")
 
