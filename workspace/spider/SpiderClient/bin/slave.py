@@ -7,7 +7,6 @@
 
 """
 from gevent import monkey
-
 monkey.patch_all()
 
 import os
@@ -337,6 +336,7 @@ if __name__ == "__main__":
     mysql_host = config_helper.mysql_host
     mysql_user = config_helper.mysql_user
     mysql_passwd = config_helper.mysql_passwd
+    env = config_helper.env
 
     init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
     # 例行抓取
@@ -376,7 +376,7 @@ if __name__ == "__main__":
     if host in mt_ip_dict:
         host = mt_ip_dict[host]
 
-    slave = Slave(host, port, master_host, workers,
+    slave = Slave(host, port, master_host, workers, env,
                   recv_real_time_request=is_recv_real_time_request)
 
     slave.info.name = 'random_client'

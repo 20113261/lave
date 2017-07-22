@@ -16,6 +16,7 @@ class ConfigHelper:
 
         self.proxy_host = '10.10.239.46:8087'
         self.master_host = '10.10.99.53:4141'
+        self.env = 'Test'
         self.redis_host = '10.10.24.130'
         self.redis_port = 6379
         #  self.redis_db = self.config.getint('redis', 'db')
@@ -51,6 +52,7 @@ class ConfigHelper:
 
         self.is_recv_real_time_request = self.config.getint("slave", "recv_real_time_request")
         self.thread_num = self.config.getint("slave", "thread_num")
+        self.env = self.config.get('slave' ,'env')
 
         self.data_type = dict(self.config.items('data_type'))
 
