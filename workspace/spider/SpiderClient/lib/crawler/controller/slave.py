@@ -41,8 +41,9 @@ class Slave(object):
         # timer，用来定时发送heartbeat状态
         self.env = env
         self.redis = redis.Redis(host='10.10.173.116', port=6379,
-                                password='MiojiRedisOrzSpiderVerify', db=1)
+                                 password='MiojiRedisOrzSpiderVerify', db=1)
         self.__timer = timer.Timer(HEARTBEAT_TIME_SPAN, self.heartbeat)
+        self.__timer_new = timer.Timer(HEARTBEAT_TIME_SPAN, self.__heartbeat)
         # 互斥信号量
         self.__sem = threading.Semaphore()
         self.__workers = workers
@@ -66,6 +67,7 @@ class Slave(object):
 
         # start the timer
         self.__timer.start()
+        self.__timer_new.start()
 
         # start the workers
         self.__workers.start()
@@ -87,7 +89,6 @@ class Slave(object):
             向master发起心跳请求，上报目前状态
         '''
         query_json = {"server_ip":self.info.service_address}
-        import json
         query_json_str = json.dumps(query_json)
         data = {"name": self.info.name,
                 "server": self.info.local_ip,
@@ -108,7 +109,7 @@ class Slave(object):
             #test for router done
 
             http_client.HttpClient(self.__master_host).get(path)
-        except Exception,e:
+        except Exception, e:
             import traceback
             error_info = str(traceback.format_exc().split('\n'))
             print 'heartbeat_error:' + error_info
