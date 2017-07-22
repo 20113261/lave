@@ -81,7 +81,40 @@ class Slave(object):
         '''
         self.__server.register(path, func)
 
+
     def heartbeat(self):
+        '''
+            向master发起心跳请求，上报目前状态
+        '''
+        query_json = {"server_ip":self.info.service_address}
+        import json
+        query_json_str = json.dumps(query_json)
+        data = {"name": self.info.name,
+                "server": self.info.local_ip,
+                "path": self.info.path,
+                "server_ip": self.info.service_address,
+                "query": query_json_str,
+                "type": "heartbeat",
+                'recv_real_time_request': self.info.recv_real_time_request}
+
+        path = "/heartbeat?" + urllib.urlencode(data)
+        try:
+            ###test for router
+            #try:
+            #    router_test_host = '10.10.244.26:48068'
+            #    http_client.HttpClient(router_test_host).get(path)
+            #except Exception,e:
+            #    print 'heartbeat for eouter test fail'
+            #test for router done
+
+            http_client.HttpClient(self.__master_host).get(path)
+        except Exception,e:
+            import traceback
+            error_info = str(traceback.format_exc().split('\n'))
+            print 'heartbeat_error:' + error_info
+
+
+    def __heartbeat(self):
         '''
             put signal in a redis to let router know this process is alive
         '''
