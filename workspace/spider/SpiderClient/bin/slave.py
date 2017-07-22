@@ -30,6 +30,7 @@ import json
 import traceback
 import sys
 import new
+import socket
 import gevent.pool
 from mioji.common.parser_except import ParserException
 
@@ -42,18 +43,29 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
-def getLocalIp(ifname='eth0'):
-    import socket
-    import fcntl
-    import struct
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
-    ret = socket.inet_ntoa(inet[20:24])
-    return ret
+# def getLocalIp(ifname='eth0'):
+#     import socket
+#     import fcntl
+#     import struct
+#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#     inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
+#     ret = socket.inet_ntoa(inet[20:24])
+#     return ret
 
 
 mysql_db_pool = None
 
+
+def getLocalIp():
+    res = ''
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        res = s.getsockname()[0]
+        s.close()
+    except Exception:
+        pass
+    return res
 
 def init_mysql_connections(host='10.10.228.253', user='mioji_admin', passwd='mioji1109', db='crawl'):
     global mysql_db_pool

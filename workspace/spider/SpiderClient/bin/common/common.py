@@ -6,8 +6,8 @@
     @desc:
 
 '''
-import jsonlib
 import time
+import socket
 from util import http_client
 from logger import logger
 from conf_manage import ConfigHelper
@@ -18,13 +18,16 @@ proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
 
 
-def getLocalIp(ifname='eth0'):
-    import socket, fcntl, struct
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    inet = fcntl.ioctl(s.fileno(), 0x8915, struct.pack('256s', ifname[:15]))
-
-    ret = socket.inet_ntoa(inet[20:24])
-    return ret
+def getLocalIp():
+    res = ''
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        res = s.getsockname()[0]
+        s.close()
+    except Exception:
+        pass
+    return res
 
 
 def set_proxy_client(client):
