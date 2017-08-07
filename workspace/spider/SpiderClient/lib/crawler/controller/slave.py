@@ -66,7 +66,8 @@ class Slave(object):
             pass
 
         # start the timer
-        self.__timer.start()
+        # 取消 http 心跳
+        # self.__timer.start()
         self.__timer_new.start()
 
         # start the workers
