@@ -243,7 +243,7 @@ def request(params):
     req_uid = None
     try:
         task.error = '12'
-        req_tasks = eval(urllib.unquote(params.get('req')))
+        req_tasks = json.loads(urllib.unquote(params.get('req')))
         req_qid = params.get('qid')
         task.req_qid = req_qid
         req_uid = params.get('uid')
