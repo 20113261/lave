@@ -1,0 +1,12 @@
+[submodule "workspace/spider/SpiderClient/bin/MeiYaApiFlight"]
+	path = workspace/spider/SpiderClient/bin/MeiYaApiFlight
+	url = http://gitlab.uc.online/spider/MeiYaApiFlight.git
+[submodule "workspace/spider/SpiderClient/bin/JacApiHotel"]
+	path = workspace/spider/SpiderClient/bin/JacApiHotel
+	url = http://gitlab.uc.online/spider/JacApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/DaolvApiHotel"]
+	path = workspace/spider/SpiderClient/bin/DaolvApiHotel
+	url = http://gitlab.uc.online/spider/DaolvApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/huangbaoche"]
+	path = workspace/spider/SpiderClient/bin/huangbaoche
+	url = http://gitlab.uc.online/spider/huangbaoche.git
