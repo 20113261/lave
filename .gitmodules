@@ -1,0 +1,3 @@
+[submodule "workspace/spider/SpiderClient/bin/MeiYaApiFlight"]
+	path = workspace/spider/SpiderClient/bin/MeiYaApiFlight
+	url = http://gitlab.uc.online/spider/MeiYaApiFlight.git
