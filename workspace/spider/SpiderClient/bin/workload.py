@@ -19,6 +19,8 @@ from common.logger import logger
 from crawler.workload import WorkloadStorable
 from util.http_client import HttpClientPool, HttpClient
 import redis
+import pika
+import traceback
 
 from gevent.queue import Queue, Empty
 
@@ -152,11 +154,14 @@ class ControllerWorkload(WorkloadStorable):
                 except Exception, e:
                     logger.exception('not redis con' + str(e))
 
-                url = 'http://{0}/?type={1}&qid={2}&uid={3}&query={4}' \
-                    .format(task.host, task.callback_type, task.req_qid, task.req_uid, urllib.quote(json.dumps(query)))
-
-                HttpClient(task.host).get(url)
-                logger.info("[error_code 信息入库 http code: {0} url: {1}]".format(Error, url))
+                # 临时兼容，有mq配置使用mq推送
+                if task.master_info.get('spider_mq_host', None):
+                    call_back_toservice(task, query)
+                else:
+                    url = 'http://{0}/?type={1}&qid={2}&uid={3}&query={4}' \
+                        .format(task.host, task.callback_type, task.req_qid, task.req_uid, urllib.quote(json.dumps(query)))
+                    HttpClient(task.host).get(url)
+                    logger.info("[error_code 信息入库 http code: {0} url: {1}]".format(Error, url))
                 return True
 
             len_key = 1
@@ -175,6 +180,7 @@ class ControllerWorkload(WorkloadStorable):
             logger.exception("complete a task fail. error = " + str(e))
 
         return True
+
 
     def complete_workloads(self):
         if self.__flag:
@@ -224,3 +230,46 @@ class ControllerWorkload(WorkloadStorable):
             获得指定任务的状态
         """
         pass
+
+
+def call_back_toservice(task, query):
+    logger.debug('[callback a verifytask by rabbitmq]')
+    try:
+        credentials = pika.PlainCredentials(username=task.master_info['spider_mq_user']
+                                            , password=task.master_info['spider_mq_passwd'])
+        connection = pika.BlockingConnection(
+            pika.ConnectionParameters(
+                host=task.master_info['spider_mq_host'], virtual_host=task.master_info['spider_mq_vhost'], credentials=credentials
+            )
+        )
+        channel = connection.channel()
+
+        msg = json.dumps({
+            'qid': task.req_qid, 'type': task.callback_type,
+            'uid': task.req_uid, 'query': json.dumps(query)
+        })
+
+        res = channel.basic_publish(
+            exchange=task.master_info['spider_mq_exchange'],
+            routing_key=task.master_info['spider_mq_routerKey'],
+            properties=pika.BasicProperties(delivery_mode=2),
+            body=msg,
+        )
+        connection.close()
+        if not res:
+            raise Exception('RabbitMQ Result False')
+        logger.debug('[callback a verifytask done]')
+    except Exception as exc:
+        logger.exception("callback a task fail. error = {0}".format(traceback.format_exc()))
+
+
+if __name__ == '__main__':
+    task = Task()
+    a= {"content":"MXP&FCO&20170827|FCO&VCE&20170830","csuid":"","master_info":{"master_addr":"10.10.155.146:48067","redis_addr":"10.10.173.116:6379","redis_db":0,"redis_passwd":"MiojiRedisOrzSpiderVerify","spider_mq_exchange":"spiderToVerify","spider_mq_exchangeType":"direct","spider_mq_host":"10.19.131.242","spider_mq_passwd":"miaoji1109","spider_mq_port":"5672","spider_mq_queue":"spider_callback_data","spider_mq_routerKey":"scv101","spider_mq_user":"writer","spider_mq_vhost":"test"},"other_info":{"cache_key":"preflightmulti|10005|10002|20170827|10002|10003|20170830|travelocity|E","callback_type":"scv101","csuid":"","data_type":"flightmulti_new_pre_verify","machine_ip":"10.10.231.156","machine_port":8089,"ptid":"ptid","qid":"1504250930338","redis_key":["flightmulti_new_pre_verify|MXP&FCO&20170827|FCO&VCE&20170830|travelocity|E|10.10.231.156:8089|1504250930338|388325ab112e52427ce4819764c54294|0"],"req_type":"v107","request_begin_time":"1504250930374","result_source_redis_key":"flightmulti_new_pre_verify_1504250930338_ptid_388325ab112e52427ce4819764c54294|travelocity|E_10.10.231.156:8089","source":"travelocityMultiFlight","src":"travelocity","ticket_info":{"csuid":"","env_name":"offline","md5":"388325ab112e52427ce4819764c54294","ptid":"ptid","qid":"1504250930338","tid":"","uid":"test","v_seat_type":"E","verify_type":"pre_verify"},"ticket_md5":"388325ab112e52427ce4819764c54294","tid":"","uid":"test"},"ptid":"ptid","qid":"1504250930338","source":"travelocityMultiFlight","ticket_info":{"csuid":"","env_name":"offline","md5":"388325ab112e52427ce4819764c54294","ptid":"ptid","qid":"1504250930338","tid":"","uid":"test","v_seat_type":"E","verify_type":"pre_verify"},"tid":"","uid":"test"}
+    task.parse('''''')
+    task.req_qid = '1'
+    task.req_uid = '22'
+    task.callback_type = 'scv101'
+    task.master_info = a['master_info']
+    print task.master_info
+    call_back_toservice(task, {'code': 1000})
