@@ -10,3 +10,540 @@
 [submodule "workspace/spider/SpiderClient/bin/huangbaoche"]
 	path = workspace/spider/SpiderClient/bin/huangbaoche
 	url = http://gitlab.uc.online/spider/huangbaoche.git
+[submodule "workspace/spider/SpiderClient/bin/accor"]
+	path = workspace/spider/SpiderClient/bin/accor
+	url = http://gitlab.uc.online/spider/accor.git
+[submodule "workspace/spider/SpiderClient/bin/aeroflot"]
+	path = workspace/spider/SpiderClient/bin/aeroflot
+	url = http://gitlab.uc.online/spider/aeroflot.git
+[submodule "workspace/spider/SpiderClient/bin/agoda"]
+	path = workspace/spider/SpiderClient/bin/agoda
+	url = http://gitlab.uc.online/spider/agoda.git
+[submodule "workspace/spider/SpiderClient/bin/agodaApiHotel"]
+	path = workspace/spider/SpiderClient/bin/agodaApiHotel
+	url = http://gitlab.uc.online/spider/agodaApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/agodaListHotel"]
+	path = workspace/spider/SpiderClient/bin/agodaListHotel
+	url = http://gitlab.uc.online/spider/agodaListHotel.git
+[submodule "workspace/spider/SpiderClient/bin/airberlin"]
+	path = workspace/spider/SpiderClient/bin/airberlin
+	url = http://gitlab.uc.online/spider/airberlin.git
+[submodule "workspace/spider/SpiderClient/bin/airchina"]
+	path = workspace/spider/SpiderClient/bin/airchina
+	url = http://gitlab.uc.online/spider/airchina.git
+[submodule "workspace/spider/SpiderClient/bin/airchinaEN"]
+	path = workspace/spider/SpiderClient/bin/airchinaEN
+	url = http://gitlab.uc.online/spider/airchinaEN.git
+[submodule "workspace/spider/SpiderClient/bin/airfrance"]
+	path = workspace/spider/SpiderClient/bin/airfrance
+	url = http://gitlab.uc.online/spider/airfrance.git
+[submodule "workspace/spider/SpiderClient/bin/airfranceEN"]
+	path = workspace/spider/SpiderClient/bin/airfranceEN
+	url = http://gitlab.uc.online/spider/airfranceEN.git
+[submodule "workspace/spider/SpiderClient/bin/airfranceRound"]
+	path = workspace/spider/SpiderClient/bin/airfranceRound
+	url = http://gitlab.uc.online/spider/airfranceRound.git
+[submodule "workspace/spider/SpiderClient/bin/airkx"]
+	path = workspace/spider/SpiderClient/bin/airkx
+	url = http://gitlab.uc.online/spider/airkx.git
+[submodule "workspace/spider/SpiderClient/bin/airtickets24"]
+	path = workspace/spider/SpiderClient/bin/airtickets24
+	url = http://gitlab.uc.online/spider/airtickets24.git
+[submodule "workspace/spider/SpiderClient/bin/aliFlight"]
+	path = workspace/spider/SpiderClient/bin/aliFlight
+	url = http://gitlab.uc.online/spider/aliFlight.git
+[submodule "workspace/spider/SpiderClient/bin/american"]
+	path = workspace/spider/SpiderClient/bin/american
+	url = http://gitlab.uc.online/spider/american.git
+[submodule "workspace/spider/SpiderClient/bin/amoma"]
+	path = workspace/spider/SpiderClient/bin/amoma
+	url = http://gitlab.uc.online/spider/amoma.git
+[submodule "workspace/spider/SpiderClient/bin/amtrak"]
+	path = workspace/spider/SpiderClient/bin/amtrak
+	url = http://gitlab.uc.online/spider/amtrak.git
+[submodule "workspace/spider/SpiderClient/bin/ana"]
+	path = workspace/spider/SpiderClient/bin/ana
+	url = http://gitlab.uc.online/spider/ana.git
+[submodule "workspace/spider/SpiderClient/bin/austrianAirlinesFlight"]
+	path = workspace/spider/SpiderClient/bin/austrianAirlinesFlight
+	url = http://gitlab.uc.online/spider/austrianAirlinesFlight.git
+[submodule "workspace/spider/SpiderClient/bin/bahn"]
+	path = workspace/spider/SpiderClient/bin/bahn
+	url = http://gitlab.uc.online/spider/bahn.git
+[submodule "workspace/spider/SpiderClient/bin/BiQuApiFlight"]
+	path = workspace/spider/SpiderClient/bin/BiQuApiFlight
+	url = http://gitlab.uc.online/spider/BiQuApiFlight.git
+[submodule "workspace/spider/SpiderClient/bin/booking"]
+	path = workspace/spider/SpiderClient/bin/booking
+	url = http://gitlab.uc.online/spider/booking.git
+[submodule "workspace/spider/SpiderClient/bin/bookingList"]
+	path = workspace/spider/SpiderClient/bin/bookingList
+	url = http://gitlab.uc.online/spider/bookingList.git
+[submodule "workspace/spider/SpiderClient/bin/bookingStarList"]
+	path = workspace/spider/SpiderClient/bin/bookingStarList
+	url = http://gitlab.uc.online/spider/bookingStarList.git
+[submodule "workspace/spider/SpiderClient/bin/britishair"]
+	path = workspace/spider/SpiderClient/bin/britishair
+	url = http://gitlab.uc.online/spider/britishair.git
+[submodule "workspace/spider/SpiderClient/bin/britishairRound"]
+	path = workspace/spider/SpiderClient/bin/britishairRound
+	url = http://gitlab.uc.online/spider/britishairRound.git
+[submodule "workspace/spider/SpiderClient/bin/britishApi"]
+	path = workspace/spider/SpiderClient/bin/britishApi
+	url = http://gitlab.uc.online/spider/britishApi.git
+[submodule "workspace/spider/SpiderClient/bin/budgetair"]
+	path = workspace/spider/SpiderClient/bin/budgetair
+	url = http://gitlab.uc.online/spider/budgetair.git
+[submodule "workspace/spider/SpiderClient/bin/ceair"]
+	path = workspace/spider/SpiderClient/bin/ceair
+	url = http://gitlab.uc.online/spider/ceair.git
+[submodule "workspace/spider/SpiderClient/bin/cheapAir"]
+	path = workspace/spider/SpiderClient/bin/cheapAir
+	url = http://gitlab.uc.online/spider/cheapAir.git
+[submodule "workspace/spider/SpiderClient/bin/cheapoair"]
+	path = workspace/spider/SpiderClient/bin/cheapoair
+	url = http://gitlab.uc.online/spider/cheapoair.git
+[submodule "workspace/spider/SpiderClient/bin/cheaptickets"]
+	path = workspace/spider/SpiderClient/bin/cheaptickets
+	url = http://gitlab.uc.online/spider/cheaptickets.git
+[submodule "workspace/spider/SpiderClient/bin/cheapticketsHotel"]
+	path = workspace/spider/SpiderClient/bin/cheapticketsHotel
+	url = http://gitlab.uc.online/spider/cheapticketsHotel.git
+[submodule "workspace/spider/SpiderClient/bin/cheapticketsList"]
+	path = workspace/spider/SpiderClient/bin/cheapticketsList
+	url = http://gitlab.uc.online/spider/cheapticketsList.git
+[submodule "workspace/spider/SpiderClient/bin/cheapticketsmulti"]
+	path = workspace/spider/SpiderClient/bin/cheapticketsmulti
+	url = http://gitlab.uc.online/spider/cheapticketsmulti.git
+[submodule "workspace/spider/SpiderClient/bin/cheapticketsRound"]
+	path = workspace/spider/SpiderClient/bin/cheapticketsRound
+	url = http://gitlab.uc.online/spider/cheapticketsRound.git
+[submodule "workspace/spider/SpiderClient/bin/cleartrip"]
+	path = workspace/spider/SpiderClient/bin/cleartrip
+	url = http://gitlab.uc.online/spider/cleartrip.git
+[submodule "workspace/spider/SpiderClient/bin/cleartripmulti"]
+	path = workspace/spider/SpiderClient/bin/cleartripmulti
+	url = http://gitlab.uc.online/spider/cleartripmulti.git
+[submodule "workspace/spider/SpiderClient/bin/cleartripRound"]
+	path = workspace/spider/SpiderClient/bin/cleartripRound
+	url = http://gitlab.uc.online/spider/cleartripRound.git
+[submodule "workspace/spider/SpiderClient/bin/csair"]
+	path = workspace/spider/SpiderClient/bin/csair
+	url = http://gitlab.uc.online/spider/csair.git
+[submodule "workspace/spider/SpiderClient/bin/ctripCar"]
+	path = workspace/spider/SpiderClient/bin/ctripCar
+	url = http://gitlab.uc.online/spider/ctripCar.git
+[submodule "workspace/spider/SpiderClient/bin/ctripDomestic"]
+	path = workspace/spider/SpiderClient/bin/ctripDomestic
+	url = http://gitlab.uc.online/spider/ctripDomestic.git
+[submodule "workspace/spider/SpiderClient/bin/ctripFlight"]
+	path = workspace/spider/SpiderClient/bin/ctripFlight
+	url = http://gitlab.uc.online/spider/ctripFlight.git
+[submodule "workspace/spider/SpiderClient/bin/ctripFlight_api"]
+	path = workspace/spider/SpiderClient/bin/ctripFlight_api
+	url = http://gitlab.uc.online/spider/ctripFlight_api.git
+[submodule "workspace/spider/SpiderClient/bin/ctripHotel"]
+	path = workspace/spider/SpiderClient/bin/ctripHotel
+	url = http://gitlab.uc.online/spider/ctripHotel.git
+[submodule "workspace/spider/SpiderClient/bin/ctripList"]
+	path = workspace/spider/SpiderClient/bin/ctripList
+	url = http://gitlab.uc.online/spider/ctripList.git
+[submodule "workspace/spider/SpiderClient/bin/ctripmulti"]
+	path = workspace/spider/SpiderClient/bin/ctripmulti
+	url = http://gitlab.uc.online/spider/ctripmulti.git
+[submodule "workspace/spider/SpiderClient/bin/ctripOtaRail"]
+	path = workspace/spider/SpiderClient/bin/ctripOtaRail
+	url = http://gitlab.uc.online/spider/ctripOtaRail.git
+[submodule "workspace/spider/SpiderClient/bin/ctripRound"]
+	path = workspace/spider/SpiderClient/bin/ctripRound
+	url = http://gitlab.uc.online/spider/ctripRound.git
+[submodule "workspace/spider/SpiderClient/bin/ctripTWRail"]
+	path = workspace/spider/SpiderClient/bin/ctripTWRail
+	url = http://gitlab.uc.online/spider/ctripTWRail.git
+[submodule "workspace/spider/SpiderClient/bin/easybook"]
+	path = workspace/spider/SpiderClient/bin/easybook
+	url = http://gitlab.uc.online/spider/easybook.git
+[submodule "workspace/spider/SpiderClient/bin/easyjet"]
+	path = workspace/spider/SpiderClient/bin/easyjet
+	url = http://gitlab.uc.online/spider/easyjet.git
+[submodule "workspace/spider/SpiderClient/bin/ebookers"]
+	path = workspace/spider/SpiderClient/bin/ebookers
+	url = http://gitlab.uc.online/spider/ebookers.git
+[submodule "workspace/spider/SpiderClient/bin/ebookersHotel"]
+	path = workspace/spider/SpiderClient/bin/ebookersHotel
+	url = http://gitlab.uc.online/spider/ebookersHotel.git
+[submodule "workspace/spider/SpiderClient/bin/ebookersList"]
+	path = workspace/spider/SpiderClient/bin/ebookersList
+	url = http://gitlab.uc.online/spider/ebookersList.git
+[submodule "workspace/spider/SpiderClient/bin/ebookersRound"]
+	path = workspace/spider/SpiderClient/bin/ebookersRound
+	url = http://gitlab.uc.online/spider/ebookersRound.git
+[submodule "workspace/spider/SpiderClient/bin/edreams"]
+	path = workspace/spider/SpiderClient/bin/edreams
+	url = http://gitlab.uc.online/spider/edreams.git
+[submodule "workspace/spider/SpiderClient/bin/edreamsRoundFlight"]
+	path = workspace/spider/SpiderClient/bin/edreamsRoundFlight
+	url = http://gitlab.uc.online/spider/edreamsRoundFlight.git
+[submodule "workspace/spider/SpiderClient/bin/elongENHotel"]
+	path = workspace/spider/SpiderClient/bin/elongENHotel
+	url = http://gitlab.uc.online/spider/elongENHotel.git
+[submodule "workspace/spider/SpiderClient/bin/elongFlight"]
+	path = workspace/spider/SpiderClient/bin/elongFlight
+	url = http://gitlab.uc.online/spider/elongFlight.git
+[submodule "workspace/spider/SpiderClient/bin/elongHotel"]
+	path = workspace/spider/SpiderClient/bin/elongHotel
+	url = http://gitlab.uc.online/spider/elongHotel.git
+[submodule "workspace/spider/SpiderClient/bin/elongList"]
+	path = workspace/spider/SpiderClient/bin/elongList
+	url = http://gitlab.uc.online/spider/elongList.git
+[submodule "workspace/spider/SpiderClient/bin/emirates"]
+	path = workspace/spider/SpiderClient/bin/emirates
+	url = http://gitlab.uc.online/spider/emirates.git
+[submodule "workspace/spider/SpiderClient/bin/europerail"]
+	path = workspace/spider/SpiderClient/bin/europerail
+	url = http://gitlab.uc.online/spider/europerail.git
+[submodule "workspace/spider/SpiderClient/bin/eurostar"]
+	path = workspace/spider/SpiderClient/bin/eurostar
+	url = http://gitlab.uc.online/spider/eurostar.git
+[submodule "workspace/spider/SpiderClient/bin/expediaENFlight"]
+	path = workspace/spider/SpiderClient/bin/expediaENFlight
+	url = http://gitlab.uc.online/spider/expediaENFlight.git
+[submodule "workspace/spider/SpiderClient/bin/expediaFlight"]
+	path = workspace/spider/SpiderClient/bin/expediaFlight
+	url = http://gitlab.uc.online/spider/expediaFlight.git
+[submodule "workspace/spider/SpiderClient/bin/expediaHotel"]
+	path = workspace/spider/SpiderClient/bin/expediaHotel
+	url = http://gitlab.uc.online/spider/expediaHotel.git
+[submodule "workspace/spider/SpiderClient/bin/expediaHotelSearchApi"]
+	path = workspace/spider/SpiderClient/bin/expediaHotelSearchApi
+	url = http://gitlab.uc.online/spider/expediaHotelSearchApi.git
+[submodule "workspace/spider/SpiderClient/bin/expediaList"]
+	path = workspace/spider/SpiderClient/bin/expediaList
+	url = http://gitlab.uc.online/spider/expediaList.git
+[submodule "workspace/spider/SpiderClient/bin/expediamulti"]
+	path = workspace/spider/SpiderClient/bin/expediamulti
+	url = http://gitlab.uc.online/spider/expediamulti.git
+[submodule "workspace/spider/SpiderClient/bin/fare2goApiFlight"]
+	path = workspace/spider/SpiderClient/bin/fare2goApiFlight
+	url = http://gitlab.uc.online/spider/fare2goApiFlight.git
+[submodule "workspace/spider/SpiderClient/bin/fare2gomulti"]
+	path = workspace/spider/SpiderClient/bin/fare2gomulti
+	url = http://gitlab.uc.online/spider/fare2gomulti.git
+[submodule "workspace/spider/SpiderClient/bin/feiquanqiu"]
+	path = workspace/spider/SpiderClient/bin/feiquanqiu
+	url = http://gitlab.uc.online/spider/feiquanqiu.git
+[submodule "workspace/spider/SpiderClient/bin/flixbus"]
+	path = workspace/spider/SpiderClient/bin/flixbus
+	url = http://gitlab.uc.online/spider/flixbus.git
+[submodule "workspace/spider/SpiderClient/bin/germanyrailApi"]
+	path = workspace/spider/SpiderClient/bin/germanyrailApi
+	url = http://gitlab.uc.online/spider/germanyrailApi.git
+[submodule "workspace/spider/SpiderClient/bin/googleflightsflight"]
+	path = workspace/spider/SpiderClient/bin/googleflightsflight
+	url = http://gitlab.uc.online/spider/googleflightsflight.git
+[submodule "workspace/spider/SpiderClient/bin/gotogateFlight"]
+	path = workspace/spider/SpiderClient/bin/gotogateFlight
+	url = http://gitlab.uc.online/spider/gotogateFlight.git
+[submodule "workspace/spider/SpiderClient/bin/greyhound"]
+	path = workspace/spider/SpiderClient/bin/greyhound
+	url = http://gitlab.uc.online/spider/greyhound.git
+[submodule "workspace/spider/SpiderClient/bin/gtaHotelApi"]
+	path = workspace/spider/SpiderClient/bin/gtaHotelApi
+	url = http://gitlab.uc.online/spider/gtaHotelApi.git
+[submodule "workspace/spider/SpiderClient/bin/haoqiaoApiHotel"]
+	path = workspace/spider/SpiderClient/bin/haoqiaoApiHotel
+	url = http://gitlab.uc.online/spider/haoqiaoApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/hilton"]
+	path = workspace/spider/SpiderClient/bin/hilton
+	url = http://gitlab.uc.online/spider/hilton.git
+[submodule "workspace/spider/SpiderClient/bin/hnair"]
+	path = workspace/spider/SpiderClient/bin/hnair
+	url = http://gitlab.uc.online/spider/hnair.git
+[submodule "workspace/spider/SpiderClient/bin/hnairEN"]
+	path = workspace/spider/SpiderClient/bin/hnairEN
+	url = http://gitlab.uc.online/spider/hnairEN.git
+[submodule "workspace/spider/SpiderClient/bin/hostelworld"]
+	path = workspace/spider/SpiderClient/bin/hostelworld
+	url = http://gitlab.uc.online/spider/hostelworld.git
+[submodule "workspace/spider/SpiderClient/bin/hostelworldList"]
+	path = workspace/spider/SpiderClient/bin/hostelworldList
+	url = http://gitlab.uc.online/spider/hostelworldList.git
+[submodule "workspace/spider/SpiderClient/bin/hotelbeds"]
+	path = workspace/spider/SpiderClient/bin/hotelbeds
+	url = http://gitlab.uc.online/spider/hotelbeds.git
+[submodule "workspace/spider/SpiderClient/bin/hotelclub"]
+	path = workspace/spider/SpiderClient/bin/hotelclub
+	url = http://gitlab.uc.online/spider/hotelclub.git
+[submodule "workspace/spider/SpiderClient/bin/hotelclubList"]
+	path = workspace/spider/SpiderClient/bin/hotelclubList
+	url = http://gitlab.uc.online/spider/hotelclubList.git
+[submodule "workspace/spider/SpiderClient/bin/hotels"]
+	path = workspace/spider/SpiderClient/bin/hotels
+	url = http://gitlab.uc.online/spider/hotels.git
+[submodule "workspace/spider/SpiderClient/bin/hotelsList"]
+	path = workspace/spider/SpiderClient/bin/hotelsList
+	url = http://gitlab.uc.online/spider/hotelsList.git
+[submodule "workspace/spider/SpiderClient/bin/hoteltravel"]
+	path = workspace/spider/SpiderClient/bin/hoteltravel
+	url = http://gitlab.uc.online/spider/hoteltravel.git
+[submodule "workspace/spider/SpiderClient/bin/hoteltravel_validation"]
+	path = workspace/spider/SpiderClient/bin/hoteltravel_validation
+	url = http://gitlab.uc.online/spider/hoteltravel_validation.git
+[submodule "workspace/spider/SpiderClient/bin/hotwireHotel"]
+	path = workspace/spider/SpiderClient/bin/hotwireHotel
+	url = http://gitlab.uc.online/spider/hotwireHotel.git
+[submodule "workspace/spider/SpiderClient/bin/hrs"]
+	path = workspace/spider/SpiderClient/bin/hrs
+	url = http://gitlab.uc.online/spider/hrs.git
+[submodule "workspace/spider/SpiderClient/bin/hrs_validation"]
+	path = workspace/spider/SpiderClient/bin/hrs_validation
+	url = http://gitlab.uc.online/spider/hrs_validation.git
+[submodule "workspace/spider/SpiderClient/bin/huifee"]
+	path = workspace/spider/SpiderClient/bin/huifee
+	url = http://gitlab.uc.online/spider/huifee.git
+[submodule "workspace/spider/SpiderClient/bin/huizuche"]
+	path = workspace/spider/SpiderClient/bin/huizuche
+	url = http://gitlab.uc.online/spider/huizuche.git
+[submodule "workspace/spider/SpiderClient/bin/idbus"]
+	path = workspace/spider/SpiderClient/bin/idbus
+	url = http://gitlab.uc.online/spider/idbus.git
+[submodule "workspace/spider/SpiderClient/bin/ihg"]
+	path = workspace/spider/SpiderClient/bin/ihg
+	url = http://gitlab.uc.online/spider/ihg.git
+[submodule "workspace/spider/SpiderClient/bin/innstantApiHotel"]
+	path = workspace/spider/SpiderClient/bin/innstantApiHotel
+	url = http://gitlab.uc.online/spider/innstantApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/italiarail"]
+	path = workspace/spider/SpiderClient/bin/italiarail
+	url = http://gitlab.uc.online/spider/italiarail.git
+[submodule "workspace/spider/SpiderClient/bin/jijitongRound"]
+	path = workspace/spider/SpiderClient/bin/jijitongRound
+	url = http://gitlab.uc.online/spider/jijitongRound.git
+[submodule "workspace/spider/SpiderClient/bin/jintong_api"]
+	path = workspace/spider/SpiderClient/bin/jintong_api
+	url = http://gitlab.uc.online/spider/jintong_api.git
+[submodule "workspace/spider/SpiderClient/bin/kempinski"]
+	path = workspace/spider/SpiderClient/bin/kempinski
+	url = http://gitlab.uc.online/spider/kempinski.git
+[submodule "workspace/spider/SpiderClient/bin/kopu"]
+	path = workspace/spider/SpiderClient/bin/kopu
+	url = http://gitlab.uc.online/spider/kopu.git
+[submodule "workspace/spider/SpiderClient/bin/kopu_api"]
+	path = workspace/spider/SpiderClient/bin/kopu_api
+	url = http://gitlab.uc.online/spider/kopu_api.git
+[submodule "workspace/spider/SpiderClient/bin/korailRail"]
+	path = workspace/spider/SpiderClient/bin/korailRail
+	url = http://gitlab.uc.online/spider/korailRail.git
+[submodule "workspace/spider/SpiderClient/bin/lcair"]
+	path = workspace/spider/SpiderClient/bin/lcair
+	url = http://gitlab.uc.online/spider/lcair.git
+[submodule "workspace/spider/SpiderClient/bin/lcairRound"]
+	path = workspace/spider/SpiderClient/bin/lcairRound
+	url = http://gitlab.uc.online/spider/lcairRound.git
+[submodule "workspace/spider/SpiderClient/bin/loco2Rail"]
+	path = workspace/spider/SpiderClient/bin/loco2Rail
+	url = http://gitlab.uc.online/spider/loco2Rail.git
+[submodule "workspace/spider/SpiderClient/bin/lufthansa"]
+	path = workspace/spider/SpiderClient/bin/lufthansa
+	url = http://gitlab.uc.online/spider/lufthansa.git
+[submodule "workspace/spider/SpiderClient/bin/mango"]
+	path = workspace/spider/SpiderClient/bin/mango
+	url = http://gitlab.uc.online/spider/mango.git
+[submodule "workspace/spider/SpiderClient/bin/mangodomestic"]
+	path = workspace/spider/SpiderClient/bin/mangodomestic
+	url = http://gitlab.uc.online/spider/mangodomestic.git
+[submodule "workspace/spider/SpiderClient/bin/marriott"]
+	path = workspace/spider/SpiderClient/bin/marriott
+	url = http://gitlab.uc.online/spider/marriott.git
+[submodule "workspace/spider/SpiderClient/bin/megabusCA"]
+	path = workspace/spider/SpiderClient/bin/megabusCA
+	url = http://gitlab.uc.online/spider/megabusCA.git
+[submodule "workspace/spider/SpiderClient/bin/megabusUK"]
+	path = workspace/spider/SpiderClient/bin/megabusUK
+	url = http://gitlab.uc.online/spider/megabusUK.git
+[submodule "workspace/spider/SpiderClient/bin/megabusUS"]
+	path = workspace/spider/SpiderClient/bin/megabusUS
+	url = http://gitlab.uc.online/spider/megabusUS.git
+[submodule "workspace/spider/SpiderClient/bin/mytrip"]
+	path = workspace/spider/SpiderClient/bin/mytrip
+	url = http://gitlab.uc.online/spider/mytrip.git
+[submodule "workspace/spider/SpiderClient/bin/nationalrail"]
+	path = workspace/spider/SpiderClient/bin/nationalrail
+	url = http://gitlab.uc.online/spider/nationalrail.git
+[submodule "workspace/spider/SpiderClient/bin/navitimeBus"]
+	path = workspace/spider/SpiderClient/bin/navitimeBus
+	url = http://gitlab.uc.online/spider/navitimeBus.git
+[submodule "workspace/spider/SpiderClient/bin/omega"]
+	path = workspace/spider/SpiderClient/bin/omega
+	url = http://gitlab.uc.online/spider/omega.git
+[submodule "workspace/spider/SpiderClient/bin/onetravelFlight"]
+	path = workspace/spider/SpiderClient/bin/onetravelFlight
+	url = http://gitlab.uc.online/spider/onetravelFlight.git
+[submodule "workspace/spider/SpiderClient/bin/onetravelRound"]
+	path = workspace/spider/SpiderClient/bin/onetravelRound
+	url = http://gitlab.uc.online/spider/onetravelRound.git
+[submodule "workspace/spider/SpiderClient/bin/orbitz"]
+	path = workspace/spider/SpiderClient/bin/orbitz
+	url = http://gitlab.uc.online/spider/orbitz.git
+[submodule "workspace/spider/SpiderClient/bin/orbitzHotel"]
+	path = workspace/spider/SpiderClient/bin/orbitzHotel
+	url = http://gitlab.uc.online/spider/orbitzHotel.git
+[submodule "workspace/spider/SpiderClient/bin/orbitzListHotel"]
+	path = workspace/spider/SpiderClient/bin/orbitzListHotel
+	url = http://gitlab.uc.online/spider/orbitzListHotel.git
+[submodule "workspace/spider/SpiderClient/bin/orbitzmulti"]
+	path = workspace/spider/SpiderClient/bin/orbitzmulti
+	url = http://gitlab.uc.online/spider/orbitzmulti.git
+[submodule "workspace/spider/SpiderClient/bin/orbitzRoundFlight"]
+	path = workspace/spider/SpiderClient/bin/orbitzRoundFlight
+	url = http://gitlab.uc.online/spider/orbitzRoundFlight.git
+[submodule "workspace/spider/SpiderClient/bin/orleansexpress"]
+	path = workspace/spider/SpiderClient/bin/orleansexpress
+	url = http://gitlab.uc.online/spider/orleansexpress.git
+[submodule "workspace/spider/SpiderClient/bin/priceline"]
+	path = workspace/spider/SpiderClient/bin/priceline
+	url = http://gitlab.uc.online/spider/priceline.git
+[submodule "workspace/spider/SpiderClient/bin/pricelineRoundFlight"]
+	path = workspace/spider/SpiderClient/bin/pricelineRoundFlight
+	url = http://gitlab.uc.online/spider/pricelineRoundFlight.git
+[submodule "workspace/spider/SpiderClient/bin/qatar"]
+	path = workspace/spider/SpiderClient/bin/qatar
+	url = http://gitlab.uc.online/spider/qatar.git
+[submodule "workspace/spider/SpiderClient/bin/qunar"]
+	path = workspace/spider/SpiderClient/bin/qunar
+	url = http://gitlab.uc.online/spider/qunar.git
+[submodule "workspace/spider/SpiderClient/bin/raileuropeApi"]
+	path = workspace/spider/SpiderClient/bin/raileuropeApi
+	url = http://gitlab.uc.online/spider/raileuropeApi.git
+[submodule "workspace/spider/SpiderClient/bin/raileuropecom"]
+	path = workspace/spider/SpiderClient/bin/raileuropecom
+	url = http://gitlab.uc.online/spider/raileuropecom.git
+[submodule "workspace/spider/SpiderClient/bin/raileuropeHK"]
+	path = workspace/spider/SpiderClient/bin/raileuropeHK
+	url = http://gitlab.uc.online/spider/raileuropeHK.git
+[submodule "workspace/spider/SpiderClient/bin/raileuropeRail"]
+	path = workspace/spider/SpiderClient/bin/raileuropeRail
+	url = http://gitlab.uc.online/spider/raileuropeRail.git
+[submodule "workspace/spider/SpiderClient/bin/realtraffic"]
+	path = workspace/spider/SpiderClient/bin/realtraffic
+	url = http://gitlab.uc.online/spider/realtraffic.git
+[submodule "workspace/spider/SpiderClient/bin/refen"]
+	path = workspace/spider/SpiderClient/bin/refen
+	url = http://gitlab.uc.online/spider/refen.git
+[submodule "workspace/spider/SpiderClient/bin/ryanair"]
+	path = workspace/spider/SpiderClient/bin/ryanair
+	url = http://gitlab.uc.online/spider/ryanair.git
+[submodule "workspace/spider/SpiderClient/bin/skyscanner_api"]
+	path = workspace/spider/SpiderClient/bin/skyscanner_api
+	url = http://gitlab.uc.online/spider/skyscanner_api.git
+[submodule "workspace/spider/SpiderClient/bin/slave_develop_new"]
+	path = workspace/spider/SpiderClient/bin/slave_develop_new
+	url = http://gitlab.uc.online/spider/slave_develop_new.git
+[submodule "workspace/spider/SpiderClient/bin/sncfen"]
+	path = workspace/spider/SpiderClient/bin/sncfen
+	url = http://gitlab.uc.online/spider/sncfen.git
+[submodule "workspace/spider/SpiderClient/bin/spiderStartscript"]
+	path = workspace/spider/SpiderClient/bin/spiderStartscript
+	url = http://gitlab.uc.online/spider/spiderStartscript.git
+[submodule "workspace/spider/SpiderClient/bin/starwood"]
+	path = workspace/spider/SpiderClient/bin/starwood
+	url = http://gitlab.uc.online/spider/starwood.git
+[submodule "workspace/spider/SpiderClient/bin/studentuniverse"]
+	path = workspace/spider/SpiderClient/bin/studentuniverse
+	url = http://gitlab.uc.online/spider/studentuniverse.git
+[submodule "workspace/spider/SpiderClient/bin/studentuniverseRound"]
+	path = workspace/spider/SpiderClient/bin/studentuniverseRound
+	url = http://gitlab.uc.online/spider/studentuniverseRound.git
+[submodule "workspace/spider/SpiderClient/bin/tangrenjiePickUp"]
+	path = workspace/spider/SpiderClient/bin/tangrenjiePickUp
+	url = http://gitlab.uc.online/spider/tangrenjiePickUp.git
+[submodule "workspace/spider/SpiderClient/bin/theTrainLineRail"]
+	path = workspace/spider/SpiderClient/bin/theTrainLineRail
+	url = http://gitlab.uc.online/spider/theTrainLineRail.git
+[submodule "workspace/spider/SpiderClient/bin/tieyourail"]
+	path = workspace/spider/SpiderClient/bin/tieyourail
+	url = http://gitlab.uc.online/spider/tieyourail.git
+[submodule "workspace/spider/SpiderClient/bin/tongcheng_new"]
+	path = workspace/spider/SpiderClient/bin/tongcheng_new
+	url = http://gitlab.uc.online/spider/tongcheng_new.git
+[submodule "workspace/spider/SpiderClient/bin/touricoApiHotel"]
+	path = workspace/spider/SpiderClient/bin/touricoApiHotel
+	url = http://gitlab.uc.online/spider/touricoApiHotel.git
+[submodule "workspace/spider/SpiderClient/bin/travelfusion"]
+	path = workspace/spider/SpiderClient/bin/travelfusion
+	url = http://gitlab.uc.online/spider/travelfusion.git
+[submodule "workspace/spider/SpiderClient/bin/travelfusionApiFlight"]
+	path = workspace/spider/SpiderClient/bin/travelfusionApiFlight
+	url = http://gitlab.uc.online/spider/travelfusionApiFlight.git
+[submodule "workspace/spider/SpiderClient/bin/travelfusionApiRoundFlight"]
+	path = workspace/spider/SpiderClient/bin/travelfusionApiRoundFlight
+	url = http://gitlab.uc.online/spider/travelfusionApiRoundFlight.git
+[submodule "workspace/spider/SpiderClient/bin/travelfusionApiTrain"]
+	path = workspace/spider/SpiderClient/bin/travelfusionApiTrain
+	url = http://gitlab.uc.online/spider/travelfusionApiTrain.git
+[submodule "workspace/spider/SpiderClient/bin/travelgenioFlight"]
+	path = workspace/spider/SpiderClient/bin/travelgenioFlight
+	url = http://gitlab.uc.online/spider/travelgenioFlight.git
+[submodule "workspace/spider/SpiderClient/bin/travelocityFlight"]
+	path = workspace/spider/SpiderClient/bin/travelocityFlight
+	url = http://gitlab.uc.online/spider/travelocityFlight.git
+[submodule "workspace/spider/SpiderClient/bin/travelocityHotel"]
+	path = workspace/spider/SpiderClient/bin/travelocityHotel
+	url = http://gitlab.uc.online/spider/travelocityHotel.git
+[submodule "workspace/spider/SpiderClient/bin/travelocityList"]
+	path = workspace/spider/SpiderClient/bin/travelocityList
+	url = http://gitlab.uc.online/spider/travelocityList.git
+[submodule "workspace/spider/SpiderClient/bin/travelocitymulti"]
+	path = workspace/spider/SpiderClient/bin/travelocitymulti
+	url = http://gitlab.uc.online/spider/travelocitymulti.git
+[submodule "workspace/spider/SpiderClient/bin/travelocityRound"]
+	path = workspace/spider/SpiderClient/bin/travelocityRound
+	url = http://gitlab.uc.online/spider/travelocityRound.git
+[submodule "workspace/spider/SpiderClient/bin/trenitalia"]
+	path = workspace/spider/SpiderClient/bin/trenitalia
+	url = http://gitlab.uc.online/spider/trenitalia.git
+[submodule "workspace/spider/SpiderClient/bin/tripsta"]
+	path = workspace/spider/SpiderClient/bin/tripsta
+	url = http://gitlab.uc.online/spider/tripsta.git
+[submodule "workspace/spider/SpiderClient/bin/ufeifan"]
+	path = workspace/spider/SpiderClient/bin/ufeifan
+	url = http://gitlab.uc.online/spider/ufeifan.git
+[submodule "workspace/spider/SpiderClient/bin/ufeifanRound"]
+	path = workspace/spider/SpiderClient/bin/ufeifanRound
+	url = http://gitlab.uc.online/spider/ufeifanRound.git
+[submodule "workspace/spider/SpiderClient/bin/venere"]
+	path = workspace/spider/SpiderClient/bin/venere
+	url = http://gitlab.uc.online/spider/venere.git
+[submodule "workspace/spider/SpiderClient/bin/venereEN"]
+	path = workspace/spider/SpiderClient/bin/venereEN
+	url = http://gitlab.uc.online/spider/venereEN.git
+[submodule "workspace/spider/SpiderClient/bin/venereList"]
+	path = workspace/spider/SpiderClient/bin/venereList
+	url = http://gitlab.uc.online/spider/venereList.git
+[submodule "workspace/spider/SpiderClient/bin/viarail"]
+	path = workspace/spider/SpiderClient/bin/viarail
+	url = http://gitlab.uc.online/spider/viarail.git
+[submodule "workspace/spider/SpiderClient/bin/viatortour"]
+	path = workspace/spider/SpiderClient/bin/viatortour
+	url = http://gitlab.uc.online/spider/viatortour.git
+[submodule "workspace/spider/SpiderClient/bin/vueling"]
+	path = workspace/spider/SpiderClient/bin/vueling
+	url = http://gitlab.uc.online/spider/vueling.git
+[submodule "workspace/spider/SpiderClient/bin/whghotelsHotel"]
+	path = workspace/spider/SpiderClient/bin/whghotelsHotel
+	url = http://gitlab.uc.online/spider/whghotelsHotel.git
+[submodule "workspace/spider/SpiderClient/bin/yinlingApi"]
+	path = workspace/spider/SpiderClient/bin/yinlingApi
+	url = http://gitlab.uc.online/spider/yinlingApi.git
+[submodule "workspace/spider/SpiderClient/bin/yinlingApiRoundFlight"]
+	path = workspace/spider/SpiderClient/bin/yinlingApiRoundFlight
+	url = http://gitlab.uc.online/spider/yinlingApiRoundFlight.git
+[submodule "workspace/spider/SpiderClient/bin/zailushangApiFlight"]
+	path = workspace/spider/SpiderClient/bin/zailushangApiFlight
+	url = http://gitlab.uc.online/spider/zailushangApiFlight.git
+[submodule "workspace/spider/SpiderClient/bin/zuji"]
+	path = workspace/spider/SpiderClient/bin/zuji
+	url = http://gitlab.uc.online/spider/zuji.git
+[submodule "workspace/spider/SpiderClient/bin/zuzucheCar"]
+	path = workspace/spider/SpiderClient/bin/zuzucheCar
+	url = http://gitlab.uc.online/spider/zuzucheCar.git
