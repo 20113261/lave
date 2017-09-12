@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -n "$1" ] ;then
-    echo "must need param slave_group like:routine,test,online_c,online_d"
+    echo "需要指定一个参数，slave_group 值为其中一个:routine,test,online_c,online_d"
     exit 1
 fi
 
@@ -34,7 +34,7 @@ start_port=8089
 for ((i=${start_port};i<$[ ${start_port} + ${proce_size} ];i++ ))
 do
     echo "create slave $i"
-    { nohup stdbuf -oL python ../slave.py  $i ../../conf/conf.ini 2>&3 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.std ;} 3>&1 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.err &
+    { nohup stdbuf -oL python ../slave.py $i 2>&3 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.std ;} 3>&1 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.err &
     echo $! > ./slavepid/pid$i
 done
 
