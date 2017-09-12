@@ -1,6 +1,6 @@
 #!/bin/bash
 if [ ! -n "$1" ] ;then
-    echo "must need param slave_group like:routine,test,online_c,online_c"
+    echo "must need param slave_group like:routine,test,online_c,online_d"
     exit 1
 fi
 slave_group=$1
