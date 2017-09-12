@@ -1,15 +1,14 @@
-#!/bin/sh   
+#!/usr/bin/env python  
 
-#keys=`(ps -ef |grep "slave" |grep -v "grep") | awk '{print $2}'`
+if [ ! -n "$1" ] ;then
+    echo "must need param slave_group like:routine,test,online_c,online_c"
+    exit 1
+fi
 
-#for key in ${keys[*]}
-#do
-#    kill -9 $key
-#done
+source ./slave_process.sh
 
+# 获取进程数
+get_process_size
+proce_size=$?
 
-ps -ef | grep 'slave' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
-
-sleep 3
-
-ps -ef | grep 'bossStatus.py' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
+python kill.py $proce_size

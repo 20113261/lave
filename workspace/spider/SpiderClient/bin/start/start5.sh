@@ -1,22 +1,33 @@
 #!/bin/bash
 
+if [ ! -n "$1" ] ;then
+    echo "must need param slave_group like:routine,test,online_c,online_c"
+    exit 1
+fi
+
+source ./slave_process.sh
+
 CURR_PATH=`cd $(dirname $0);pwd;`
 cd $CURR_PATH
 
-export PYTHONPATH=$PYTHONPATH:../../lib
+slave_group=$1
+
+#export PYTHONPATH=$PYTHONPATH:../../lib:../../bin:../mioji
+#export CONFIG_FILE=../../conf/slave.${slave_group}.ini
 HOST=$(hostname)
 
-# 增加 Spider 监控服务
+echo "PYTHONPATH=$PYTHONPATH"
+echo "CONFIG_FILE=$CONFIG_FILE"
 
-if [ `/sbin/ifconfig -a|grep inet|grep -v 127.0.0.1|grep -v inet6|awk '{print $2}'|tr -d "addr:"` == '10.10.246.77' ];then
-	nohup stdbuf -oL python ../mioji/server/simple_server.py 2>&1 | cronolog /search/spider_monitor_log/rotation/%Y%m%d/%Y%m%d%H/slave_monitor.log.%Y%m%d%H &
-	echo $! > monitor_pid
-fi
+# 获取进程数
+get_process_size ${slave_group}
+proce_size=$?
 
-for ((i=8089;i<$[ 8089 + $1 ];i++))
+for ((i=8089;i<$[ 8089 + ${proce_size} ];i++ ))
 do
-    nohup stdbuf -oL python ../slave.py  $i ../../conf/conf.ini 2>&1 | cronolog ../../logs/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST} &
-    echo $! > ../pid/pid$i
+    echo "create slave $i"
+#	{ nohup stdbuf -oL python ../slave.py  $i ../../conf/conf.ini 2>&3 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.std ;} 3>&1 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.err &
+#    echo $! > ../pid/pid$i
 done
 
 
