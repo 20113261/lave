@@ -325,10 +325,11 @@ if __name__ == "__main__":
         print "Usage: %s config_file_path" % sys.argv[0]
         sys.exit()
     os.environ["CONFIG_FILE"] = sys.argv[2]
+    logger.info('PYTHONPATH={0} ;CONFIG_FILE={1}'.format(os.environ["PYTHONPATH"], os.environ["CONFIG_FILE"]))
 
     from common.conf_manage import ConfigHelper
-
-    config_helper = ConfigHelper(sys.argv[2])
+    config_helper = ConfigHelper()
+    
     '''# set proxy client
     proxy_client = http_client.HttpClientPool(
         config.get("proxy", "host"), maxsize=20)

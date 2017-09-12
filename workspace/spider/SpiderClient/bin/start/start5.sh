@@ -5,15 +5,20 @@ if [ ! -n "$1" ] ;then
     exit 1
 fi
 
+slave_group=$1
+
 source ./slave_process.sh
 
 CURR_PATH=`cd $(dirname $0);pwd;`
 cd $CURR_PATH
 
-slave_group=$1
+# 取SpidrClient目录
+cd ../../
+ROOT_PATH=`pwd`
+cd $CURR_PATH
 
-#export PYTHONPATH=$PYTHONPATH:../../lib:../../bin:../mioji
-#export CONFIG_FILE=../../conf/slave.${slave_group}.ini
+export PYTHONPATH=${ROOT_P}/lib:${ROOT_P}/bin:${RPPT_P}/bin/mioji
+export CONFIG_FILE=${ROOT_P}/conf/slave.${slave_group}.ini
 HOST=$(hostname)
 
 echo "PYTHONPATH=$PYTHONPATH"
@@ -26,8 +31,8 @@ proce_size=$?
 for ((i=8089;i<$[ 8089 + ${proce_size} ];i++ ))
 do
     echo "create slave $i"
-#	{ nohup stdbuf -oL python ../slave.py  $i ../../conf/conf.ini 2>&3 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.std ;} 3>&1 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.err &
-#    echo $! > ../pid/pid$i
+    { nohup stdbuf -oL python ../slave.py  $i ../../conf/conf.ini 2>&3 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.std ;} 3>&1 | nohup cronolog /search/spider_log/rotation/%Y%m%d/%Y%m%d%H/slave.log_${i}.%Y%m%d%H.${HOST}.err &
+    echo $! > ../pid/pid$i
 done
 
 

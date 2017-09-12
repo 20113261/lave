@@ -1,13 +1,13 @@
 #!/usr/bin/env python  
 import os
 import requests
-import time 
-import sys
+import time
 
 os.system(" ps -ef | grep 'bossStatus.py' | grep -v 'grep' | awk '{print $2}' | xargs kill -9 ")
 
-for i in range(int(sys.argv[1])): 
+pid_list = os.listdir('./slavepid')
 
+for i in len(pid_list):
     url = 'http://127.0.0.1:{0}/restart_process'.format(str(8089+i))
     print url
     try:
@@ -15,7 +15,7 @@ for i in range(int(sys.argv[1])):
     except:
         pass
 
-time.sleep(20)
+time.sleep(15)
 
-
-os.system("ps -ef | grep 'slave' | grep -v 'grep' | awk '{print $2}' | xargs kill -9 ")
+for pid in pid_list:
+    os.system("kill -9 {0}".format(pid))
