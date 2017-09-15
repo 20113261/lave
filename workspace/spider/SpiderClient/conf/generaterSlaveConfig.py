@@ -5,7 +5,8 @@ import MySQLdb
 
 
 def generaterSlaveConfig():
-    for cfg_file_name in ['slave.spider.ini', 'slave.validation.ini', 'slave.startwithD.ini']:
+    for cfg_file_name in ['slave.spider.ini', 'slave.validation.ini', 'slave.startwithD.ini',
+                          'newframeFlight.ini',  'test.online.ini']:
 
         config = ConfigParser.ConfigParser()
         config.add_section('data_type')
@@ -23,9 +24,9 @@ def generaterSlaveConfig():
         config.set('data_type', '10.10.218.199', 'RoundFlight_MultiFlight')
         config.set('data_type', '10.10.246.77', 'Rail_Bus')
 
-        if cfg_file_name == 'slave.spider.ini':
+        if cfg_file_name == 'slave.routine.ini':
             config.add_section('master')
-            config.set('master', 'host', '10.10.99.53:4141')
+            config.set('master', 'host', '10.10.110.74:48069')
 
             config.add_section('proxy')
             config.set('proxy', 'host', '10.10.239.46:8087')
@@ -35,6 +36,7 @@ def generaterSlaveConfig():
 
             config.set('slave', 'name', 'un_used_name')
             config.set('slave', 'recv_real_time_request', 0)
+            config.set('slave', 'env', 'routine')
 
             # uc
             config.add_section('mysql')
@@ -54,7 +56,7 @@ def generaterSlaveConfig():
             config.set('redis', 'host', '10.10.24.130')
             config.set('redis', 'port', 6379)
 
-        elif cfg_file_name == 'slave.validation.ini':
+        elif cfg_file_name == 'slave.online_c.ini':
             config.add_section('master')
             config.set('master', 'host', '10.10.244.26:48068')
 
@@ -66,6 +68,7 @@ def generaterSlaveConfig():
 
             config.set('slave', 'name', 'un_used_name')
             config.set('slave', 'recv_real_time_request', 1)
+            config.set('slave', 'env', 'OnlineC')
 
             # uc
             config.add_section('mysql')
@@ -85,7 +88,7 @@ def generaterSlaveConfig():
             config.set('redis', 'host', '10.10.24.130')
             config.set('redis', 'port', 6379)
 
-        elif cfg_file_name == 'slave.startwithD.ini':
+        elif cfg_file_name == 'slave.online_d.ini':
             config.add_section('master')
             config.set('master', 'host', '10.19.102.211:48068')
 
@@ -97,6 +100,7 @@ def generaterSlaveConfig():
 
             config.set('slave', 'name', 'un_used_name')
             config.set('slave', 'recv_real_time_request', 1)
+            config.set('slave', 'env', 'OnlineD')
 
             config.add_section('mysql')
             config.set('mysql', 'host', '10.10.154.38')
@@ -114,9 +118,40 @@ def generaterSlaveConfig():
             config.add_section('redis')
             config.set('redis', 'host', '10.10.24.130')
             config.set('redis', 'port', 6379)
+        elif cfg_file_name == 'slave.test.ini':
+            config.add_section('master')
+            config.set('master', 'host', '10.10.216.3:48068')
 
-        conn = MySQLdb.connect(host='10.10.154.38', user='reader',
-                               charset='utf8', passwd='miaoji1109', db='onlinedb')
+            config.add_section('proxy')
+            config.set('proxy', 'host', '10.10.239.46:8087')
+
+            config.add_section('slave')
+            config.set('slave', 'thread_num', 1)
+
+            config.set('slave', 'name', 'un_used_name')
+            config.set('slave', 'recv_real_time_request', 1)
+            config.set('slave', 'env', 'Test')
+
+            # uc
+            config.add_section('mysql')
+            config.set('mysql', 'host', '10.10.154.38')
+            config.set('mysql', 'user', 'writer')
+            config.set('mysql', 'pswd', 'miaoji1109')
+            config.set('mysql', 'db', 'validation')
+
+            # spiderbase
+            config.add_section('spiderbase')
+            config.set('spiderbase', 'host', '10.19.118.147')
+            config.set('spiderbase', 'user', 'reader')
+            config.set('spiderbase', 'pswd', 'mioji1109')
+            config.set('spiderbase', 'db', 'source_info')
+
+            config.add_section('redis')
+            config.set('redis', 'host', '10.10.24.130')
+            config.set('redis', 'port', 6379)
+
+        conn = MySQLdb.connect(host='10.10.238.148', user='mioji_admin',
+                               charset='utf8', passwd='mioji1109', db='spider_config')
         cursor = conn.cursor()
 
         sql = "select sectionName,className,filePath,modeName from parserSource2Module"
