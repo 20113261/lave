@@ -12,22 +12,42 @@ from util import http_client
 from logger import logger
 from conf_manage import ConfigHelper
 
+frame_listhotel = ['10.10.84.225', '10.10.95.70', '10.10.48.27', '10.10.100.30', '10.10.111.212', '10.10.99.125']
+frame_flight = ['10.10.106.179', '10.10.29.204', '10.10.38.160', '10.10.153.6']
+frame_roundflight = ['10.10.228.4', '10.10.218.199']
+frame_rail = ['10.10.246.77', ]
+
+verify_online = ['10.10.156.56', '10.10.184.214', '10.10.176.6', '10.10.170.233', '10.19.111.69', '10.19.10.128']
+verify_test = ['10.10.155.184', '10.10.218.206', '10.10.215.193', '10.10.225.226', '10.10.231.156', '10.10.234.200']
+
+proxy_ips = set(
+    frame_flight + frame_listhotel
+    + frame_roundflight + frame_rail
+    + verify_online + verify_test)
+
 config_helper = ConfigHelper()
 
-proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
+# proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
+
+local_ip = None
 
 
 def getLocalIp():
-    res = ''
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        res = s.getsockname()[0]
-        s.close()
-    except Exception:
-        pass
-    return res
+    global local_ip
+    if local_ip:
+        return local_ip
+    else:
+        res = ''
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            s.connect(("8.8.8.8", 80))
+            res = s.getsockname()[0]
+            s.close()
+        except Exception:
+            pass
+        local_ip = res
+    return local_ip
 
 
 def set_proxy_client(client):
@@ -35,16 +55,11 @@ def set_proxy_client(client):
     proxy_client2 = client
 
 
-frame_ip = '10.10.48.27|10.10.38.160|10.10.29.204|10.10.106.179|10.10.228.4|10.10.218.199|10.10.246.77|10.10.153.6|10.10.95.70|10.10.84.225|10.10.100.30|10.10.111.212|10.10.99.125|10.10.156.116|'
-verify_cn_ip = '10.10.156.116|10.10.156.56|10.10.184.17|10.10.184.214|10.10.170.233|10.10.176.6|10.10.199.118|10.19.194.208|10.19.10.128|10.19.111.69|10.10.155.184'
-special_ip = frame_ip + '|' + verify_cn_ip
-
-
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={}):
     try:
         ip = getLocalIp()
-        if ip not in special_ip:
+        if ip not in proxy_ips:
             return 'REALTIME'
     except:
         return None
@@ -93,10 +108,9 @@ def invalid_proxy(proxy, source):
 
 
 def update_proxy(source_name, proxy, start_time, error_code):
-    special_ip = frame_ip + '|' + verify_cn_ip
     try:
         ip = getLocalIp()
-        if ip not in special_ip:
+        if ip not in proxy_ips:
             return None
     except:
         return None
@@ -158,5 +172,9 @@ def getTupleDataFromFile(file_name):
 
 if __name__ == '__main__':
     # p = get_proxy(forbid_regions=['CN'])
-    cand_str = 'test str'
-    print getStrMd5(cand_str)
+    # cand_str = 'test str'
+    # print getStrMd5(cand_str)
+    print proxy_ips
+    print getLocalIp()
+    print getLocalIp()
+    print getLocalIp() not in proxy_ips
