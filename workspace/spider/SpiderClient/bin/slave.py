@@ -321,10 +321,10 @@ def new_spider_info(params):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 2:
         print "Usage: %s config_file_path" % sys.argv[0]
         sys.exit()
-    os.environ["CONFIG_FILE"] = sys.argv[2]
+    # os.environ["CONFIG_FILE"] = sys.argv[2]
     logger.info('PYTHONPATH={0} ;CONFIG_FILE={1}'.format(os.environ["PYTHONPATH"], os.environ["CONFIG_FILE"]))
 
     from common.conf_manage import ConfigHelper
