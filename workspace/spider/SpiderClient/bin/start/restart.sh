@@ -1,4 +1,8 @@
 #!/bin/bash
+
+source ./start_check.sh
+check
+
 if [ ! -n "$1" ] ;then
     echo "must need param slave_group like:routine,test,online_c,online_d"
     exit 1

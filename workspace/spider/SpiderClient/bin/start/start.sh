@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ./start_check.sh
+check
+
 if [ ! -n "$1" ] ;then
     echo "需要指定一个参数，slave_group 值为其中一个:routine,test,online_c,online_d"
     exit 1
