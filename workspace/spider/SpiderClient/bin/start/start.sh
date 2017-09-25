@@ -1,5 +1,7 @@
 #!/bin/bash
 
+CURR_PATH=`cd $(dirname $0);pwd;`
+cd $CURR_PATH
 source ./start_check.sh
 check
 
@@ -12,8 +14,6 @@ slave_group=$1
 
 source ./slave_process.sh
 
-CURR_PATH=`cd $(dirname $0);pwd;`
-cd $CURR_PATH
 
 # 取SpidrClient目录
 cd ../../
