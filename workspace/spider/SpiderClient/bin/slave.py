@@ -67,7 +67,7 @@ def getLocalIp():
         pass
     return res
 
-def init_mysql_connections(host='10.10.228.253', user='mioji_admin', passwd='mioji1109', db='crawl'):
+def init_mysql_connections(host='10.10.238.148', user='mioji_admin', passwd='mioji1109', db='crawl'):
     global mysql_db_pool
     mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                              host=host, port=3306, user=user, passwd=passwd,
@@ -136,8 +136,13 @@ def work(task):
             logger.info('creating instance cost\t [%s ms] \t [%s]' % (
                 str(etime - stime), task.source))
         except Exception, e:
+<<<<<<< HEAD
             logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s]",
                              task.task_data, str(e))
+=======
+            logger.error('creating instance cost\t [%s ms] \t [%s]' % (
+                str(etime - stime), task.source))
+>>>>>>> master
             error_info = str(traceback.format_exc().split('\n'))
             error = WORK_ERROR
             workload.complete_workload(task, error, proxy_or_ticket)
