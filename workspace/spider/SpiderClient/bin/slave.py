@@ -67,7 +67,7 @@ def getLocalIp():
         pass
     return res
 
-def init_mysql_connections(host='10.10.228.253', user='mioji_admin', passwd='mioji1109', db='crawl'):
+def init_mysql_connections(host='10.10.238.148', user='mioji_admin', passwd='mioji1109', db='crawl'):
     global mysql_db_pool
     mysql_db_pool = PooledDB(creator=MySQLdb, mincached=1, maxcached=2, maxconnections=10,
                              host=host, port=3306, user=user, passwd=passwd,
