@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# 暂停魔山
+sh /usr/local/monitor_shell/monitor_control.sh -p 60
+
 CURR_PATH=`cd $(dirname $0);pwd;`
 echo $CURR_PATH
 cd $CURR_PATH
