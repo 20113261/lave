@@ -436,9 +436,6 @@
 [submodule "workspace/spider/SpiderClient/bin/skyscanner_api"]
 	path = workspace/spider/SpiderClient/bin/skyscanner_api
 	url = http://gitlab.uc.online/spider/skyscanner_api.git
-[submodule "workspace/spider/SpiderClient/bin/slave_develop_new"]
-	path = workspace/spider/SpiderClient/bin/slave_develop_new
-	url = http://gitlab.uc.online/spider/slave_develop_new.git
 [submodule "workspace/spider/SpiderClient/bin/sncfen"]
 	path = workspace/spider/SpiderClient/bin/sncfen
 	url = http://gitlab.uc.online/spider/sncfen.git
