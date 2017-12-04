@@ -128,6 +128,7 @@ def work(task):
 
             source_dir = os.path.join(dirname, file_path)
             sys.path.insert(0, source_dir)
+            logger.info('source:{0},file_path:{1},class_name:{2},mode_name:{3},source_dir:{4}'.format(task.source,file_path,class_name,mode_name,source_dir))
             stime = time.time()
             mod = __import__(mode_name)
             clazz = getattr(mod, class_name)
