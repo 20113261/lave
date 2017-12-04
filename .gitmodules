@@ -544,3 +544,6 @@
 [submodule "workspace/spider/SpiderClient/bin/zuzucheCar"]
 	path = workspace/spider/SpiderClient/bin/zuzucheCar
 	url = http://gitlab.uc.online/spider/zuzucheCar.git
+[submodule "workspace/spider/SpiderClient/bin/yinlingApiMultiFlight"]
+	path = workspace/spider/SpiderClient/bin/yinlingApiMultiFlight
+	url = http://gitlab.uc.online/spider/yinlingApiMultiFlight.git
