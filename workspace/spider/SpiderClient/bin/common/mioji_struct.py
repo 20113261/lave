@@ -172,6 +172,7 @@ def convert_m_flight_to_miojilight(mflight):
 
     stop_id = []
     stop_time = []
+    stop_by = []
 
     for leg in mflight.legs:
         dept_segs.append(leg.segments[0])
@@ -200,6 +201,7 @@ def convert_m_flight_to_miojilight(mflight):
 
         leg_stop_id = []
         leg_stop_time = []
+        leg_stop_by = []
 
         for seg in leg.segments:
             leg_flight_no.append(seg.flight_no)
@@ -214,6 +216,7 @@ def convert_m_flight_to_miojilight(mflight):
             leg_stop_id.append(safe_join('_', [seg.dept_id, seg.dest_id]))
             leg_stop_time.append(
                 safe_join('_', [seg.dept_date.strftime(FOR_FLIGHT_DATE), seg.dest_date.strftime(FOR_FLIGHT_DATE)]))
+            leg_stop_by.append(seg.real_class)
 
         flight_no.append(safe_join('_', leg_flight_no))
         flight_corp.append(safe_join('_', leg_flight_corp))
@@ -226,6 +229,7 @@ def convert_m_flight_to_miojilight(mflight):
 
         stop_id.append(safe_join('|', leg_stop_id))
         stop_time.append(safe_join('|', leg_stop_time))
+        stop_by.append(safe_join('_', leg_stop_by))
 
     flight.package = safe_join('&', package)
     flight.return_rule = safe_join('&', return_rule)
@@ -249,6 +253,7 @@ def convert_m_flight_to_miojilight(mflight):
 
     flight.stop_id = safe_join('&', stop_id)
     flight.stop_time = safe_join('&', stop_time)
+    flight.stopby = safe_join('&', stop_by)
 
     flight.dept_id = safe_join('&', [s.dept_id for s in dept_segs])
     flight.dest_id = safe_join('&', [s.dest_id for s in dest_segs])
