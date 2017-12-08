@@ -258,8 +258,6 @@ def InsertHotel_room4(args):
           'others_info,guest_info, hotel_url) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, ' + \
           '%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
-    insert_hotel_base_data_task_info(list(map(lambda x: (x[2], x[3], x[1], x[-1]), args)))
-
     return db.ExecuteSQLs(sql, args)
 
 
