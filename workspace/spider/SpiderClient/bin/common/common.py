@@ -60,13 +60,14 @@ def set_proxy_client(client):
 
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={},
-              verify_info="verify", ip_num=1, ip_type="internal", task=None, task_type="test"):
+              verify_info="verify", ip_num=1, ip_type="internal", task=None, task_type="online"):
     try:
         ip = getLocalIp()
         if ip not in proxy_ips:
             return 'REALTIME'
     except:
         return None
+
     if task_type == "online":
         if proxy_info == {}:
             pass
@@ -97,6 +98,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             forbid_regions_str = '_'.join([i for i in forbid_regions])
 
         try:
+            print "online:--------"
             p = proxy_client2.get("/proxy?source=%s&user=crawler&passwd=spidermiaoji2014" % source)
             # p = proxy_client2.get("/proxy?source=%s&user=parser&passwd=parser" % source)
         except:
