@@ -67,6 +67,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             return 'REALTIME'
     except:
         return None
+    
     task_type = task.ticket_info['env_name']
     if task_type == "test":
         time_st = time.time() 
@@ -88,7 +89,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             p = requests.get("http://10.10.32.22:48200"+get_info).content
             time_end = time.time() - time_st
             logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
-            p = [json.loads(proxy_info)['resp'][0]['ips'][0]['inner_ip'], p]
+            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], p]
         except:
             p = ''
     # if task_type == "online":
