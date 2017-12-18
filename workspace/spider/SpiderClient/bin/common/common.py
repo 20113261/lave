@@ -69,6 +69,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
         return None
     
     task_type = task.ticket_info['env_name']
+    task_type = task.ticket_info.get('env_name',"test")
     if task_type == "test":
         time_st = time.time() 
         logger.info("开始获取代理")
