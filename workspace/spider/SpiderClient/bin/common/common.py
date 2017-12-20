@@ -68,8 +68,9 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
     except:
         return None
     
-    task_type = task.ticket_info['env_name']
     task_type = task.ticket_info.get('env_name',"test")
+    # 暂时将新socks代理关闭
+    task_type = "online"
     if task_type == "test":
         time_st = time.time() 
         logger.info("开始获取代理")
