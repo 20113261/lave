@@ -70,7 +70,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
     
     task_type = task.ticket_info.get('env_name',"test")
     # 暂时将新socks代理关闭
-    task_type = "online"
+    # task_type = "online"
     if task_type == "test":
         time_st = time.time() 
         logger.info("开始获取代理")
@@ -91,7 +91,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             p = requests.get("http://10.10.32.22:48200"+get_info).content
             time_end = time.time() - time_st
             logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
-            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], p]
+            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], [p,time_end]]
         except:
             p = ''
     # if task_type == "online":
