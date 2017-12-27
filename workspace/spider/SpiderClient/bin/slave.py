@@ -354,7 +354,7 @@ if __name__ == "__main__":
     mysql_passwd = config_helper.mysql_passwd
     env = config_helper.env
 
-    init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
+    # init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
     # 例行抓取
     data_type_str = ''
     greents_num = 200  # 每个线程协程数默认为200
