@@ -34,6 +34,8 @@ config_helper = ConfigHelper()
 proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
 
 local_ip = None
+# 新代理服务host:port
+new_proxy_host = config_helper.new_proxy_host
 
 
 def getLocalIp():
@@ -68,30 +70,30 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
     except:
         return None
     
-    task_type = task.ticket_info.get('env_name',"test")
+    task_type = task.ticket_info.get('env_name', "test")
     # 暂时将新socks代理关闭
     # task_type = "online"
     if task_type == "test":
         time_st = time.time() 
         logger.info("开始获取代理")
         
-        msg = {"req":[{
-            "source":source,
-            "type":verify_info,
-            "num":ip_num,
-            "ip_type":ip_type,
+        msg = {"req": [{
+            "source": source,
+            "type": verify_info,
+            "num": ip_num,
+            "ip_type": ip_type,
         }]}
-        msg= json.dumps(msg)
+        msg = json.dumps(msg)
         
-        qid = str(task.ticket_info.get('qid',0))
-        ptid = task.ticket_info.get('ptid',"test")
+        qid = str(task.ticket_info.get('qid', 0))
+        ptid = task.ticket_info.get('ptid', "test")
         try:
             get_info = '/?type=px001&qid={0}&query={1}&ptid={2}&tid=tid&ccy=AUD'.format(qid, msg, ptid)
-            logger.info("get proxy info :http://10.10.189.85:48200{0}".format(get_info)) 
-            p = requests.get("http://10.10.32.22:48200"+get_info).content
+            logger.info("get proxy info :http://{1}{0}".format(get_info, new_proxy_host))
+            p = requests.get("http://{0}".format(new_proxy_host)+get_info).content
             time_end = time.time() - time_st
             logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
-            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], [p,time_end,get_info]]
+            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], [p, time_end, get_info]]
         except:
             p = ''
     # if task_type == "online":
