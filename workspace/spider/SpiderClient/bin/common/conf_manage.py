@@ -5,8 +5,8 @@ import os
 import ConfigParser
 
 
-# config_file_path = os.environ["CONFIG_FILE"]
-config_file_path = '/Users/mioji2017/Documents/workspace/spider_work/slave_develop_new/workspace/spider/SpiderClient/conf/slave.routine.ini'
+config_file_path = os.environ["CONFIG_FILE"]
+# config_file_path = '/Users/mioji2017/Documents/workspace/spider_work/slave_develop_new/workspace/spider/SpiderClient/conf/slave.routine.ini'
 
 
 class ConfigHelper:
