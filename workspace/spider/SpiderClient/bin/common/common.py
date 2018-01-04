@@ -13,7 +13,7 @@ import requests
 from util import http_client
 from logger import logger
 from conf_manage import ConfigHelper
-from proxy_alert import alert
+# from proxy_alert import alert
 
 frame_listhotel = ['10.10.84.225', '10.10.95.70', '10.10.48.27', '10.10.100.30', '10.10.111.212', '10.10.99.125']
 frame_flight = ['10.10.106.179', '10.10.29.204', '10.10.38.160', '10.10.153.6']
@@ -64,12 +64,12 @@ def set_proxy_client(client):
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={},
               verify_info="verify", ip_num=1, ip_type="internal", task=None, ):
-    # try:
-    #     ip = getLocalIp()
-    #     if ip not in proxy_ips:
-    #         return 'REALTIME'
-    # except:
-    #     return None
+    try:
+        ip = getLocalIp()
+        if ip not in proxy_ips:
+            return 'REALTIME'
+    except:
+        return None
     
     task_type = task.ticket_info.get('env_name', "test")
     # 暂时将新socks代理关闭
