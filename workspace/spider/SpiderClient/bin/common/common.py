@@ -13,6 +13,7 @@ import requests
 from util import http_client
 from logger import logger
 from conf_manage import ConfigHelper
+from proxy_alert import alert
 
 frame_listhotel = ['10.10.84.225', '10.10.95.70', '10.10.48.27', '10.10.100.30', '10.10.111.212', '10.10.99.125']
 frame_flight = ['10.10.106.179', '10.10.29.204', '10.10.38.160', '10.10.153.6']
@@ -63,12 +64,12 @@ def set_proxy_client(client):
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={},
               verify_info="verify", ip_num=1, ip_type="internal", task=None, ):
-    try:
-        ip = getLocalIp()
-        if ip not in proxy_ips:
-            return 'REALTIME'
-    except:
-        return None
+    # try:
+    #     ip = getLocalIp()
+    #     if ip not in proxy_ips:
+    #         return 'REALTIME'
+    # except:
+    #     return None
     
     task_type = task.ticket_info.get('env_name', "test")
     # 暂时将新socks代理关闭
@@ -93,8 +94,17 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             p = requests.get("http://{0}".format(new_proxy_host)+get_info).content
             time_end = time.time() - time_st
             logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
-            p = [json.loads(p)['resp'][0]['ips'][0]['inner_ip'], [p, time_end, get_info]]
+            proxy_ip = json.loads(p)['resp'][0]['ips'][0]['inner_ip']
+            proxy_ip = None
+            if not proxy_ip:
+                # alert(msg, qid, source)
+                logger.debug("[Exception MJOPObserver,type=ex78001,uid=,csuid=,qid={0},ts={1},ip=,refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info))
+            p = [proxy_ip, [p, time_end, get_info]]
         except:
+            logger.debug("[Exception MJOPObserver,type=ex78001,\
+                    uid=,csuid=,qid={0},ts={1},\
+                    ip=,refer_id=, \
+                    cur_id=,debug={2}]".format(qid, time.time() * 1000, "取代理请求时报错"))
             p = ''
     # if task_type == "online":
     else:
