@@ -64,12 +64,12 @@ def set_proxy_client(client):
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={},
               verify_info="verify", ip_num=1, ip_type="internal", task=None, ):
-    try:
-        ip = getLocalIp()
-        if ip not in proxy_ips:
-            return 'REALTIME'
-    except:
-        return None
+    # try:
+    #     ip = getLocalIp()
+    #     if ip not in proxy_ips:
+    #         return 'REALTIME'
+    # except:
+    #     return None
     # task_type = task.ticket_info.get('env_name', "test")
     # if task_type == "test":
     time_st = time.time() 
@@ -92,7 +92,6 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
         time_end = time.time() - time_st
         logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
         proxy_ip = json.loads(p)['resp'][0]['ips'][0]['inner_ip']
-        proxy_ip = None
         if not proxy_ip:
             # alert(msg, qid, source)
             logger.debug("[Exception MJOPObserver,type=ex78001,uid=,csuid=,qid={0},ts={1},ip=,refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info))
