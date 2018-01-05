@@ -70,14 +70,11 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             return 'REALTIME'
     except:
         return None
-    
-    task_type = task.ticket_info.get('env_name', "test")
-    # 暂时将新socks代理关闭
-    # task_type = "online"
-    if task_type == "test":
-        time_st = time.time() 
-        logger.info("开始获取代理")
-        
+    # task_type = task.ticket_info.get('env_name', "test")
+    # if task_type == "test":
+    time_st = time.time() 
+    # logger.info("开始获取代理")
+    try:
         msg = {"req": [{
             "source": source,
             "type": verify_info,
@@ -85,63 +82,63 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             "ip_type": ip_type,
         }]}
         msg = json.dumps(msg)
-        
+    
         qid = str(task.ticket_info.get('qid', 0))
         ptid = task.ticket_info.get('ptid', "test")
-        try:
-            get_info = '/?type=px001&qid={0}&query={1}&ptid={2}&tid=tid&ccy=AUD'.format(qid, msg, ptid)
-            logger.info("get proxy info :http://{1}{0}".format(get_info, new_proxy_host))
-            p = requests.get("http://{0}".format(new_proxy_host)+get_info).content
-            time_end = time.time() - time_st
-            logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
-            proxy_ip = json.loads(p)['resp'][0]['ips'][0]['inner_ip']
-            proxy_ip = None
-            if not proxy_ip:
-                # alert(msg, qid, source)
-                logger.debug("[Exception MJOPObserver,type=ex78001,uid=,csuid=,qid={0},ts={1},ip=,refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info))
-            p = [proxy_ip, [p, time_end, get_info]]
-        except:
-            logger.debug("[Exception MJOPObserver,type=ex78001,\
-                    uid=,csuid=,qid={0},ts={1},\
-                    ip=,refer_id=, \
-                    cur_id=,debug={2}]".format(qid, time.time() * 1000, "取代理请求时报错"))
-            p = ''
-    # if task_type == "online":
-    else:
-        if proxy_info == {}:
-            pass
-        else:
-            # todo, 当前全部使用默认值
-            if proxy_info.has_key("allow_ports"):
-                allow_ports = proxy_info['allow_ports']
-            if proxy_info.has_key("forbid_ports"):
-                forbid_ports = proxy_info['forbid_ports']
-            if proxy_info.has_key("allow_regions"):
-                allow_regions = proxy_info['allow_regions']
-            if proxy_info.has_key("forbid_regions"):
-                forbid_regions = proxy_info['forbid_regions']
 
-        allow = ""
-        forbid = ""
-        allow_regions_str = ""
-        forbid_regions_str = ""
+        get_info = '/?type=px001&qid={0}&query={1}&ptid={2}&tid=tid&ccy=AUD'.format(qid, msg, ptid)
+        logger.info("get proxy info :http://{1}{0}".format(get_info, new_proxy_host))
+        p = requests.get("http://{0}".format(new_proxy_host)+get_info).content
+        time_end = time.time() - time_st
+        logger.info("获取到代理，代理信息{0},获取代理耗时{1}".format(p, time_end))
+        proxy_ip = json.loads(p)['resp'][0]['ips'][0]['inner_ip']
+        proxy_ip = None
+        if not proxy_ip:
+            # alert(msg, qid, source)
+            logger.debug("[Exception MJOPObserver,type=ex78001,uid=,csuid=,qid={0},ts={1},ip=,refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info))
+        p = [proxy_ip, [p, time_end, get_info]]
+    except:
+        logger.debug("[Exception MJOPObserver,type=ex78001,\
+                uid=,csuid=,qid={0},ts={1},\
+                ip=,refer_id=, \
+                cur_id=,debug={2}]".format(qid, time.time() * 1000, "取代理请求时报错"))
+        p = ''
+    # # if task_type == "online":
+    # else:
+    #     if proxy_info == {}:
+    #         pass
+    #     else:
+    #         # todo, 当前全部使用默认值
+    #         if proxy_info.has_key("allow_ports"):
+    #             allow_ports = proxy_info['allow_ports']
+    #         if proxy_info.has_key("forbid_ports"):
+    #             forbid_ports = proxy_info['forbid_ports']
+    #         if proxy_info.has_key("allow_regions"):
+    #             allow_regions = proxy_info['allow_regions']
+    #         if proxy_info.has_key("forbid_regions"):
+    #             forbid_regions = proxy_info['forbid_regions']
 
-        if len(allow_ports) != 0:
-            allow = '_'.join([str(i) for i in allow_ports])
-        if len(forbid_ports) != 0:
-            forbid = '_'.join([str(i) for i in forbid_ports])
+    #     allow = ""
+    #     forbid = ""
+    #     allow_regions_str = ""
+    #     forbid_regions_str = ""
 
-        if len(allow_regions) != 0:
-            allow_regions_str = '_'.join([i for i in allow_regions])
-        if len(forbid_regions) != 0:
-            forbid_regions_str = '_'.join([i for i in forbid_regions])
+    #     if len(allow_ports) != 0:
+    #         allow = '_'.join([str(i) for i in allow_ports])
+    #     if len(forbid_ports) != 0:
+    #         forbid = '_'.join([str(i) for i in forbid_ports])
 
-        try:
-            p = proxy_client2.get("/proxy?source=%s&user=crawler&passwd=spidermiaoji2014" % source)
-            # p = proxy_client2.get("/proxy?source=%s&user=parser&passwd=parser" % source)
-            p = [p,]
-        except:
-            p = ''
+    #     if len(allow_regions) != 0:
+    #         allow_regions_str = '_'.join([i for i in allow_regions])
+    #     if len(forbid_regions) != 0:
+    #         forbid_regions_str = '_'.join([i for i in forbid_regions])
+
+    #     try:
+    #         p = proxy_client2.get("/proxy?source=%s&user=crawler&passwd=spidermiaoji2014" % source)
+    #         # p = proxy_client2.get("/proxy?source=%s&user=parser&passwd=parser" % source)
+    #         p = [p,]
+    #     except:
+    #         p = ''
     return p
 
 
