@@ -64,12 +64,12 @@ def set_proxy_client(client):
 def get_proxy(source=None, allow_ports=[], forbid_ports=[],
               allow_regions=[], forbid_regions=[], user='realtime', passwd='realtime', proxy_info={},
               verify_info="verify", ip_num=1, ip_type="internal", task=None, ):
-    # try:
-    #     ip = getLocalIp()
-    #     if ip not in proxy_ips:
-    #         return 'REALTIME'
-    # except:
-    #     return None
+    try:
+        ip = getLocalIp()
+        if ip not in proxy_ips:
+            return 'REALTIME'
+    except:
+        return None
     # task_type = task.ticket_info.get('env_name', "test")
     # if task_type == "test":
     time_st = time.time() 
