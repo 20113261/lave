@@ -94,13 +94,13 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
         proxy_ip = json.loads(p)['resp'][0]['ips'][0]['inner_ip']
         if not proxy_ip:
             # alert(msg, qid, source)
-            logger.debug("[Exception MJOPObserver,type=ex78001,uid=,csuid=,qid={0},ts={1},ip=,refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info))
+            logger.debug("[Exception MJOPObserver,type=ex78002,uid=,csuid=,qid={0},ts={1},ip={3},refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info, ip))
         p = [proxy_ip, [p, time_end, get_info]]
     except:
-        logger.debug("[Exception MJOPObserver,type=ex78001,\
+        logger.debug("[Exception MJOPObserver,type=ex78002,\
                 uid=,csuid=,qid={0},ts={1},\
-                ip=,refer_id=, \
-                cur_id=,debug={2}]".format(qid, time.time() * 1000, "取代理请求时报错"))
+                ip={3},refer_id=, \
+                cur_id=,debug={2}]".format(qid, time.time() * 1000, "取代理请求时报错", ip))
         p = ''
     # # if task_type == "online":
     # else:
