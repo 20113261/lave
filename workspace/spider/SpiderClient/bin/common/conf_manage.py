@@ -5,8 +5,9 @@ import os
 import ConfigParser
 
 
+# config_file_path = os.environ["CONFIG_FILE"]
 config_file_path = os.environ["CONFIG_FILE"]
-
+# config_file_path = '/Users/mioji2017/Documents/workspace/spider_work/slave_develop_new/workspace/spider/SpiderClient/conf/slave.test.ini'
 
 class ConfigHelper:
 
@@ -36,11 +37,12 @@ class ConfigHelper:
 
     def read_config(self):
         self.proxy_host = self.config.get("proxy", "host")
+        self.new_proxy_host = self.config.get("proxy", "new_host")    
         self.master_host = self.config.get("master", "host")
         self.redis_host = self.config.get("redis", "host")
         self.redis_port = self.config.getint("redis", "port")
         #  self.redis_db = self.config.getint('redis', 'db')
-
+        
         self.mysql_host = self.config.get('mysql', 'host')
         self.mysql_user = self.config.get('mysql', 'user')
         self.mysql_passwd = self.config.get('mysql', 'pswd')
