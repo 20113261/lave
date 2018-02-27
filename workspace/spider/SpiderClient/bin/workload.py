@@ -41,7 +41,7 @@ class ControllerWorkload(WorkloadStorable):
         self.__client = HttpClientPool(
             host, timeout=1000, maxsize=500, block=True)
         self.__test_client = HttpClientPool(
-            '10.10.114.35', timeout=1000, maxsize=500, block=True)
+            '10.10.114.35:12345', timeout=1000, maxsize=500, block=True)
         self.timeout = 2395
         self.__sources = sources
         self.__sem = threading.Semaphore()
