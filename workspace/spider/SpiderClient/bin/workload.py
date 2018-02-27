@@ -40,6 +40,8 @@ class ControllerWorkload(WorkloadStorable):
 
         self.__client = HttpClientPool(
             host, timeout=1000, maxsize=500, block=True)
+        self.__test_client = HttpClientPool(
+            '10.10.114.35', timeout=1000, maxsize=500, block=True)
         self.timeout = 2395
         self.__sources = sources
         self.__sem = threading.Semaphore()
@@ -73,9 +75,13 @@ class ControllerWorkload(WorkloadStorable):
             return True
 
         logger.info('Need %d New Tasks' % task_length)
+
         url = "/workload?count={0}&qid={1}&type=routine001&data_type={2}".format(need_task, int(1000 * time.time()),
                                                                                  self.data_type_str)
-        result = self.__client.get(url)
+        if self.data_type_str == "RoundFlight":
+            result = self.__test_client.get(url)
+        else:
+            result = self.__client.get(url)
         if result is None or result == []:
             return False
 
@@ -198,7 +204,11 @@ class ControllerWorkload(WorkloadStorable):
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             other_query = '&type=routine002&qid={0}&cur_id=&'.format(int(1000 * time.time()))
-            self.__client.get(
+            if self.data_type_str == "RoundFlight":
+                self.__test_client.get(
+                    "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
+            else:
+                self.__client.get(
                 "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
