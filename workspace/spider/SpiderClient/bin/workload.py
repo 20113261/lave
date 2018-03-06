@@ -175,12 +175,14 @@ class ControllerWorkload(WorkloadStorable):
                 len_key = self.TaskingDict.pop(task)
 
             while len_key > 0:
-                task_status = {"id": task.id, "content": task.content, "source": task.source,
-                               "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
-                               "timeslot": task.timeslot}
-                task_status = {"id": task.id, "content": task.content, "source": task.source,
-                               "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
-                               "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
+                if self.data_type_str not in ["RoundFlight", "ListHotel"]:
+                    task_status = {"id": task.id, "content": task.content, "source": task.source,
+                                   "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
+                                   "timeslot": task.timeslot}
+                else:
+                    task_status = {"id": task.id, "content": task.content, "source": task.source,
+                                   "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
+                                   "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
                 self.__tasks_status.append(task_status)
 
                 len_key -= 1
