@@ -78,7 +78,7 @@ class ControllerWorkload(WorkloadStorable):
 
         url = "/workload?count={0}&qid={1}&type=routine001&data_type={2}".format(need_task, int(1000 * time.time()),
                                                                                  self.data_type_str)
-        if self.data_type_str == "RoundFlight":
+        if self.data_type_str in ["RoundFlight", "ListHotel"]:
             result = self.__test_client.get(url)
         else:
             result = self.__client.get(url)
@@ -178,6 +178,9 @@ class ControllerWorkload(WorkloadStorable):
                 task_status = {"id": task.id, "content": task.content, "source": task.source,
                                "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                "timeslot": task.timeslot}
+                task_status = {"id": task.id, "content": task.content, "source": task.source,
+                               "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
+                               "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
                 self.__tasks_status.append(task_status)
 
                 len_key -= 1
@@ -204,7 +207,7 @@ class ControllerWorkload(WorkloadStorable):
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             other_query = '&type=routine002&qid={0}&cur_id=&'.format(int(1000 * time.time()))
-            if self.data_type_str == "RoundFlight":
+            if self.data_type_str in ["RoundFlight", "ListHotel"]:
                 self.__test_client.get(
                     "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
             else:
