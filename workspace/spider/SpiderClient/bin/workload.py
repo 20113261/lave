@@ -19,6 +19,7 @@ from common.logger import logger
 from crawler.workload import WorkloadStorable
 from util.http_client import HttpClientPool, HttpClient
 import redis
+import requests
 import pika
 import traceback
 
@@ -41,7 +42,7 @@ class ControllerWorkload(WorkloadStorable):
         self.__client = HttpClientPool(
             host, timeout=1000, maxsize=500, block=True)
         self.__test_client = HttpClientPool(
-            '10.10.114.35:12345', timeout=1000, maxsize=500, block=True)
+            '10.10.239.46:12345', timeout=1000, maxsize=500, block=True)
         self.timeout = 2395
         self.__sources = sources
         self.__sem = threading.Semaphore()
@@ -180,7 +181,7 @@ class ControllerWorkload(WorkloadStorable):
                                    "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                    "timeslot": task.timeslot}
                 else:
-                    task_status = {"id": task.id, "content": task.content, "source": task.source,
+                    task_status = {"id": task.id, "content": task.content, "source": task.source,"feedback_times":task.feedback_times,
                                    "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                    "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
                 self.__tasks_status.append(task_status)
@@ -191,7 +192,6 @@ class ControllerWorkload(WorkloadStorable):
             logger.exception("complete a task fail. error = " + str(e))
 
         return True
-
 
     def complete_workloads(self):
         if self.__flag:
@@ -209,9 +209,15 @@ class ControllerWorkload(WorkloadStorable):
         try:
             completed_task = json.dumps(self.__tasks_status[:len_task])
             other_query = '&type=routine002&qid={0}&cur_id=&'.format(int(1000 * time.time()))
+            data = {
+                "q": urllib.quote(completed_task),
+                "type": "routine002",
+                "qid": int(1000 * time.time()),
+                "cur_id": "",
+            }
             if self.data_type_str in ["RoundFlight", "ListHotel"]:
-                self.__test_client.get(
-                    "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
+                url = "http://10.10.239.46:12345/complete_workload"
+                requests.post(url, data=data)
             else:
                 self.__client.get(
                 "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
