@@ -79,7 +79,7 @@ class ControllerWorkload(WorkloadStorable):
 
         url = "/workload?count={0}&qid={1}&type=routine001&data_type={2}".format(need_task, int(1000 * time.time()),
                                                                                  self.data_type_str)
-        if self.data_type_str in ["RoundFlight", "ListHotel"]:
+        if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
             result = self.__test_client.get(url)
         else:
             result = self.__client.get(url)
@@ -176,7 +176,7 @@ class ControllerWorkload(WorkloadStorable):
                 len_key = self.TaskingDict.pop(task)
 
             while len_key > 0:
-                if self.data_type_str not in ["RoundFlight", "ListHotel"]:
+                if self.data_type_str not in ["RoundFlight", "ListHotel", "Flight"]:
                     task_status = {"id": task.id, "content": task.content, "source": task.source,
                                    "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
                                    "timeslot": task.timeslot}
@@ -215,9 +215,9 @@ class ControllerWorkload(WorkloadStorable):
                 "qid": int(1000 * time.time()),
                 "cur_id": "",
             }
-            if self.data_type_str in ["RoundFlight", "ListHotel"]:
+            if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
                 url = "http://10.10.239.46:12345/complete_workload"
-                requests.post(url, data=data)
+                requests.post(url, data=data, timeout=1000)
             else:
                 self.__client.get(
                 "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
