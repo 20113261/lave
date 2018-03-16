@@ -79,10 +79,10 @@ class ControllerWorkload(WorkloadStorable):
 
         url = "/workload?count={0}&qid={1}&type=routine001&data_type={2}".format(need_task, int(1000 * time.time()),
                                                                                  self.data_type_str)
-        if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
-            result = self.__test_client.get(url)
-        else:
-            result = self.__client.get(url)
+        # if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
+        result = self.__test_client.get(url)
+        # else:
+            # result = self.__client.get(url)
         if result is None or result == []:
             return False
 
@@ -176,14 +176,14 @@ class ControllerWorkload(WorkloadStorable):
                 len_key = self.TaskingDict.pop(task)
 
             while len_key > 0:
-                if self.data_type_str not in ["RoundFlight", "ListHotel", "Flight"]:
-                    task_status = {"id": task.id, "content": task.content, "source": task.source,
-                                   "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
-                                   "timeslot": task.timeslot}
-                else:
-                    task_status = {"id": task.id, "content": task.content, "source": task.source,"feedback_times":task.feedback_times,
-                                   "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
-                                   "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
+                # if self.data_type_str not in ["RoundFlight", "ListHotel", "Flight"]:
+                task_status = {"id": task.id, "content": task.content, "source": task.source,
+                                "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
+                                "timeslot": task.timeslot}
+                # else:
+                    # task_status = {"id": task.id, "content": task.content, "source": task.source,"feedback_times":task.feedback_times,
+                    #                "workload_key": task.workload_key, "error": int(Error), 'proxy': "NULL",
+                    #                "timeslot": task.timeslot,"used_times": task.used_times, "collection_name": task.collection_name,'tid':task.tid}
                 self.__tasks_status.append(task_status)
 
                 len_key -= 1
@@ -215,12 +215,12 @@ class ControllerWorkload(WorkloadStorable):
                 "qid": int(1000 * time.time()),
                 "cur_id": "",
             }
-            if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
-                url = "http://10.10.239.46:12345/complete_workload"
-                requests.post(url, data=data, timeout=1000)
-            else:
-                self.__client.get(
-                "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
+            # if self.data_type_str in ["RoundFlight", "ListHotel", "Flight"]:
+            url = "http://10.10.239.46:12345/complete_workload"
+            requests.post(url, data=data, timeout=1000)
+            # else:
+            #     self.__client.get(
+            #     "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
             logger.info("complete task to master fail. task_count=" +
