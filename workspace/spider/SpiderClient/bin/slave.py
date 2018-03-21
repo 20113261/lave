@@ -139,6 +139,8 @@ def work(task):
         except Exception, e:
             logger.error("[新框架 爬虫抛出异常: task_data:%s  error:%s]",
                              task.task_data, traceback.format_exc())
+            stime = time.time()
+            etime = time.time()
             logger.error('creating instance cost\t [%s ms] \t [%s]' % (
                 str(etime - stime), task.source))
             error = WORK_ERROR
