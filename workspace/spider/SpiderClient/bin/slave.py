@@ -360,23 +360,24 @@ if __name__ == "__main__":
     # 例行抓取
     data_type_str = ''
     greents_num = 200  # 每个线程协程数默认为200
+    import workload
+    
+    mioji.common.pool.pool.set_size(4096 * 2)
     if 0 == is_recv_real_time_request:
         data_type = config_helper.data_type
         data_type_str = data_type.get(host)
         task_type = data_type.get(host, 'NULL')
 
         if 'ListHotel' in task_type:
-            import workload
-
-            workload.TASK_COUNT = 240
+            workload.TASK_COUNT = 80
             greents_num = 80
-            mioji.common.pool.pool.set_size(4096)
+            # mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
         else:
-            mioji.common.pool.pool.set_size(4096)
+            # mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
     else:
-        mioji.common.pool.pool.set_size(1024)
+        pass
 
     port = int(sys.argv[1])
     master_host = config_helper.master_host
