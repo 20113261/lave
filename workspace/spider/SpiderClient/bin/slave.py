@@ -370,7 +370,7 @@ if __name__ == "__main__":
 
         if 'ListHotel' in task_type:
             workload.TASK_COUNT = 80
-            greents_num = 80
+            greents_num = 160
             # mioji.common.pool.pool.set_size(4096)
             mioji.common.spider.need_write_file = False
         else:

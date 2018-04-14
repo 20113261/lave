@@ -16,6 +16,20 @@ def insert_hotel_base_data_task_info(args):
     except Exception:
         logger.exception("Insert Task Data Error")
 
+def InsertFerry(args):
+    '''
+    渡轮例行数据入库
+    '''
+    routing_key = 'ferry'
+    q_list = None
+    insert_rabbitmq_ok = False
+    insert_db_ok = True
+    try:
+        insert_rabbitmq(args=args, queue_list=q_list, routing_key=routing_key)
+        insert_rabbitmq_ok = True
+    except Exception:
+        logger.exception('[rabbitmq 入库异常]')
+    return insert_rabbitmq_ok, insert_db_ok
 
 def InsertFlight(args):
     # sql = "INSERT INTO flight" + table_name_date + " (flight_no,plane_no,airline,dept_id,dest_id,dept_day,dept_time," + \
