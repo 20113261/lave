@@ -7,6 +7,8 @@
 import db  # 222:crawl
 from logger import logger
 from insert_rabbitmq import insert_rabbitmq
+import pika
+import json
 
 
 def insert_hotel_base_data_task_info(args):
@@ -40,6 +42,29 @@ def InsertFlight(args):
           "stop) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
     return db.ExecuteSQLs(sql, args)
 
+
+def InsertNewHotel(args):
+    try:
+        credentials = pika.PlainCredentials(username='writer', password='miaoji1109')
+        connection = pika.BlockingConnection(
+            pika.ConnectionParameters(
+                host="10.10.160.200", port=5672, virtual_host='mpf', credentials=credentials
+            )
+        )
+        channel = connection.channel()
+        channel.queue_declare(queue='spiderToDataPush',durable=True)
+        msg = json.dumps(args, ensure_ascii=False)
+        res = channel.basic_publish(exchange='dataPush', routing_key='spiderToDataPush', body=msg,)
+
+        connection.close()
+        if not res:
+            raise Exception('RabbitMQ Result False')
+        logger.debug('[rabbitmq InsertNewHotel 入库结束]')
+        print res
+        return True,True
+    except :
+        logger.exception('[mysql 入库异常]')
+        return False,False
 
 # 新增 change rule、baggage 等字段
 def InsertNewFlight(args):
