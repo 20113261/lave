@@ -244,9 +244,22 @@ def call_back_toservice(task, query):
         )
         channel = connection.channel()
 
+        response = {}
+        cost_time = -1
+        try:
+            response = {
+                'error': {'id': query['other_info']['parser_error']}
+            }
+            cost_time = time.time() - task.create_time
+        except:
+            pass
+
         msg = json.dumps({
             'qid': task.req_qid, 'type': task.callback_type,
-            'uid': task.req_uid, 'query': json.dumps(query)
+            'uid': task.req_uid, 'csuid': '',
+            'queue': task.master_info.get('spider_mq_queue', ''),
+            'cost': cost_time,
+            'query': json.dumps(query), 'response': response,
         })
 
         res = channel.basic_publish(
