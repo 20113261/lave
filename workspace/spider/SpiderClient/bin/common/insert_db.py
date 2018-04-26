@@ -54,16 +54,16 @@ def InsertNewHotel(args):
         channel = connection.channel()
         channel.queue_declare(queue='spiderToDataPush',durable=True)
         msg = json.dumps(args, ensure_ascii=False)
-        res = channel.basic_publish(exchange='dataPush', routing_key='spiderToDataPush', body=msg,)
+        res = channel.basic_publish(exchange='dataPush', routing_key='data_push_tmp', body=msg,)
 
         connection.close()
         if not res:
             raise Exception('RabbitMQ Result False')
         logger.debug('[rabbitmq InsertNewHotel 入库结束]')
-        print res
+
         return True,True
     except :
-        logger.exception('[mysql 入库异常]')
+        logger.exception('[rabbitmq InsertNewHotel 入库异常]')
         return False,False
 
 # 新增 change rule、baggage 等字段
