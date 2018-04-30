@@ -44,7 +44,10 @@ def InsertFlight(args):
 
 
 def InsertNewHotel(args,task):
-    info = task.get("master_info",{})
+    try:
+        info = task.master_info
+    except:
+        raise ValueError('master_info任务 获取失败')
     host = info.get("spider_mq_host")
     user = info.get("spider_mq_user")
     passwd = info.get('spider_mq_passwd')
