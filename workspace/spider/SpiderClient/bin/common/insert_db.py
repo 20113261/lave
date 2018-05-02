@@ -44,7 +44,7 @@ def InsertFlight(args):
 
 
 def InsertNewHotel(args):
-        try:
+    try:
         credentials = pika.PlainCredentials(username='writer', password='miaoji1109')
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
