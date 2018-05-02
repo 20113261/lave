@@ -48,13 +48,13 @@ def InsertNewHotel(args):
         credentials = pika.PlainCredentials(username='writer', password='miaoji1109')
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
-                host="10.10.160.200", port=5672, virtual_host='mpf', credentials=credentials
+                host="10.10.160.200", port=5672, virtual_host='HotelDataPush', credentials=credentials
             )
         )
         channel = connection.channel()
-        channel.queue_declare(queue='spiderToDataPush',durable=True)
+        channel.queue_declare(queue='routine_to_datapush',durable=True)
         msg = json.dumps(args, ensure_ascii=False)
-        res = channel.basic_publish(exchange='dataPush', routing_key='data_push_tmp', body=msg,)
+        res = channel.basic_publish(exchange='RoutineToDataPush', routing_key='routine', body=msg,)
 
         connection.close()
         if not res:
