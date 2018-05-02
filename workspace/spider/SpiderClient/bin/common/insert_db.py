@@ -43,40 +43,24 @@ def InsertFlight(args):
     return db.ExecuteSQLs(sql, args)
 
 
-def InsertNewHotel(args,task):
-    try:
-        info = task.master_info
-    except:
-        raise ValueError('master_info任务 获取失败')
-    host = info.get("spider_mq_host")
-    user = info.get("spider_mq_user")
-    passwd = info.get('spider_mq_passwd')
-    port = info.get('spider_mq_port')
-    v_host = info.get("spider_mq_vhost")
-    exchange = info.get("spider_mq_exchange")
-    queue = info.get("spider_mq_queue")
-    routing_key = info.get("spider_mq_routerKey")
-    if info and user and passwd and port and v_host and exchange and queue and routing_key:
-        pass
-    else:
-        raise Exception('mq info 获取失败')
-    try:
-        credentials = pika.PlainCredentials(username=user, password=passwd)
+def InsertNewHotel(args):
+        try:
+        credentials = pika.PlainCredentials(username='writer', password='miaoji1109')
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
-                host=host, port=port, virtual_host=v_host, credentials=credentials
+                host="10.10.160.200", port=5672, virtual_host='mpf', credentials=credentials
             )
         )
         channel = connection.channel()
-        channel.queue_declare(queue=queue,durable=True)
+        channel.queue_declare(queue='spiderToDataPush',durable=True)
         msg = json.dumps(args, ensure_ascii=False)
-        res = channel.basic_publish(exchange=exchange, routing_key=routing_key, body=msg,)
+        res = channel.basic_publish(exchange='dataPush', routing_key='data_push_tmp', body=msg,)
 
         connection.close()
         if not res:
             raise Exception('RabbitMQ Result False')
         logger.debug('[rabbitmq InsertNewHotel 入库结束]')
-        print res
+
         return True,True
     except :
         logger.exception('[rabbitmq InsertNewHotel 入库异常]')
