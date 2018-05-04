@@ -359,7 +359,7 @@ if __name__ == "__main__":
     # init_mysql_connections(host=mysql_host, user=mysql_user, passwd=mysql_passwd)
     # 例行抓取
     data_type_str = ''
-    greents_num = 200  # 每个线程协程数默认为200
+    greents_num = 160  # 每个线程协程数默认为写160
     import workload
     
     mioji.common.pool.pool.set_size(4096 * 2)
