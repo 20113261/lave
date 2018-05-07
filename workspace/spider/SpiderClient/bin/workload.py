@@ -223,8 +223,9 @@ class ControllerWorkload(WorkloadStorable):
             #     "/complete_workload?q=" + urllib.quote(completed_task) + other_query)
             self.__tasks_status = self.__tasks_status[len_task:]
         except Exception, e:
-            logger.info("complete task to master fail. task_count=" +
-                        str(len_task) + ' err = ' + str(e))
+            logger.error('complete task: {0}'.format(self.__tasks_status[:len_task]))
+            logger.error("complete task to master fail. task_count=" +
+                        str(len_task) + ' err = ' + traceback.format_exc())
 
         return True
 
