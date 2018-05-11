@@ -10,6 +10,7 @@ import time
 import socket
 import json
 import requests
+import traceback
 from util import http_client
 from logger import logger
 from conf_manage import ConfigHelper
@@ -92,6 +93,8 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
             logger.debug("[Exception MJOPObserver,type=ex78002,uid=,csuid=,qid={0},ts={1},ip={3},refer_id=,cur_id=,debug={2}]".format(qid, time.time() * 1000, "未取到代理，请求信息为："+get_info, ip))
         p = [proxy_ip, [p, time_end, get_info]]
     except:
+        exstr = traceback.format_exc()
+        print exstr
         logger.debug("[Exception MJOPObserver,type=ex78002,\
                 uid=,csuid=,qid={0},ts={1},\
                 ip={3},refer_id=, \
