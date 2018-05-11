@@ -33,7 +33,7 @@ config_helper = ConfigHelper()
 # proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
 
-new_proxy_host = '10.10.239.46:8088'
+new_proxy_host = '10.10.182.238:9090'
 local_ip = None
 
 
