@@ -49,7 +49,7 @@ def InsertNewHotel(args):
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
                 host="10.10.160.200", port=5672, virtual_host='HotelDataPush', credentials=credentials,
-                heartbeat_interval=0, heartbeat=0
+                heartbeat_interval=0
             )
         )
         channel = connection.channel()
