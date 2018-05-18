@@ -58,7 +58,7 @@ def InsertNewHotel(args):
         channel.queue_bind(queue='routine_to_datapush', exchange='RoutineToDataPush', routing_key='routine')
         msg = json.dumps(args, ensure_ascii=False)
         res = channel.basic_publish(exchange='RoutineToDataPush', routing_key='routine', body=msg,
-                                    properties=pika.BasicProperties(delivery_mode=1)
+                                    properties=None
                                     )
 
         connection.close()
