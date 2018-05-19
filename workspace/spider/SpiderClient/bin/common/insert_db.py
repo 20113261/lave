@@ -46,12 +46,7 @@ def InsertFlight(args):
 def InsertNewHotel(args):
     try:
         credentials = pika.PlainCredentials(username='writer', password='miaoji1109')
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(
-                host="10.10.160.200", port=5672, virtual_host='HotelDataPush', credentials=credentials,
-                heartbeat_interval=0
-            )
-        )
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host="10.10.160.200", port=5672, virtual_host='HotelDataPush', credentials=credentials))
         channel = connection.channel()
         channel.queue_declare(queue='routine_to_datapush',durable=True)
         channel.exchange_declare(exchange='RoutineToDataPush', durable=True, auto_delete=False)
