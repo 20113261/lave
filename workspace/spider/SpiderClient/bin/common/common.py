@@ -34,7 +34,8 @@ config_helper = ConfigHelper()
 # proxy_client = http_client.HttpClientPool("10.136.8.94:8086")
 proxy_client2 = http_client.HttpClientPool(config_helper.proxy_host, maxsize=20)
 
-new_proxy_host = '10.10.182.238:9090'
+# new_proxy_host = '10.10.182.238:9090'
+new_proxy_host = '10.10.239.46:8088'
 local_ip = None
 
 
@@ -95,6 +96,7 @@ def get_proxy(source=None, allow_ports=[], forbid_ports=[],
     except:
         exstr = traceback.format_exc()
         print exstr
+        logger.debug(exstr)
         logger.debug("[Exception MJOPObserver,type=ex78002,\
                 uid=,csuid=,qid={0},ts={1},\
                 ip={3},refer_id=, \
