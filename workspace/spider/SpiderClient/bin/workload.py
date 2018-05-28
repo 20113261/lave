@@ -278,6 +278,7 @@ def call_back_toservice(task, query):
             properties=pika.BasicProperties(delivery_mode=2),
             body=msg,
         )
+        connection.process_data_events()
         connection.close()
         if not res:
             raise Exception('RabbitMQ Result False')
