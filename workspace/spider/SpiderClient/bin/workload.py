@@ -261,7 +261,8 @@ def call_back_toservice(task, query):
                                             , password=task.master_info['spider_mq_passwd'])
         connection = pika.BlockingConnection(
             pika.ConnectionParameters(
-                host=task.master_info['spider_mq_host'], virtual_host=task.master_info['spider_mq_vhost'], credentials=credentials
+                host=task.master_info['spider_mq_host'], virtual_host=task.master_info['spider_mq_vhost'], credentials=credentials, 
+                heartbeat_interval=0
             )
         )
         channel = connection.channel()
