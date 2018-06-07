@@ -6,24 +6,26 @@
     @desc:
         作业管理
 """
+import json
 import os
 import random
-import json
-import urllib
-import jsonlib
-import time
-from util import timer
-from common.task import Task
 import threading
-from common.logger import logger
-from crawler.workload import WorkloadStorable
-from util.http_client import HttpClientPool, HttpClient
+import time
+import traceback
+import urllib
+
+import jsonlib
+import pika
 import redis
 import requests
-import pika
-import traceback
+from gevent.queue import Empty, Queue
 
-from gevent.queue import Queue, Empty
+from common.logger import logger
+from common.task import Task
+from crawler.workload import WorkloadStorable
+from util import timer
+from util.http_client import HttpClient, HttpClientPool
+from common.warning import warn
 
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
@@ -279,11 +281,14 @@ def call_back_toservice(task, query):
             body=msg,
         )
         connection.process_data_events()
+
         connection.close()
         if not res:
+            warn("P1", 'RabbitMQ Result False: {0}'.format(msg))
             raise Exception('RabbitMQ Result False')
         logger.debug('[callback a verifytask done]')
     except Exception as exc:
+        warn("P1", 'RabbitMQ Result False qid : {0}'.format(task.req_qid))
         logger.exception("callback a task fail. error = {0}".format(traceback.format_exc()))
 
 
