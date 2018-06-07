@@ -25,7 +25,7 @@ from common.task import Task
 from crawler.workload import WorkloadStorable
 from util import timer
 from util.http_client import HttpClient, HttpClientPool
-from common.warning import warn
+from mioji.common.warning import warn
 
 TASK_TIME_SPAN = 150
 COMPLETE_TIME_SPAN = 2
