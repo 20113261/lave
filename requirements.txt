@@ -32,7 +32,7 @@ six==1.10.0
 suds==0.4
 tornado==4.4.3
 ucloud==2.0.1
-urllib3==1.19.1
+urllib3==1.24.2
 user-agent==0.1.5
 virtualenv==15.0.3
 xmltodict==0.11.0
