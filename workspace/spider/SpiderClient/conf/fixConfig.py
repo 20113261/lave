@@ -20,13 +20,13 @@ def fixConfig():
         #if each == 'conf1.ini':
         #    pdb.set_trace()
         
-        conf.remove_option('slave', 'parsers')
-        conf.remove_option('slave', 'sources')
+        conf.remove_option('subordinate', 'parsers')
+        conf.remove_option('subordinate', 'sources')
         sections = conf.sections()
 
-        sections.remove('slave')
+        sections.remove('subordinate')
         sections.remove('proxy')
-        sections.remove('master')
+        sections.remove('main')
 
         for ele in sections:
             try:

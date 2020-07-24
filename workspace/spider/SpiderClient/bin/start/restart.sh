@@ -2,11 +2,16 @@
 
 CURR_PATH=`cd $(dirname $0);pwd;`
 cd $CURR_PATH
+source ./start_check.sh
+check
+
+if [ ! -n "$1" ] ;then
+    echo "must need param slave_group like:routine,test,online_c,online_d"
+    exit 1
+fi
+slave_group=$1
 
 sh kill.sh
 
-sleep  5
-sh start5.sh 1
-
-nohup stdbuf -oL python bossStatus.py  2>&1 | cronolog /search/spider_log/rotation/%Y%m%d/restart.%Y%m%d_%H.log &
-
+sleep 5
+sh start.sh ${slave_group}

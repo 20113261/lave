@@ -1,15 +1,13 @@
-#!/bin/sh   
+#!/usr/bin/env python
+# 暂停魔山
+sh /usr/local/monitor_shell/monitor_control.sh -p 60
 
-#keys=`(ps -ef |grep "slave" |grep -v "grep") | awk '{print $2}'`
+CURR_PATH=`cd $(dirname $0);pwd;`
+echo $CURR_PATH
+cd $CURR_PATH
+source ./slave_process.sh
+# 获取进程数
+get_process_size ${slave_group}
+proce_size=$?
 
-#for key in ${keys[*]}
-#do
-#    kill -9 $key
-#done
-
-
-ps -ef | grep 'slave' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
-
-sleep 3
-
-ps -ef | grep 'bossStatus.py' | grep -v 'grep' | awk '{print $2}' | xargs kill -9
+python kill.py ${proce_size}

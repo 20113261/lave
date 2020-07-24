@@ -9,7 +9,7 @@
 import sys
 import MySQLdb
 import os
-#from slave import Connection
+#from subordinate import Connection
 from MySQLdb.cursors import DictCursor
 import datetime
 import commands
