@@ -109,7 +109,7 @@ class MiniFactory:
         from mioji.common.task_info import Task
         task = Task()
         from mioji.common import spider
-        spider.slave_get_proxy = simple_get_socks_proxy
+        spider.subordinate_get_proxy = simple_get_socks_proxy
         if 'flight' in self.type:
             ticket_info = {'v_seat_type': 'E', 'env_name': 'test'}
         elif 'hotel' in self.type:

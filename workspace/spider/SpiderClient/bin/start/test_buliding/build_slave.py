@@ -24,13 +24,13 @@ def _submodule_update():
 
 
 def _build_old_spider(tag):
-    local('git clone http://gitlab.uc.online/spider/slave_develop_new.git')
-    local('cd slave_develop_new')
-    with lcd('slave_develop_new'):
+    local('git clone http://gitlab.uc.online/spider/subordinate_develop_new.git')
+    local('cd subordinate_develop_new')
+    with lcd('subordinate_develop_new'):
         local('git checkout {tag}'.format(tag=tag))
         _submodule_update()
         local('git submodule status')
-        local('mkdir workspace/spider/SpiderClient/bin/start/slavepid')
+        local('mkdir workspace/spider/SpiderClient/bin/start/subordinatepid')
 
 
 def _build_new_spider(tag):
@@ -41,7 +41,7 @@ def _build_new_spider(tag):
             local('git checkout {tag}'.format(tag=tag))
             _submodule_update()
             local('git submodule status')
-    local('scp -r tmp/Spider/src/mioji slave_develop_new/workspace/spider/SpiderClient/bin/mioji')
+    local('scp -r tmp/Spider/src/mioji subordinate_develop_new/workspace/spider/SpiderClient/bin/mioji')
 
 
 @task
@@ -52,7 +52,7 @@ def build(old_ver, new_ver, path=None):
         local('pwd')
         _build_old_spider(old_ver)
         _build_new_spider(new_ver)
-        local('mv slave_develop_new/workspace/spider/SpiderClient ./')
+        local('mv subordinate_develop_new/workspace/spider/SpiderClient ./')
         file_name = '{0}_{1}_spider.tar.gz'.format(old_ver, new_ver)
         local('tar -zcvf {0} SpiderClient'.format(file_name))
         local('md5 {0}'.format(file_name))
@@ -61,8 +61,8 @@ def build(old_ver, new_ver, path=None):
 
 def _deploy_spider():
     with cd('/search/test'):
-        run('rm -rf slave_develop_new')
-        put('{0}/spider_slave.tar.gz', './')
+        run('rm -rf subordinate_develop_new')
+        put('{0}/spider_subordinate.tar.gz', './')
 
 
 @roles('test_spider')
@@ -84,4 +84,4 @@ if __name__ == '__main__':
     # path = None
     # path = build('release_v1.0.2', 'release_v1.0.0')
     # deploy(path, 'test_spider')
-    build('slave.20171220.a', 'Spider.20171221.a')
+    build('subordinate.20171220.a', 'Spider.20171221.a')

@@ -25,7 +25,7 @@ def send(title, mail_info, mail_list):
 
 
 if __name__ == '__main__':
-    # send('slave 进程被kill', 'content',
+    # send('subordinate 进程被kill', 'content',
     #      'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
 
     print send('Test', 'test', 'hourong@mioji.com')

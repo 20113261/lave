@@ -8,7 +8,7 @@
 '''
 import sys
 import MySQLdb
-#from slave import Connection
+#from subordinate import Connection
 from MySQLdb.cursors import DictCursor
 import datetime
 #from logger import logger

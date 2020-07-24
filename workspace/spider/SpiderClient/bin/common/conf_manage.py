@@ -6,7 +6,7 @@ import ConfigParser
 
 
 config_file_path = os.environ["CONFIG_FILE"]
-# config_file_path = '/Users/mioji2017/Documents/workspace/spider_work/slave_develop_new/workspace/spider/SpiderClient/conf/slave.routine.ini'
+# config_file_path = '/Users/mioji2017/Documents/workspace/spider_work/subordinate_develop_new/workspace/spider/SpiderClient/conf/subordinate.routine.ini'
 
 
 class ConfigHelper:
@@ -16,7 +16,7 @@ class ConfigHelper:
         self.config.read(file_path)
 
         self.proxy_host = '10.10.239.46:8087'
-        self.master_host = '10.10.99.53:4141'
+        self.main_host = '10.10.99.53:4141'
         self.env = 'Test'
         self.redis_host = '10.10.24.130'
         self.redis_port = 6379
@@ -38,7 +38,7 @@ class ConfigHelper:
     def read_config(self):
         self.proxy_host = self.config.get("proxy", "host")
         self.new_proxy_host = self.config.get("proxy", "new_host")
-        self.master_host = self.config.get("master", "host")
+        self.main_host = self.config.get("main", "host")
         self.redis_host = self.config.get("redis", "host")
         self.redis_port = self.config.getint("redis", "port")
         #  self.redis_db = self.config.getint('redis', 'db')
@@ -52,9 +52,9 @@ class ConfigHelper:
         self.spiderbase_passwd = self.config.get('spiderbase', 'pswd')
         self.spiderbase_db = self.config.get('spiderbase', 'db')
 
-        self.is_recv_real_time_request = self.config.getint("slave", "recv_real_time_request")
-        self.thread_num = self.config.getint("slave", "thread_num")
-        self.env = self.config.get('slave' ,'env')
+        self.is_recv_real_time_request = self.config.getint("subordinate", "recv_real_time_request")
+        self.thread_num = self.config.getint("subordinate", "thread_num")
+        self.env = self.config.get('subordinate' ,'env')
 
         self.data_type = dict(self.config.items('data_type'))
 

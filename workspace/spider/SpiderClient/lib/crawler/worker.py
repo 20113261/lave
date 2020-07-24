@@ -77,7 +77,7 @@ class Worker(threading.Thread):
             logger.info('workload assign task pool size: {0} free count: {1}'.format(self.__pool.size, self.__pool.free_count()))
             if self.__pool.free_count() < 2:
                 logger.warn('[Exception MJOPObserver,type=ex78000,uid=,csuid=,qid={ts},ts={ts},ip={ip},'
-                            'refer_id=,cur_id=spider_slave,debug=任务堆积-空闲池:{free}/{size}-等待任务:{count}]'
+                            'refer_id=,cur_id=spider_subordinate,debug=任务堆积-空闲池:{free}/{size}-等待任务:{count}]'
                             .format(ts=int(time.time()*1000), ip=local_ip,
                                     size=self.__pool.size, free=self.__pool.free_count(),
                                     count=self.workload.tasks.qsize()))
@@ -113,7 +113,7 @@ class Workers(object):
                 self.__workload.get_workloads()
                 time.sleep(5)
             except Exception, e:
-                logger.info('from master get task thread is  killed , sleep 3s ' + str(e))
+                logger.info('from main get task thread is  killed , sleep 3s ' + str(e))
                 time.sleep(8)
 
         logger.info('get task thread is killed')

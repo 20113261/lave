@@ -7,7 +7,7 @@
         数据访问
 '''
 
-from slave import UCConnection
+from subordinate import UCConnection
 from MySQLdb.cursors import DictCursor
 from logger import logger
 import MySQLdb

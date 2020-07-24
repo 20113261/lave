@@ -38,15 +38,15 @@ class BossStatus(object):
 
     def get_process_l(self):
         """
-            获取启动的slave进程列表
+            获取启动的subordinate进程列表
         """
-        cmd = "ps -ef | grep 'slave.py' | grep -v 'grep' | awk -F ' ' '{print $10}'"
+        cmd = "ps -ef | grep 'subordinate.py' | grep -v 'grep' | awk -F ' ' '{print $10}'"
         init_process_l = commands.getoutput(cmd).split('\n')
         return init_process_l
 
     def update_process_status(self):
         """
-            检查slave进程是否被kill
+            检查subordinate进程是否被kill
         """
         ISOTIMEFORMAT = '%Y-%m-%d %X'
         cur_process_list = []
@@ -69,7 +69,7 @@ class BossStatus(object):
         if content != '':
             print 'content is %s' % content
             print 'self.getLocalIp() is ' + self.getLocalIp()
-            # send('[爬虫监控][爬虫 slave][进程被 kill]', self.getLocalIp() + ' :: ' + content,
+            # send('[爬虫监控][爬虫 subordinate][进程被 kill]', self.getLocalIp() + ' :: ' + content,
             #      'dujun@mioji.com;changjing@mioji.com;hourong@mioji.com;shengweisong@mioji.com')
 
 

@@ -18,8 +18,8 @@ logging.getLogger("pika").propagate = False
 
 # online
 HOST = '10.10.38.166'
-USER = 'master'
-PASSWD = 'master'
+USER = 'main'
+PASSWD = 'main'
 
 
 def insert_rabbitmq(args, queue_list, routing_key):

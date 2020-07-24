@@ -18,4 +18,4 @@ for i in range(int(sys.argv[1])):
 time.sleep(20)
 
 
-os.system("ps -ef | grep 'slave' | grep -v 'grep' | awk '{print $2}' | xargs kill -9 ")
+os.system("ps -ef | grep 'subordinate' | grep -v 'grep' | awk '{print $2}' | xargs kill -9 ")
