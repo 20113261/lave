@@ -1,7 +1,7 @@
 backports-abc==0.5
 certifi==2017.1.23
 cffi==1.8.3
-cryptography==1.5.2
+cryptography==3.2
 DBUtils==1.2
 enum34==1.1.6
 futures==3.0.5
