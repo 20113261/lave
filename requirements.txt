@@ -29,7 +29,7 @@ redis==2.10.5
 requests==2.10.0
 singledispatch==3.4.0.3
 six==1.10.0
-suds==0.4
+suds==1.0.0
 tornado==4.4.3
 ucloud==2.0.1
 urllib3==1.19.1
